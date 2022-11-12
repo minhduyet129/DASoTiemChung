@@ -1,0 +1,70 @@
+﻿@using DASoTiemChung.Controllers
+
+
+
+<div id="sidebar" class="active">
+    <div class="sidebar-wrapper active border">
+        <div class="sidebar-header">
+            <div class="d-flex justify-content-between">
+                <div class="logo">
+                    <a href="~/">
+                        <spam>Quản lý vắc xin</spa>
+                    </a>
+                </div>
+                <div class="toggler">
+                    <a href="javascript:;" class="sidebar-hide d-xl-none d-block"><i class="bi bi-x bi-middle"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="sidebar-menu">
+            <ul class="menu">
+                @*<li class="sidebar-title">Menu</li>*@
+                <li class="sidebar-item">
+                    <a asp-route="@LoController.RouteIndex" class="sidebar-link">
+                        <i class="bi bi-columns-gap"></i>
+                        <span>Quản lý lô</span>
+                    </a>
+                </li>
+               
+               
+                @*<li class="sidebar-item">
+
+                    <div class="btn btn-toggle collapsed sidebar-link" data-bs-toggle="collapse" data-bs-target="#dashboard-collapse" aria-expanded="false">
+                        <i class="bi bi-sliders"></i>
+                        <span>Cấu hình hệ thống</span>
+                    </div>
+                    <div class="collapse" id="dashboard-collapse">
+                        <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                            <li class="sidebar-item">
+                                <a asp-route="@SystemParameterController.AboutUsPage" class="sidebar-link">
+                                    <span>Giới thiệu về shop</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-item">
+                                <a asp-route="@SystemParameterController.ShippingPolicyPage" class="sidebar-link">
+                                    <span>Đặt hàng & vận chuyển</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-item">
+                                <a asp-route="@SystemParameterController.ReturnPolicyPage" class="sidebar-link">
+                                    <span>Trả hàng - hoàn tiền</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-item">
+                                <a asp-route="@SystemParameterController.CooporatePage" class="sidebar-link">
+                                    <span>Hợp tác</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-item">
+                                <a asp-route="@SystemParameterController.HomeSliderConfig" asp-route-code="HOME_SLIDER" class="sidebar-link">
+                                    <span>Slide ảnh trang chủ</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>*@
+            </ul>
+        </div>
+        <button class="sidebar-toggler btn x"><i data-feather="x"></i></button>
+    </div>
+</div>

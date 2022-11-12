@@ -1,48 +1,81 @@
-﻿<!DOCTYPE html>
+﻿
+<!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - DASoTiemChung</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@(ViewBag.Title ?? "Admin")</title>
+    
+    @*<partial name="Partial/_Styles" />*@
+    @await Html.PartialAsync("Partial/_Styles")
+    @RenderSection("Styles", false)
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">DASoTiemChung</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
+    <div id="app">
+        @*<partial name="Partial/_NavBar" />*@
+        @await Html.PartialAsync("Partial/_NavBar")
+        <div id="main">
+            <header class="mb-3">
+                <a href="#" class="burger-btn d-block d-xl-none">
+                    <i class="bi bi-justify fs-3"></i>
+                </a>
+            </header>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2022 - DASoTiemChung - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            @RenderBody()
+
+            <footer>
+                @*<div class="footer clearfix mb-0 text-muted">
+                <div class="float-start">
+                <p>2021 &copy; Mazer</p>
+                </div>
+                <div class="float-end">
+                <p>
+                Crafted with <span class="text-danger"><i class="bi bi-heart"></i></span> by <a href="http://ahmadsaugi.com">A. Saugi</a>
+                </p>
+                </div>
+                </div>*@
+                <div class="footer clearfix mb-0 text-muted">
+                    <div class="float-start">
+                        <p>@DateTime.Now.Year &copy;</p>
+                    </div>
+                    <div class="float-end">
+                        @*<p>
+                        Crafted with <span class="text-danger"><i class="bi bi-heart"></i></span> by <a href="http://ahmadsaugi.com">A. Saugi</a>
+                        </p>*@
+                    </div>
+                </div>
+            </footer>
         </div>
-    </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    @await RenderSectionAsync("Scripts", required: false)
+    </div>
+  
+    <script>
+        
+        (function() {
+            'use strict'
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+            tooltipTriggerList.forEach(function(tooltipTriggerEl) {
+                new bootstrap.Tooltip(tooltipTriggerEl)
+            })
+        })()
+
+    </script>
+    @*<partial name="Partial/_Scripts" />*@
+    @await Html.PartialAsync("Partial/_Scripts")
+    @RenderSection("Scripts", false)
+    <script type="text/javascript">
+        $(document).ready(function() {
+            //https://stackoverflow.com/questions/26018756/bootstrap-button-drop-down-inside-responsive-table-not-visible-because-of-scroll
+            //https://www.w3schools.com/bootstrap/bootstrap_ref_js_dropdown.asp
+            $(document).on({
+                "show.bs.dropdown": function(event) {
+                    $(this).closest(".table-responsive").css("overflow", "inherit");
+                },
+                "hide.bs.dropdown": function(event) {
+                    $(this).closest(".table-responsive").css("overflow", "auto");
+                }
+            }, ".table-responsive .btn-group");
+        });
+    </script>
 </body>
 </html>

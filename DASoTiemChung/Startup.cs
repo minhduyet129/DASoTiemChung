@@ -1,4 +1,5 @@
 using DASoTiemChung.Models;
+using DASoTiemChung.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -27,7 +28,15 @@ namespace DASoTiemChung
         {
             services.AddControllersWithViews();
             services.AddDbContext<SoTiemChungContext>(options =>
-            options.UseSqlServer(Configuration.GetConnectionString("DefaultDatabase")));
+            {
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultDatabase"));
+
+                options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+            }
+            );
+            
+            
+            services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
