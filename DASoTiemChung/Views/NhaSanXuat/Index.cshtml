@@ -1,0 +1,395 @@
+﻿@using  DASoTiemChung.Controllers
+@{
+    ViewBag.Title = "Quản lý nhà sản xuất";
+}
+
+@section Styles {
+    <style type="text/css">
+    </style>
+}
+
+<div class="page-heading">
+    <div class="page-title">
+        <div class="row">
+            <div class="col-12 col-md-6 order-md-1 order-last">
+                <h3>@Html.Raw(ViewBag.Title)</h3>
+
+            </div>
+            <div class="col-12 col-md-6 order-md-2 order-first">
+                <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
+                    <ol class="breadcrumb">
+                        @*<li class="breadcrumb-item"><a href="javascript:;">Dữ liệu cơ bản (v2)</a></li>*@
+                        @*<li class="breadcrumb-item active" aria-current="page">Quản lý trường học (v2)</li>*@
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+    <section class="section">
+        <div class="card border">
+            <div class="card-header d-flex align-items-center">
+                <h4 class="card-title m-0">Tìm kiếm</h4>
+                <button class="btn ms-auto"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#search"
+                        aria-expanded="true"
+                        aria-controls="search">
+                    <i class="fa fa-angle-down"></i>
+                </button>
+            </div>
+            <div class="card-content show" id="search">
+                <div class="card-body">
+                    <form id="searchForm" class="form">
+                        <div class="row">
+                            <div class="col-md-3 col-12">
+                                <div class="form-group">
+                                    <label for="searchName">Tên</label>
+                                    <div class="position-relative">
+                                        <input type="text" id="searchName" class="form-control"
+                                               placeholder="Nhập tên muốn tìm" name="school-name">
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-12 d-flex justify-content-end">
+                                <button type="submit"
+                                        class="btn btn-primary me-1 mb-1">
+                                    Tìm kiếm
+                                </button>
+                                @*<button type="reset"
+                                    class="btn btn-light-secondary me-1 mb-1">
+                                    Reset
+                                    </button>*@
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Striped rows start -->
+    <section class="section">
+        <div class="card border">
+            <div class="card-header d-flex align-items-center">
+                <div class="d-flex justify-content-between w-100">
+                    <h4 class="card-title m-0">Danh sách danh mục</h4>
+                    <button type="button" class="btn btn-primary"
+                            onclick="openForm({ url: '@Url.RouteUrl(NhaSanXuatController.RouteForm,new { id = 0 }))' })">
+                        Thêm mới
+                    </button>
+                </div>
+            </div>
+            @*<div class="card-body"></div>*@
+            <div id="dataTable" style="min-height: 100px;">
+            </div>
+        </div>
+    </section>
+    <!-- Striped rows end -->
+</div>
+<div class="modal fade" id="detailModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script type="text/javascript">
+        let $dataTable;
+        let $searchName;
+        let $searchActive;
+        let $searchCreationTime;
+        let $searchLastModificationTime;
+        let $detailModal;
+        let detailModalInstance;
+        let SkipCount = 1;
+        let MaxResultCount = 10;
+        let pagingAjaxInstance;
+        let detailAjaxInstance;
+        let guidImgFilePondInstance;
+        let thumbImgFilePondInstance;
+
+        $(document).ready(function () {
+            $dataTable = $("#dataTable");
+            $searchName = $("#searchName");
+            $searchActive = $("#searchStatus");
+            $searchCreationTime = $("#searchCreationTime");
+            $searchLastModificationTime = $("#searchLastModificationTime");
+
+            $searchForm = $("#searchForm");
+            $detailModal = $("#detailModal");
+            detailModalInstance = new bootstrap.Modal(
+                document.getElementById("detailModal"),
+                {
+                    backdrop: 'static',
+                    keyboard: false,
+                    focus: false,
+                }
+            );
+
+            //$detailModal.on('shown.bs.modal', function() {
+            //    $(document).off('focusin.modal');
+            //});
+
+            $detailModal.on("hide.bs.modal", function (e) {
+                detailAjaxInstance && detailAjaxInstance.abort();
+                detailAjaxInstance = null;
+            });
+
+            $(document)
+                .unbind()
+                .on("submit", "#searchForm", function (e) {
+                    e.preventDefault();
+
+                    getPaging({ index: 1 });
+                });
+
+            getPaging();
+        });
+
+        function getPaging(
+            { index, size } = { index: SkipCount, size: MaxResultCount }
+        ) {
+            pagingAjaxInstance && pagingAjaxInstance.abort();
+            pagingAjaxInstance = null;
+
+            SkipCount = index || SkipCount;
+            MaxResultCount = size || MaxResultCount;
+
+            let payload = {
+                SkipCount,
+                MaxResultCount,
+                TenNhaSanXuat: $.trim($searchName.val()).length > 0 ? $.trim($searchName.val()) : "",
+
+            };
+
+            pagingAjaxInstance = $.ajax({
+                url: `@Url.RouteUrl(NhaSanXuatController.RouteDataGrid)`,
+                method: "GET",
+                data: payload,
+                beforeSend: () => {
+                    $dataTable.FLoading("show");
+                },
+                success: (result) => {
+                    $dataTable.empty().append(result);
+                },
+                error: (jqXHR, textStatus, errorThrown) => {
+                    let error = { message: "Đã có lỗi xảy ra, vui lòng liên hệ quản trị!" };
+                    if ($.trim(jqXHR.responseText).length > 0) {
+                        try {
+                            error = (JSON.parse(jqXHR.responseText) ?? { error: { ...error } })
+                                .error;
+                        } catch {
+                            error.message = jqXHR.responseText;
+                        }
+                    }
+                    Swal.fire({
+                        icon: "error",
+                        title: "Ôi không...",
+                        text: error.message,
+                        //footer: '<a href="javascript:;">Why do I have this issue?</a>'
+                    });
+                },
+            }).always(() => {
+                $dataTable.FLoading("hide");
+            });
+        }
+
+        function openForm({ url }) {
+            detailAjaxInstance = $.ajax({
+                url,
+                method: "GET",
+                beforeSend: () => {
+                    $("#main").FLoading("show");
+                    //$detailModal.find(".modal-body").empty().append("Đang tải dữ liệu...");
+                },
+                success: (result) => {
+                    $detailModal.find(".modal-content").empty().append(result);
+
+
+
+                    detailModalInstance.show();
+                },
+                error: (jqXHR, textStatus, errorThrown) => {
+                    let error = { message: "Đã có lỗi xảy ra, vui lòng liên hệ quản trị!" };
+                    if ($.trim(jqXHR.responseText).length > 0) {
+                        try {
+                            error = (JSON.parse(jqXHR.responseText) ?? { error: { ...error } })
+                                .error;
+                        } catch {
+                            error.message = jqXHR.responseText;
+                        }
+                    }
+                    Swal.fire({
+                        icon: "error",
+                        title: "Ôi không...",
+                        text: error.message,
+                        //footer: '<a href="javascript:;">Why do I have this issue?</a>'
+                    });
+                },
+            }).always(() => {
+                $("#main").FLoading("hide");
+            });
+        }
+
+        function saveForm({ url, method }) {
+            if (!$("#pcName").val()) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Ôi không...',
+                    text: 'Vui lòng nhập tên nhà sản xuất',
+                    //footer: '<a href="javascript:;">Why do I have this issue?</a>'
+                });
+                return;
+            }
+            if (!$("#pcSDT").val()) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Ôi không...',
+                    text: 'Vui lòng nhập Số điện thoại',
+                    //footer: '<a href="javascript:;">Why do I have this issue?</a>'
+                });
+                return;
+            }
+            if (!$("#pcEmail").val()) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Ôi không...',
+                    text: 'Vui lòng nhập email',
+                    //footer: '<a href="javascript:;">Why do I have this issue?</a>'
+                });
+                return;
+            }
+            if (!$("#pcDiaChi").val()) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Ôi không...',
+                    text: 'Vui lòng nhập Địa chỉ hiện tại',
+                    //footer: '<a href="javascript:;">Why do I have this issue?</a>'
+                });
+                return;
+            }
+            $.ajax({
+                url,
+                method,
+                data: $(this).serialize(),
+                beforeSend: () => {
+                    //$detailModal.FLoading("show");
+                    //$detailModal.find(".modal-body").empty().append("Đang tải dữ liệu...");
+                },
+                success: (result) => {
+                    detailModalInstance.hide();
+                    getPaging();
+
+                    Swal.fire({
+                        icon: "success",
+                        title: "Thực hiện thành công",
+                    }).then((result) => {
+
+                    });
+                },
+                error: (jqXHR, textStatus, errorThrown) => {
+                    let error = { message: "Đã có lỗi xảy ra, vui lòng liên hệ quản trị!" };
+                    if ($.trim(jqXHR.responseText).length > 0) {
+                        try {
+                            error = (JSON.parse(jqXHR.responseText) ?? { error: { ...error } })
+                                .error;
+                        } catch {
+                            error.message = jqXHR.responseText;
+                        }
+                    }
+                    Swal.fire({
+                        icon: "error",
+                        title: "Ôi không...",
+                        text: error.message,
+                        //footer: '<a href="javascript:;">Why do I have this issue?</a>'
+                    });
+                },
+            }).always(() => {
+                //$detailModal.FLoading("hide");
+            });
+        }
+
+        function closeForm() {
+            Swal.fire({
+                icon: 'question',
+                title: "Bạn có chắc chắn muốn đóng cửa sổ này?",
+                text: "Nếu bạn đóng cửa sổ này, tất cả các thay đổi sẽ không được lưu!",
+                showCancelButton: true,
+                confirmButtonText: 'Có',
+                confirmButtonColor: '#d33',
+                cancelButtonText: 'Không',
+                cancelButtonColor: '#3085d6',
+                focusCancel: true,
+            }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    detailModalInstance.hide();
+                }
+            });
+        }
+
+        function confirmOnDelete({ url }) {
+            Swal.fire({
+                icon: 'question',
+                title: "Bạn có chắc chắn muốn xóa?",
+                showCancelButton: true,
+                confirmButtonText: 'Có',
+                confirmButtonColor: '#d33',
+                cancelButtonText: 'Không',
+                cancelButtonColor: '#3085d6',
+                focusCancel: true,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    deleteItem({ url });
+                }
+            });
+        }
+
+        function deleteItem({ url }) {
+            $.ajax({
+                url,
+                method: "DELETE",
+                beforeSend: () => {
+                    //$detailModal.FLoading("show");
+                    //$detailModal.find(".modal-body").empty().append("Đang tải dữ liệu...");
+                },
+                success: (result) => {
+                    getPaging();
+
+                    Swal.fire({
+                        icon: "success",
+                        title: "Thực hiện thành công",
+                    }).then((result) => {
+
+                    });
+                },
+                error: (jqXHR, textStatus, errorThrown) => {
+                    let error = { message: "Đã có lỗi xảy ra, vui lòng liên hệ quản trị!" };
+                    if ($.trim(jqXHR.responseText).length > 0) {
+                        try {
+                            error = (JSON.parse(jqXHR.responseText) ?? { error: { ...error } })
+                                .error;
+                        } catch {
+                            error.message = jqXHR.responseText;
+                        }
+                    }
+                    Swal.fire({
+                        icon: "error",
+                        title: "Ôi không...",
+                        text: error.message,
+                        //footer: '<a href="javascript:;">Why do I have this issue?</a>'
+                    });
+                },
+            }).always(() => {
+                //$detailModal.FLoading("hide");
+            });
+        }
+
+
+    </script>
+}

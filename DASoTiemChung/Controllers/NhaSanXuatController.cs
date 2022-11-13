@@ -1,4 +1,4 @@
-﻿using DASoTiemChung.Dtos.MuiTiem;
+﻿using DASoTiemChung.Dtos.NhaSanXuat;
 using DASoTiemChung.Filter;
 using DASoTiemChung.Models;
 using DASoTiemChung.Repositories;
@@ -11,19 +11,19 @@ using System.Threading.Tasks;
 
 namespace DASoTiemChung.Controllers
 {
-    public class MuiTiemController : Controller
+    public class NhaSanXuatController : Controller
     {
-        private readonly ILogger<MuiTiemController> _logger;
+        private readonly ILogger<NhaSanXuatController> _logger;
         private readonly SoTiemChungContext _context;
-        private readonly IGenericRepository<MuiTiem> _reposity;
+        private readonly IGenericRepository<NhaSanXuat> _reposity;
 
-        public MuiTiemController(ILogger<MuiTiemController> logger, SoTiemChungContext context, IGenericRepository<MuiTiem> reposity)
+        public NhaSanXuatController(ILogger<NhaSanXuatController> logger, SoTiemChungContext context, IGenericRepository<NhaSanXuat> reposity)
         {
             _logger = logger;
             _context = context;
             _reposity = reposity;
         }
-        public const string RouteIndex = "MuiTiemHome";
+        public const string RouteIndex = "NhaSanXuatHome";
         [HttpGet("[controller]/", Name = RouteIndex)]
         public async Task<IActionResult> Index()
         {
@@ -31,14 +31,14 @@ namespace DASoTiemChung.Controllers
             return View();
         }
 
-        public const string RouteDataGrid = "MuiTiemGetDataGrid";
+        public const string RouteDataGrid = "NhaSanXuatGetDataGrid";
         [HttpGet("[controller]/DataGrid", Name = RouteDataGrid)]
-        public async Task<IActionResult> DataGridAsync(SearchMuiTiemDto input)
+        public async Task<IActionResult> DataGridAsync(SearchNhaSanXuatDto input)
         {
             return PartialView("_DataGrid", await GetPagingLos(input));
         }
 
-        private async Task<PagedResultDto<MuiTiem>> GetPagingLos(SearchMuiTiemDto input)
+        private async Task<PagedResultDto<NhaSanXuat>> GetPagingLos(SearchNhaSanXuatDto input)
         {
 
             if (input.SkipCount < 0)
@@ -54,9 +54,9 @@ namespace DASoTiemChung.Controllers
             var query = _reposity.GetAll();
             try
             {
-                if (!string.IsNullOrEmpty(input.TenMuiTiem))
+                if (!string.IsNullOrEmpty(input.TenNhaSanXuat))
                 {
-                    query = query.Where(x => x.TenMuiTiem.Contains(input.TenMuiTiem));
+                    query = query.Where(x => x.TenNhaSanXuat.Contains(input.TenNhaSanXuat));
                 }
 
 
@@ -66,9 +66,9 @@ namespace DASoTiemChung.Controllers
             {
                 _logger.LogError(ex, ex.ToString());
             }
-            PagedResultDto<MuiTiem> result = new PagedResultDto<MuiTiem>(0, input.SkipCount, take, new List<MuiTiem>());
+            PagedResultDto<NhaSanXuat> result = new PagedResultDto<NhaSanXuat>(0, input.SkipCount, take, new List<NhaSanXuat>());
             result.TotalCount = query.Count();
-            query = query.OrderBy(x => x.TenMuiTiem).Skip(skipRecord).Take(take);
+            query = query.OrderBy(x => x.TenNhaSanXuat).Skip(skipRecord).Take(take);
 
 
 
@@ -86,11 +86,11 @@ namespace DASoTiemChung.Controllers
         }
 
 
-        public const string RouteForm = "MuiTiemGetForm";
+        public const string RouteForm = "NhaSanXuatGetForm";
         [HttpGet("[controller]/{id}", Name = RouteForm)]
         public async Task<IActionResult> Form(int id)
         {
-            MuiTiem result = new MuiTiem();
+            NhaSanXuat result = new NhaSanXuat();
 
 
 
@@ -114,17 +114,17 @@ namespace DASoTiemChung.Controllers
             return PartialView("_Form", result);
         }
 
-        public const string RouteCreate = "MuiTiemPostCreate";
+        public const string RouteCreate = "NhaSanXuatPostCreate";
         [HttpPost("[controller]/", Name = RouteCreate)]
-        public async Task<IActionResult> Create(MuiTiem dto)
+        public async Task<IActionResult> Create(NhaSanXuat dto)
         {
 
             try
             {
-                var find = _reposity.GetAll().FirstOrDefault(x => x.TenMuiTiem == dto.TenMuiTiem);
+                var find = _reposity.GetAll().FirstOrDefault(x => x.TenNhaSanXuat == dto.TenNhaSanXuat || x.SoDienThoai == dto.SoDienThoai || x.Email == dto.Email);
                 if (find != null)
                 {
-                    return BadRequest("Tên đã tồn tại!");
+                    return BadRequest("Tên, số điện thoại hoặc email đã tồn tại!");
                 }
                 _reposity.Insert(dto);
                 _reposity.Save();
@@ -140,21 +140,21 @@ namespace DASoTiemChung.Controllers
 
         }
 
-        public const string RouteUpdate = "MuiTiemPutUpdate";
+        public const string RouteUpdate = "NhaSanXuatPutUpdate";
         [HttpPut("[controller]/{id}", Name = RouteUpdate)]
-        public async Task<IActionResult> Update(int id, MuiTiem dto)
+        public async Task<IActionResult> Update(int id, NhaSanXuat dto)
         {
 
-            if (id != dto.MaMuiTiem)
+            if (id != dto.MaNhaSanXuat)
             {
                 return BadRequest("Lỗi request!");
             }
             try
             {
-                var find = _reposity.GetAll().FirstOrDefault(x => (x.TenMuiTiem == dto.TenMuiTiem) && x.MaMuiTiem != dto.MaMuiTiem);
+                var find = _reposity.GetAll().FirstOrDefault(x => (x.TenNhaSanXuat == dto.TenNhaSanXuat || x.DiaChiHienTai == dto.DiaChiHienTai|| x.Email == dto.Email || x.SoDienThoai == dto.SoDienThoai) && x.MaNhaSanXuat != dto.MaNhaSanXuat);
                 if (find != null)
                 {
-                    return BadRequest("Tên hoặc đã tồn tại!");
+                    return BadRequest("Tên, địa chỉ, số điện thoại hoặc email đã tồn tại!");
                 }
                 var lo = _reposity.GetById(id);
                 if (lo != null)
@@ -175,7 +175,7 @@ namespace DASoTiemChung.Controllers
             return BadRequest("Có lỗi khi xử lý!");
         }
 
-        public const string RouteDelete = "MuiTiemDelete";
+        public const string RouteDelete = "NhaSanXuatDelete";
         [HttpDelete("[controller]/{id}", Name = RouteDelete)]
         public async Task<IActionResult> Delete(int? id)
         {
@@ -193,7 +193,7 @@ namespace DASoTiemChung.Controllers
                     }
                     else
                     {
-                        return NotFound($"Không tìm thấy mũi tiêm với id {id}");
+                        return NotFound($"Không tìm thấy nhà sản xuất với id {id}");
                     }
 
                 }
@@ -210,4 +210,3 @@ namespace DASoTiemChung.Controllers
         }
     }
 }
-

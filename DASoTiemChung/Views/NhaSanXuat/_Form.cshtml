@@ -1,0 +1,60 @@
+﻿@using DASoTiemChung.Controllers
+
+@model NhaSanXuat
+@functions {
+    //public string GenerateCategorySelectOptions(CategoryDto item, int level)
+    //{
+    //    var html = @"<option value=""" + item.Id + @""" " + (Model.ParentId.Equals(item.Id) ? "selected" : "") + ">"
+    //    + (level > 1 ? "&#x251c;" + string.Concat(Enumerable.Repeat("&#x2500;", level)) : "")
+    //    + item.Name + @"</option>";
+    //    if (item.Childrens != null && item.Childrens.Count() > 0)
+    //    {
+    //        level++;
+    //        foreach (var child in item.Childrens)
+    //        {
+    //            html += GenerateCategorySelectOptions(child, level);
+    //        }
+    //    }
+    //    return html;
+    //}
+}
+@{
+    
+    var submitUrl = Model.MaNhaSanXuat==0 ? Url.RouteUrl(NhaSanXuatController.RouteCreate) : Url.RouteUrl(NhaSanXuatController.RouteUpdate, new { id = Model.MaNhaSanXuat });
+    var submitMethod = Model.MaNhaSanXuat==0 ? "POST" : "PUT";
+}
+<div class="modal-header">
+    <h5 class="modal-title">@(Model.MaNhaSanXuat==0 ? "Thêm mới" : "Sửa") Nhà sản xuất vắc xin</h5>
+    @*<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>*@
+</div>
+<div class="modal-body">
+    <form id="detailsForm"
+          class="row g-3"
+          onsubmit="event.preventDefault(); saveForm.call(this, { url: '@Html.Raw(submitUrl)', method: '@Html.Raw(submitMethod)' });">
+        <div class="form-group d-none">
+            <label for="pcId">Id</label>
+            <input type="text" readonly class="form-control" id="pcId" name="@Html.NameFor(x => x.MaNhaSanXuat)" placeholder="" value="@Html.Raw(Model.MaNhaSanXuat==0 ? 0 : Model.MaNhaSanXuat)" />
+        </div>
+        <div class="form-group">
+            <label for="pcName">Tên nhà sản xuất</label>
+            <input type="text" class="form-control" id="pcName" name="@Html.NameFor(x => x.TenNhaSanXuat)" placeholder="Tên nhà sản xuất" value="@Model.TenNhaSanXuat">
+        </div>
+        <div class="form-group">
+            <label for="pcSDT">Số điện thoại</label>
+            <input type="text" class="form-control" id="pcSDT" name="@Html.NameFor(x => x.SoDienThoai)" placeholder="Số điện thoại" value="@Html.Raw(Model.SoDienThoai)">
+        </div>
+        <div class="form-group">
+            <label for="pcEmail">Email</label>
+            <input type="text" class="form-control" id="pcEmail" name="@Html.NameFor(x => x.Email)" placeholder="Địa chỉ Email" value="@Html.Raw(Model.Email)">
+        </div>
+        <div class="form-group">
+            <label for="pcDiaChi">Địa chỉ hiện tại</label>
+            <input type="text" class="form-control" id="pcDiaChi" name="@Html.NameFor(x => x.DiaChiHienTai)" placeholder="Địa chỉ hiện tại" value="@Html.Raw(Model.DiaChiHienTai)">
+        </div>
+
+    </form>
+</div>
+<div class="modal-footer">
+    <button type="submit" class="btn btn-primary" form="detailsForm">Lưu</button>
+    <button type="button" class="btn btn-secondary" @*data-bs-dismiss="modal"*@ onclick="closeForm()">Đóng</button>
+</div>
