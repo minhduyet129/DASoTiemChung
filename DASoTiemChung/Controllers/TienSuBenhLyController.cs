@@ -151,7 +151,7 @@ namespace DASoTiemChung.Controllers
             }
             try
             {
-                var find = _reposity.GetAll().FirstOrDefault(x => (x.TenBenhLy == dto.TenBenhLy || x.TrieuChung == dto.TrieuChung || x.TinhTrang == dto.TinhTrang));
+                var find = _reposity.GetAll().FirstOrDefault(x => (x.TenBenhLy == dto.TenBenhLy) && x.MaBenhLy != dto.MaBenhLy);
                 if (find != null)
                 {
                     return BadRequest("Tên bệnh lý đã tồn tại");

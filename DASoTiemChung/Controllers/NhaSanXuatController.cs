@@ -151,7 +151,7 @@ namespace DASoTiemChung.Controllers
             }
             try
             {
-                var find = _reposity.GetAll().FirstOrDefault(x => (x.TenNhaSanXuat == dto.TenNhaSanXuat || x.DiaChiHienTai == dto.DiaChiHienTai|| x.Email == dto.Email || x.SoDienThoai == dto.SoDienThoai) && x.MaNhaSanXuat != dto.MaNhaSanXuat);
+                var find = _reposity.GetAll().FirstOrDefault(x => (x.TenNhaSanXuat == dto.TenNhaSanXuat || x.SoDienThoai == dto.SoDienThoai || x.Email == dto.Email) && x.MaNhaSanXuat != dto.MaNhaSanXuat);
                 if (find != null)
                 {
                     return BadRequest("Tên, địa chỉ, số điện thoại hoặc email đã tồn tại!");
