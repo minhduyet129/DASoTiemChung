@@ -1,5 +1,4 @@
-﻿using DASoTiemChung.Dtos;
-using DASoTiemChung.Dtos.Lo;
+﻿using DASoTiemChung.Dtos.Lo;
 using DASoTiemChung.Filter;
 using DASoTiemChung.Models;
 using DASoTiemChung.Repositories;
@@ -12,34 +11,34 @@ using System.Threading.Tasks;
 
 namespace DASoTiemChung.Controllers
 {
-    public class LoController : Controller
+    public class VacXinController : Controller
     {
-        private readonly ILogger<LoController> _logger;
+        private readonly ILogger<VacXinController> _logger;
         private readonly SoTiemChungContext _context;
-        private readonly IGenericRepository<Lo> _reposity;
+        private readonly IGenericRepository<VacXin> _reposity;
 
-        public LoController(ILogger<LoController> logger, SoTiemChungContext context, IGenericRepository<Lo> reposity)
+        public VacXinController(ILogger<VacXinController> logger, SoTiemChungContext context, IGenericRepository<VacXin> reposity)
         {
             _logger = logger;
             _context = context;
             _reposity = reposity;
         }
-        public  const string RouteIndex = "LoHome";
+        public const string RouteIndex = "VacXinHome";
         [HttpGet("[controller]/", Name = RouteIndex)]
         public async Task<IActionResult> Index()
         {
-            
+
             return View();
         }
 
-        public  const string RouteDataGrid = "LoGetDataGrid";
+        public const string RouteDataGrid = "VacXinGetDataGrid";
         [HttpGet("[controller]/DataGrid", Name = RouteDataGrid)]
-        public async Task<IActionResult> DataGridAsync(SearchLoDto input)
+        public async Task<IActionResult> DataGridAsync(SearchVacXinDto input)
         {
             return PartialView("_DataGrid", await GetPagingLos(input));
         }
 
-        private async Task<PagedResultDto<Lo>> GetPagingLos(SearchLoDto input)
+        private async Task<PagedResultDto<VacXin>> GetPagingLos(SearchVacXinDto input)
         {
 
             if (input.SkipCount < 0)
@@ -55,9 +54,9 @@ namespace DASoTiemChung.Controllers
             var query = _reposity.GetAll();
             try
             {
-                if (!string.IsNullOrEmpty(input.TenLo))
+                if (!string.IsNullOrEmpty(input.TenVacXin))
                 {
-                    query = query.Where(x => x.TenLo.Contains(input.TenLo));
+                    query = query.Where(x => x.TenVacXin.Contains(input.TenVacXin));
                 }
 
 
@@ -67,12 +66,12 @@ namespace DASoTiemChung.Controllers
             {
                 _logger.LogError(ex, ex.ToString());
             }
-            PagedResultDto<Lo> result = new PagedResultDto<Lo>(0, input.SkipCount, take, new List<Lo>());
+            PagedResultDto<VacXin> result = new PagedResultDto<VacXin>(0, input.SkipCount, take, new List<VacXin>());
             result.TotalCount = query.Count();
-            query = query.OrderBy(x => x.TenLo).Skip(skipRecord).Take(take);
+            query = query.OrderBy(x => x.TenVacXin).Skip(skipRecord).Take(take);
 
-            
-            
+
+
             result.Items = query.ToList();
 
             bool checkNull = (result != null);
@@ -87,15 +86,15 @@ namespace DASoTiemChung.Controllers
         }
 
 
-        public const string RouteForm = "LoGetForm";
+        public const string RouteForm = "VacXinGetForm";
         [HttpGet("[controller]/{id}", Name = RouteForm)]
         public async Task<IActionResult> Form(int id)
         {
-            Lo result = new Lo();
+            VacXin result = new VacXin();
 
 
 
-            if (id==0)
+            if (id == 0)
             {
                 return PartialView("_Form", result);
             }
@@ -115,17 +114,17 @@ namespace DASoTiemChung.Controllers
             return PartialView("_Form", result);
         }
 
-        public const string RouteCreate = "LoPostCreate";
+        public const string RouteCreate = "VacXinPostCreate";
         [HttpPost("[controller]/", Name = RouteCreate)]
-        public async Task<IActionResult> Create(Lo dto)
+        public async Task<IActionResult> Create(VacXin dto)
         {
-            
+
             try
             {
-                var find = _reposity.GetAll().FirstOrDefault(x => x.TenLo == dto.TenLo || x.Code == dto.Code);
+                var find = _reposity.GetAll().FirstOrDefault(x => x.TenVacXin == dto.TenVacXin);
                 if (find != null)
                 {
-                    return BadRequest("Tên hoặc mã code đã tồn tại!");
+                    return BadRequest("Tên đã tồn tại!");
                 }
                 _reposity.Insert(dto);
                 _reposity.Save();
@@ -141,32 +140,32 @@ namespace DASoTiemChung.Controllers
 
         }
 
-        public const string RouteUpdate = "LoPutUpdate";
+        public const string RouteUpdate = "VacXinPutUpdate";
         [HttpPut("[controller]/{id}", Name = RouteUpdate)]
-        public async Task<IActionResult> Update(int id, Lo dto)
+        public async Task<IActionResult> Update(int id, VacXin dto)
         {
 
-            if (id != dto.MaLo)
+            if (id != dto.MaVacXin)
             {
                 return BadRequest("Lỗi request!");
             }
             try
             {
-                var find = _reposity.GetAll().FirstOrDefault(x => (x.TenLo == dto.TenLo || x.Code == dto.Code) && x.MaLo!=dto.MaLo);
+                var find = _reposity.GetAll().FirstOrDefault(x => (x.TenVacXin == dto.TenVacXin) && x.MaVacXin != dto.MaVacXin);
                 if (find != null)
                 {
-                    return BadRequest("Tên hoặc mã code đã tồn tại!");
+                    return BadRequest("Tên đã tồn tại!");
                 }
-                var lo=_reposity.GetById(id);
+                var lo = _reposity.GetById(id);
                 if (lo != null)
                 {
-                    
+
                     _reposity.Update(dto);
                     _reposity.Save();
                     return Ok();
                 }
                 return NotFound("Không tìm thấy!");
-               
+
             }
             catch (Exception ex)
             {
@@ -176,7 +175,7 @@ namespace DASoTiemChung.Controllers
             return BadRequest("Có lỗi khi xử lý!");
         }
 
-        public const string RouteDelete = "LoDelete";
+        public const string RouteDelete = "VacXinDelete";
         [HttpDelete("[controller]/{id}", Name = RouteDelete)]
         public async Task<IActionResult> Delete(int? id)
         {
@@ -185,7 +184,7 @@ namespace DASoTiemChung.Controllers
             {
                 if (id.HasValue)
                 {
-                    var lo =_reposity.GetById(id.Value);
+                    var lo = _reposity.GetById(id.Value);
                     if (lo != null)
                     {
                         _reposity.Delete(id);
@@ -196,18 +195,18 @@ namespace DASoTiemChung.Controllers
                     {
                         return NotFound($"Không tìm thấy lô với id {id}");
                     }
-                    
+
                 }
-                
+
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, ex.ToString());
             }
 
-            
+
             return BadRequest("Có lỗi xảy ra!");
-            
+
         }
     }
 }

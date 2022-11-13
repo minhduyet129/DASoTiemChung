@@ -1,6 +1,6 @@
 ﻿@using DASoTiemChung.Controllers
 
-@model Lo
+@model VacXin
 @functions {
     //public string GenerateCategorySelectOptions(CategoryDto item, int level)
     //{
@@ -20,11 +20,11 @@
 }
 @{
     
-    var submitUrl = Model.MaLo==0 ? Url.RouteUrl(LoController.RouteCreate) : Url.RouteUrl(LoController.RouteUpdate, new { id = Model.MaLo });
-    var submitMethod = Model.MaLo==0 ? "POST" : "PUT";
+    var submitUrl = Model.MaVacXin==0 ? Url.RouteUrl(VacXinController.RouteCreate) : Url.RouteUrl(VacXinController.RouteUpdate, new { id = Model.MaVacXin });
+    var submitMethod = Model.MaVacXin==0 ? "POST" : "PUT";
 }
 <div class="modal-header">
-    <h5 class="modal-title">@(Model.MaLo==0 ? "Thêm mới" : "Sửa") lô vắc xin</h5>
+    <h5 class="modal-title">@(Model.MaVacXin==0 ? "Thêm mới" : "Sửa") loại vắc xin</h5>
     @*<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>*@
 </div>
 <div class="modal-body">
@@ -33,16 +33,13 @@
           onsubmit="event.preventDefault(); saveForm.call(this, { url: '@Html.Raw(submitUrl)', method: '@Html.Raw(submitMethod)' });">
         <div class="form-group d-none">
             <label for="pcId">Id</label>
-            <input type="text" readonly class="form-control" id="pcId" name="@Html.NameFor(x => x.MaLo)" placeholder="" value="@Html.Raw(Model.MaLo==0 ? 0 : Model.MaLo)" />
+            <input type="text" readonly class="form-control" id="pcId" name="@Html.NameFor(x => x.MaVacXin)" placeholder="" value="@Html.Raw(Model.MaVacXin==0 ? 0 : Model.MaVacXin)" />
             </div>
         
+        
         <div class="form-group">
-            <label for="pcCode">Mã lô</label>
-            <input type="text" class="form-control" id="pcCode" name="@Html.NameFor(x => x.Code)" placeholder="Mã lô" value="@Model.Code">
-        </div>
-        <div class="form-group">
-            <label for="pcName">Tên lô</label>
-            <input type="text" class="form-control" id="pcName" name="@Html.NameFor(x => x.TenLo)" placeholder="Tên lô" value="@Html.Raw(Model.TenLo)">
+            <label for="pcName">Tên vắc xin</label>
+            <input type="text" class="form-control" id="pcName" name="@Html.NameFor(x => x.TenVacXin)" placeholder="Tên lô" value="@Html.Raw(Model.TenVacXin)">
         </div>
         
         
