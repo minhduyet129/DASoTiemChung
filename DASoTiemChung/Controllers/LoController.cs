@@ -152,7 +152,7 @@ namespace DASoTiemChung.Controllers
             }
             try
             {
-                var find = _reposity.GetAll().FirstOrDefault(x => x.TenLo == dto.TenLo || x.Code == dto.Code);
+                var find = _reposity.GetAll().FirstOrDefault(x => (x.TenLo == dto.TenLo || x.Code == dto.Code) && x.MaLo!=dto.MaLo);
                 if (find != null)
                 {
                     return BadRequest("Tên hoặc mã code đã tồn tại!");
