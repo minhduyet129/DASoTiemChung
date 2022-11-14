@@ -1,0 +1,74 @@
+﻿@using DASoTiemChung.Controllers
+@using DASoTiemChung.Filter
+
+@model NhanVien
+@functions {
+    //public string GenerateCategorySelectOptions(CategoryDto item, int level)
+    //{
+    //    var html = @"<option value=""" + item.Id + @""" " + (Model.ParentId.Equals(item.Id) ? "selected" : "") + ">"
+    //    + (level > 1 ? "&#x251c;" + string.Concat(Enumerable.Repeat("&#x2500;", level)) : "")
+    //    + item.Name + @"</option>";
+    //    if (item.Childrens != null && item.Childrens.Count() > 0)
+    //    {
+    //        level++;
+    //        foreach (var child in item.Childrens)
+    //        {
+    //            html += GenerateCategorySelectOptions(child, level);
+    //        }
+    //    }
+    //    return html;
+    //}
+}
+@{
+
+    var submitUrl = Model.MaNhanVien==0 ? Url.RouteUrl(NhanVienController.RouteCreate) : Url.RouteUrl(NhanVienController.RouteUpdate, new { id = Model.MaNhanVien });
+    var submitMethod = Model.MaNhanVien==0 ? "POST" : "PUT";
+}
+<div class="modal-header">
+    <h5 class="modal-title">@(Model.MaNhanVien==0 ? "Thêm mới" : "Sửa") nhân viên</h5>
+    @*<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>*@
+</div>
+<div class="modal-body">
+    <form id="detailsForm"
+          class="row g-3"
+          onsubmit="event.preventDefault(); saveForm.call(this, { url: '@Html.Raw(submitUrl)', method: '@Html.Raw(submitMethod)' });">
+        <div class="form-group d-none">
+            <label for="pcId">Id</label>
+            <input type="text" readonly class="form-control" id="pcId" name="@Html.NameFor(x => x.MaNhanVien)" placeholder="" value="@Html.Raw(Model.MaNhanVien==0 ? 0 : Model.MaNhanVien)" />
+        </div>
+
+        <div class="form-group">
+            <label for="pcName">Tên nhân viên</label>
+            <input type="text" class="form-control" id="pcName" name="@Html.NameFor(x => x.TenNhanVien)" placeholder="Tên nhân viên" value="@Model.TenNhanVien">
+        </div>
+        <div class="form-group">
+            <label for="pcUserName">Tên tài khoản</label>
+            <input type="text" class="form-control" id="pcUserName" name="@Html.NameFor(x => x.TenTaiKhoan)" placeholder="Tên tài khoản" value="@Html.Raw(Model.TenTaiKhoan)">
+        </div>
+        <div class="form-group">
+            <label for="pcPassword">Mật khẩu</label>
+            <input type="password" class="form-control" id="pcPassword" name="@Html.NameFor(x => x.MatKhau)" placeholder="Mật khẩu" value="@Html.Raw(Model.MatKhau)">
+        </div>
+        <div class="form-group">
+            <label for="pcPhone">Số điện thoại</label>
+            <input type="text" class="form-control" id="pcPhone" name="@Html.NameFor(x => x.SoDienThoai)" placeholder="Số điện thoại" value="@Html.Raw(Model.SoDienThoai)">
+        </div>
+        <div class="form-group">
+            <label for="pcRole">Quyền</label>
+            <select class="choices form-select" id="pcRole" name="@Html.NameFor(x => x.MaQuyen)">
+                <option value="" >Chọn quyền</option>
+                @foreach (Quyen role in ViewBag.Roles ?? new List<Quyen>())
+                {
+                    @*@Html.Raw(GenerateCategorySelectOptions(category, 1))*@
+                    <option value="@Html.Raw(role.MaQuyen)" selected="@(Model.MaQuyen.Equals(role.MaQuyen))">@Html.Raw(role.TenQuyen)</option>
+                }
+            </select>
+        </div>
+
+
+    </form>
+</div>
+<div class="modal-footer">
+    <button type="submit" class="btn btn-primary" form="detailsForm">Lưu</button>
+    <button type="button" class="btn btn-secondary" @*data-bs-dismiss="modal"*@ onclick="closeForm()">Đóng</button>
+</div>
