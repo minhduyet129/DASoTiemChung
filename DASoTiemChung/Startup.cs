@@ -1,5 +1,6 @@
 using DASoTiemChung.Models;
 using DASoTiemChung.Repositories;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -34,8 +35,15 @@ namespace DASoTiemChung
                 options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
             }
             );
-            
-            
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+            .AddCookie(options =>
+            {
+                options.LoginPath = "/DangNhap";
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
+                options.AccessDeniedPath = "/AccessDenied";
+            });
+
+
             services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
         }
 
@@ -57,6 +65,7 @@ namespace DASoTiemChung
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

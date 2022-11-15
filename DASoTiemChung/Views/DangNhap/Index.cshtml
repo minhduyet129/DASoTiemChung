@@ -1,0 +1,63 @@
+﻿@using DASoTiemChung.Controllers
+@{
+    Layout = "";
+}
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@(ViewBag.Title ?? "Admin")</title>
+
+    @*<partial name="Partial/_Styles" />*@
+    @await Html.PartialAsync("Partial/_Styles")
+
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+                <h2 class="text-center text-dark mt-5">Đăng nhập</h2>
+                <div class="text-center mb-5 text-dark">Hệ thống quản trị tiêm chủng</div>
+                <div class="card my-5">
+
+
+                    <form id="detailsForm" class="card-body cardbody-color p-lg-5" action="@Url.RouteUrl(DangNhapController.LoginExcute)" method="post">
+                        @if (TempData["Message"] != null)
+                        {
+                            <span style="color:red">@TempData["Message"]</span>
+                        }
+
+                        <div class="text-center">
+                            <img src="https://nld.mediacdn.vn/291774122806476800/2022/9/17/-16634237467131246634662.jpg" class="img-fluid profile-image-pic img-thumbnail rounded-circle my-3"
+                                 width="200px" alt="profile">
+                        </div>
+
+                        <div class="mb-3">
+
+                            <input type="text" class="form-control" id="userName" name="TenTaiKhoan" aria-describedby="emailHelp"
+                                   placeholder="Tên tài khoản">
+
+                        </div>
+                        <div class="mb-3">
+                            <input type="password" class="form-control" id="password" name="MatKhau" placeholder="Mật khẩu">
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary px-5 mb-5 w-100" form="detailsForm">Đăng nhập</button>
+
+                        </div>
+
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    @await Html.PartialAsync("Partial/_Scripts")
+    
+</body>
+</html>
