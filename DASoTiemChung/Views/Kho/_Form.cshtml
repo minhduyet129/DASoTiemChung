@@ -1,0 +1,90 @@
+﻿@using DASoTiemChung.Controllers
+
+@model Kho
+@functions {
+    //public string GenerateCategorySelectOptions(CategoryDto item, int level)
+    //{
+    //    var html = @"<option value=""" + item.Id + @""" " + (Model.ParentId.Equals(item.Id) ? "selected" : "") + ">"
+    //    + (level > 1 ? "&#x251c;" + string.Concat(Enumerable.Repeat("&#x2500;", level)) : "")
+    //    + item.Name + @"</option>";
+    //    if (item.Childrens != null && item.Childrens.Count() > 0)
+    //    {
+    //        level++;
+    //        foreach (var child in item.Childrens)
+    //        {
+    //            html += GenerateCategorySelectOptions(child, level);
+    //        }
+    //    }
+    //    return html;
+    //}
+}
+@{
+
+    var submitUrl = Model.MaKho == 0 ? Url.RouteUrl(KhoController.RouteCreate) : Url.RouteUrl(KhoController.RouteUpdate, new { id = Model.MaKho });
+    var submitMethod = Model.MaKho == 0 ? "POST" : "PUT";
+}
+<div class="modal-header">
+    <h5 class="modal-title">@(Model.MaKho==0 ? "Thêm mới" : "Sửa") kho vắc xin</h5>
+    @*<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>*@
+</div>
+<div class="modal-body">
+    <form id="detailsForm"
+          class="row g-3"
+          onsubmit="event.preventDefault(); saveForm.call(this, { url: '@Html.Raw(submitUrl)', method: '@Html.Raw(submitMethod)' });">
+        <div class="form-group d-none">
+            <label for="pcId">Id</label>
+            <input type="text" readonly class="form-control" id="pcId" name="@Html.NameFor(x => x.MaKho)" placeholder="" value="@Html.Raw(Model.MaKho==0 ? 0 : Model.MaKho)" />
+        </div>
+
+        <div class="form-group">
+            <label for="pcName">Tên kho</label>
+            <input type="text" class="form-control" id="pcName" name="@Html.NameFor(x => x.TenKho)" placeholder="Tên kho" value="@Model.TenKho">
+        </div>
+        <div class="form-group">
+            <label for="pcTinhThanh">Tỉnh thành</label>
+            <select class="choices form-select" id="pcTinhThanh" onchange="changeTinh()" name="@Html.NameFor(x => x.MaTinhThanhPho)">
+                <option value="">Chọn tỉnh thành</option>
+                @foreach (TinhThanhPho role in ViewBag.TinhThanhs ?? new List<TinhThanhPho>())
+                {
+                    @*@Html.Raw(GenerateCategorySelectOptions(category, 1))*@
+                    <option value="@Html.Raw(role.MaTinhThanhPho)" selected="@(Model.MaTinhThanhPho.Equals(role.MaTinhThanhPho))">@Html.Raw(role.TenTinhThanhPho)</option>
+                }
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="pcQuanHuyen">Quận huyện</label>
+            <select class="choices form-select" id="pcQuanHuyen" onchange="changeHuyen()" name="@Html.NameFor(x => x.MaQuanHuyen)">
+                <option value="">Chọn quận huyện</option>
+                @foreach (QuanHuyen role in ViewBag.QuanHuyens ?? new List<QuanHuyen>())
+                {
+                    @*@Html.Raw(GenerateCategorySelectOptions(category, 1))*@
+                    <option value="@Html.Raw(role.MaQuanHuyen)" selected="@(Model.MaQuanHuyen.Equals(role.MaQuanHuyen))">@Html.Raw(role.TenQuanHuyen)</option>
+                }
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="pcXaPhuong">Xã phường</label>
+            <select class="choices form-select" id="pcXaPhuong"  name="@Html.NameFor(x => x.MaXaPhuong)">
+                <option value="">Chọn xã phường</option>
+                @foreach (XaPhuong role in ViewBag.XaPhuongs ?? new List<XaPhuong>())
+                {
+                    @*@Html.Raw(GenerateCategorySelectOptions(category, 1))*@
+                    <option value="@Html.Raw(role.MaXaPhuong)" selected="@(Model.MaXaPhuong.Equals(role.MaXaPhuong))">@Html.Raw(role.TenXaPhuong)</option>
+                }
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="pcSoNha">Số nhà</label>
+            <input type="text" class="form-control" id="pcSoNha" name="@Html.NameFor(x => x.SoNha)" placeholder="Số nhà" value="@Model.SoNha">
+        </div>
+        
+
+
+
+
+    </form>
+</div>
+<div class="modal-footer">
+    <button type="submit" class="btn btn-primary" form="detailsForm">Lưu</button>
+    <button type="button" class="btn btn-secondary" @*data-bs-dismiss="modal"*@ onclick="closeForm()">Đóng</button>
+</div>
