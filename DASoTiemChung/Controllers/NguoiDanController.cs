@@ -214,7 +214,7 @@ namespace DASoTiemChung.Controllers
             }
             try
             {
-                var find = _reposity.GetAll().FirstOrDefault(x => x.HoTen == dto.HoTen && x.MaNguoiDan != dto.MaNguoiDan);
+                var find = _reposity.GetAll().FirstOrDefault(x => x.SoCccdhc.Trim() == dto.SoCccdhc.Trim() && x.MaNguoiDan != dto.MaNguoiDan);
                 if (find != null)
                 {
                     return BadRequest("Tên người dân đã tồn tại!");
