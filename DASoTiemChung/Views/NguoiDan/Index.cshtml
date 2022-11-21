@@ -390,6 +390,68 @@
                 });
                 return;
             }
+            if (!$("#pcTheBDYT").val()) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Ôi không...',
+                    text: 'Vui lòng nhập số thẻ bảo hiểm y tế',
+                    //footer: '<a href="javascript:;">Why do I have this issue?</a>'
+                });
+                return;
+            }
+            if (!$("#pcNgheNghiep").val()) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Ôi không...',
+                    text: 'Vui lòng nhập nghề nghiệp',
+                    //footer: '<a href="javascript:;">Why do I have this issue?</a>'
+                });
+                return;
+            }
+            if (!$("#pcDVCT").val()) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Ôi không...',
+                    text: 'Vui lòng nhập đơn vị công tác',
+                    //footer: '<a href="javascript:;">Why do I have this issue?</a>'
+                });
+                return;
+            }
+            if (!$("#pcDT").val()) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Ôi không...',
+                    text: 'Vui lòng nhập dân tộc',
+                    //footer: '<a href="javascript:;">Why do I have this issue?</a>'
+                });
+                return;
+            }
+            if (!$("#pcNguoiDamHo").val()) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Ôi không...',
+                    text: 'Vui lòng nhập người dám hộ nhập không nếu không có',
+                    //footer: '<a href="javascript:;">Why do I have this issue?</a>'
+                });
+                return;
+            }
+            if (!$("#pcQHNguoiDamHo").val()) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Ôi không...',
+                    text: 'Vui lòng nhập quan hệ với người dám hộ nhập không nếu không có',
+                    //footer: '<a href="javascript:;">Why do I have this issue?</a>'
+                });
+                return;
+            } if (!$("#pcSDTNguoiDamHo").val()) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Ôi không...',
+                    text: 'Vui lòng nhập số điện thoại người dám hộ nhập không nếu không có',
+                    //footer: '<a href="javascript:;">Why do I have this issue?</a>'
+                });
+                return;
+            }
 
             $.ajax({
                 url,
