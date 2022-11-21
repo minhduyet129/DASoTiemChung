@@ -14,8 +14,6 @@ namespace DASoTiemChung.Dtos.Kho
         public XaPhuong XaPhuongNavigation { get; set; }
         public QuanHuyen QuanHuyenNavigation { get; set; }
         public TinhThanhPho TinhThanhPhoNavigation { get; set; }
-        public virtual ICollection<PhieuNhap> PhieuNhaps { get; set; }
-        public virtual ICollection<PhieuXuat> PhieuXuats { get; set; }
-        public virtual ICollection<VacXinTheoLo> VacXinTheoLos { get; set; }
+        
     }
 }

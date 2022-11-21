@@ -24,7 +24,7 @@ namespace DASoTiemChung.Controllers
         public async Task<IActionResult> GetByMaTinh(int maTinh)
         { 
             
-            var result=_reposity.GetAll().Where(x => x.MaTinhThanhPho == maTinh).ToList();
+            var result=_reposity.GetAll().Where(x => x.MaTinhThanhPho == maTinh).OrderBy(x=>x.TenQuanHuyen).ToList();
             return Ok(result);
         }
     }

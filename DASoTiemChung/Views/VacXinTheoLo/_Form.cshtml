@@ -1,0 +1,111 @@
+﻿@using DASoTiemChung.Controllers
+@using DASoTiemChung.Filter
+
+@model VacXinTheoLo
+@functions {
+    //public string GenerateCategorySelectOptions(CategoryDto item, int level)
+    //{
+    //    var html = @"<option value=""" + item.Id + @""" " + (Model.ParentId.Equals(item.Id) ? "selected" : "") + ">"
+    //    + (level > 1 ? "&#x251c;" + string.Concat(Enumerable.Repeat("&#x2500;", level)) : "")
+    //    + item.Name + @"</option>";
+    //    if (item.Childrens != null && item.Childrens.Count() > 0)
+    //    {
+    //        level++;
+    //        foreach (var child in item.Childrens)
+    //        {
+    //            html += GenerateCategorySelectOptions(child, level);
+    //        }
+    //    }
+    //    return html;
+    //}
+}
+@{
+    
+    var submitUrl = Model.MaVacXinTheoLo==0 ? Url.RouteUrl(VacXinTheoLoController.RouteCreate) : Url.RouteUrl(VacXinTheoLoController.RouteUpdate, new { id = Model.MaVacXinTheoLo });
+    var submitMethod = Model.MaVacXinTheoLo==0 ? "POST" : "PUT";
+}
+<div class="modal-header">
+    <h5 class="modal-title">@(Model.MaVacXinTheoLo==0 ? "Thêm mới" : "Sửa") vắc xin theo lô</h5>
+    @*<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>*@
+</div>
+<div class="modal-body">
+    <form id="detailsForm"
+          class="row g-3"
+          onsubmit="event.preventDefault(); saveForm.call(this, { url: '@Html.Raw(submitUrl)', method: '@Html.Raw(submitMethod)' });">
+        <div class="form-group d-none">
+            <label for="pcId">Id</label>
+            <input type="text" readonly class="form-control" id="pcId" name="@Html.NameFor(x => x.MaVacXinTheoLo)" placeholder="" value="@Html.Raw(Model.MaVacXinTheoLo==0 ? 0 : Model.MaVacXinTheoLo)" />
+        </div>
+
+        <div class="form-group">
+            <label for="pcName">Tên vắc xin theo lô</label>
+            <input type="text" class="form-control" id="pcName" name="@Html.NameFor(x => x.TenVacXinTheoLo)" placeholder="Tên vắc xin theo lô" value="@Model.TenVacXinTheoLo">
+        </div>
+        <div class="form-group">
+            <label for="pcLo">Lô</label>
+            <select class="choices form-select" id="pcLo" name="@Html.NameFor(x => x.MaLo)">
+                <option value="" >Chọn lô</option>
+                @foreach (Lo role in ViewBag.Los ?? new List<Lo>())
+                {
+                    @*@Html.Raw(GenerateCategorySelectOptions(category, 1))*@
+                    <option value="@Html.Raw(role.MaLo)" selected="@(Model.MaLo.Equals(role.MaLo))">@Html.Raw(role.TenLo)</option>
+                }
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="pcKho">Kho</label>
+            <select class="choices form-select" id="pcKho" name="@Html.NameFor(x => x.MaKho)">
+                <option value="" >Chọn kho</option>
+                @foreach (Kho role in ViewBag.Khos ?? new List<Kho>())
+                {
+                    @*@Html.Raw(GenerateCategorySelectOptions(category, 1))*@
+                    <option value="@Html.Raw(role.MaKho)" selected="@(Model.MaKho.Equals(role.MaKho))">@Html.Raw(role.TenKho)</option>
+                }
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="pcNSX">Nhà sản xuất</label>
+            <select class="choices form-select" id="pcNSX" name="@Html.NameFor(x => x.MaNhaSanXuat)">
+                <option value="" >Chọn nhà sản xuất</option>
+                @foreach (NhaSanXuat role in ViewBag.NhaSanXuats ?? new List<NhaSanXuat>())
+                {
+                    @*@Html.Raw(GenerateCategorySelectOptions(category, 1))*@
+                    <option value="@Html.Raw(role.MaNhaSanXuat)" selected="@(Model.MaNhaSanXuat.Equals(role.MaNhaSanXuat))">@Html.Raw(role.TenNhaSanXuat)</option>
+                }
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="pcVacXin">Vắc xin</label>
+            <select class="choices form-select" id="pcVacXin" name="@Html.NameFor(x => x.MaVacXin)">
+                <option value="" >Chọn vắc xin</option>
+                @foreach (VacXin role in ViewBag.VacXins ?? new List<VacXin>())
+                {
+                    @*@Html.Raw(GenerateCategorySelectOptions(category, 1))*@
+                    <option value="@Html.Raw(role.MaVacXin)" selected="@(Model.MaVacXin.Equals(role.MaVacXin))">@Html.Raw(role.TenVacXin)</option>
+                }
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="pcXuatXu">Xuất xứ</label>
+            <input type="text" class="form-control" id="pcXuatXu" name="@Html.NameFor(x => x.XuatXu)" placeholder="Xuất xứ" value="@Html.Raw(Model.XuatXu)">
+        </div>
+        <div class="form-group">
+            <label for="pcNgaySanXuat">Ngày sản xuất</label>
+            <input type="date" class="form-control" id="pcNgaySanXuat" name="@Html.NameFor(x => x.NgaySanXuat)"  value="@Model.NgaySanXuat.Value.ToString("yyyy-MM-dd")">
+        </div>
+        <div class="form-group">
+            <label for="pcNgayHetHan">Ngày hết hạn</label>
+            <input type="date" class="form-control" id="pcNgayHetHan" name="@Html.NameFor(x => x.NgayHetHan)"  value="@Model.NgayHetHan.Value.ToString("yyyy-MM-dd")">
+        </div>
+        <div class="form-group">
+            <label for="pcSoLuong">Số lượng</label>
+            <input type="number" class="form-control" id="pcSoLuong" name="@Html.NameFor(x => x.SoLuong)" placeholder="Số lượng" value="@Model.SoLuong">
+        </div>
+
+    </form>
+</div>
+<div class="modal-footer">
+    <button type="submit" class="btn btn-primary" form="detailsForm">Lưu</button>
+    <button type="button" class="btn btn-secondary" @*data-bs-dismiss="modal"*@ onclick="closeForm()">Đóng</button>
+</div>
