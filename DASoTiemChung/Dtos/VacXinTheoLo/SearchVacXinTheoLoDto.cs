@@ -1,7 +1,7 @@
 ﻿using DASoTiemChung.Filter;
 using System;
 
-namespace DASoTiemChung.Dtos.VacXinTheoLo
+namespace DASoTiemChung.Dtos
 {
     public class SearchVacXinTheoLoDto :PagedRequestDto
     {
