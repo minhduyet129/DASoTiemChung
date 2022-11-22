@@ -37,17 +37,13 @@
         </div>
 
         <div class="form-group">
-            <label for="pcCode">Mã lô</label>
-            <input type="text" class="form-control" id="pcCode" name="@Html.NameFor(x => x.Code)" placeholder="Mã lô" value="@Model.Code">
+            <label for="pcCode">Mã CODE</label>
+            <input type="text" class="form-control" id="pcCode" name="@Html.NameFor(x => x.Code)" placeholder="Mã CODE" value="@Model.Code">
         </div>
         <div class="form-group">
             <label for="pcName">Tên lô</label>
             <input type="text" class="form-control" id="pcName" name="@Html.NameFor(x => x.TenLo)" placeholder="Tên lô" value="@Html.Raw(Model.TenLo)">
         </div>
-
-
-
-
     </form>
 </div>
 <div class="modal-footer">

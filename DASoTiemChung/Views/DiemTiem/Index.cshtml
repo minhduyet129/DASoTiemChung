@@ -1,0 +1,548 @@
+﻿@using DASoTiemChung.Controllers
+
+@{
+    ViewBag.Title = "Quản lý điểm tiêm vắc xin";
+
+}
+
+@section Styles {
+    <style type="text/css">
+    </style>
+}
+
+<div class="page-heading">
+    <div class="page-title">
+        <div class="row">
+            <div class="col-12 col-md-6 order-md-1 order-last">
+                <h3>@Html.Raw(ViewBag.Title)</h3>
+
+            </div>
+            <div class="col-12 col-md-6 order-md-2 order-first">
+                <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
+                    <ol class="breadcrumb">
+                        @*<li class="breadcrumb-item"><a href="javascript:;">Dữ liệu cơ bản (v2)</a></li>*@
+                        @*<li class="breadcrumb-item active" aria-current="page">Quản lý trường học (v2)</li>*@
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+    <section class="section">
+        <div class="card border">
+            <div class="card-header d-flex align-items-center">
+                <h4 class="card-title m-0">Tìm kiếm</h4>
+                <button class="btn ms-auto"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#search"
+                        aria-expanded="true"
+                        aria-controls="search">
+                    <i class="fa fa-angle-down"></i>
+                </button>
+            </div>
+            <div class="card-content show" id="search">
+                <div class="card-body">
+                    <form id="searchForm" class="form">
+                        <div class="row">
+                            <div class="col-md-3 col-12">
+                                <div class="form-group">
+                                    <label for="searchName">Tên</label>
+                                    <div class="position-relative">
+                                        <input type="text" id="searchName" class="form-control"
+                                               placeholder="Nhập tên muốn tìm" name="school-name">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-12">
+                                <div class="form-group">
+                                    <label for="searchSoNha">Số nhà</label>
+                                    <div class="position-relative">
+                                        <input type="text" id="searchSoNha" class="form-control"
+                                               placeholder="Nhập số nhà muốn tìm" name="school-name">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-12">
+                                <div class="form-group">
+                                    <label for="searchXaPhuong">Tên xã phường</label>
+                                    <div class="position-relative">
+                                        <input type="text" id="searchXaPhuong" class="form-control"
+                                               placeholder="Nhập tên xã phường muốn tìm" name="school-name">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-12">
+                                <div class="form-group">
+                                    <label for="searchQuanHuyen">Tên quận huyện</label>
+                                    <div class="position-relative">
+                                        <input type="text" id="searchQuanHuyen" class="form-control"
+                                               placeholder="Nhập tên quận huyện muốn tìm" name="school-name">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-12">
+                                <div class="form-group">
+                                    <label for="searchTinhThanh">Tên tỉnh thành</label>
+                                    <div class="position-relative">
+                                        <input type="text" id="searchTinhThanh" class="form-control"
+                                               placeholder="Nhập tên tỉnh thành muốn tìm" name="school-name">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12 d-flex justify-content-end">
+                                <button type="submit"
+                                        class="btn btn-primary me-1 mb-1">
+                                    Tìm kiếm
+                                </button>
+                                @*<button type="reset"
+                                    class="btn btn-light-secondary me-1 mb-1">
+                                    Reset
+                                    </button>*@
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Striped rows start -->
+    <section class="section">
+        <div class="card border">
+            <div class="card-header d-flex align-items-center">
+                <div class="d-flex justify-content-between w-100">
+                    <h4 class="card-title m-0">Danh sách danh mục</h4>
+                    <button type="button" class="btn btn-primary"
+                            onclick="openForm({ url: '@Url.RouteUrl(DiemTiemController.RouteForm,new { id = 0 }))' })">
+                        Thêm mới
+                    </button>
+                </div>
+            </div>
+            @*<div class="card-body"></div>*@
+            <div id="dataTable" style="min-height: 100px;">
+            </div>
+        </div>
+    </section>
+    <!-- Striped rows end -->
+</div>
+<div class="modal fade" id="detailModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script type="text/javascript">
+        let $dataTable;
+        let $searchName;
+        let $searchSoNha;
+        let $searchXaPhuong;
+        let $searchQuanHuyen;
+        let $searchTinhThanh;
+        let $detailModal;
+        let detailModalInstance;
+        let SkipCount = 1;
+        let MaxResultCount = 10;
+        let pagingAjaxInstance;
+        let detailAjaxInstance;
+        let guidImgFilePondInstance;
+        let thumbImgFilePondInstance;
+
+        $(document).ready(function() {
+            $dataTable = $("#dataTable");
+            $searchName = $("#searchName");
+            $searchSoNha = $("#searchSoNha");
+            $searchXaPhuong = $("#searchXaPhuong");
+            $searchQuanHuyen = $("#searcQuanHuyen");
+            $searchTinhThanh = $("#searchTinhThanh");
+
+
+            $searchForm = $("#searchForm");
+            $detailModal = $("#detailModal");
+            detailModalInstance = new bootstrap.Modal(
+                document.getElementById("detailModal"),
+                {
+                    backdrop: 'static',
+                    keyboard: false,
+                    focus: false,
+                }
+            );
+
+            //$detailModal.on('shown.bs.modal', function() {
+            //    $(document).off('focusin.modal');
+            //});
+
+            $detailModal.on("hide.bs.modal", function(e) {
+                detailAjaxInstance && detailAjaxInstance.abort();
+                detailAjaxInstance = null;
+            });
+
+            $(document)
+                .unbind()
+                .on("submit", "#searchForm", function(e) {
+                    e.preventDefault();
+
+                    getPaging({ index: 1 });
+                });
+
+            getPaging();
+        });
+
+        function getPaging(
+            { index, size } = { index: SkipCount, size: MaxResultCount }
+        ) {
+            pagingAjaxInstance && pagingAjaxInstance.abort();
+            pagingAjaxInstance = null;
+
+            SkipCount = index || SkipCount;
+            MaxResultCount = size || MaxResultCount;
+
+            let payload = {
+                SkipCount,
+                MaxResultCount,
+                TenDiemTiem: $.trim($searchName.val()).length > 0 ? $.trim($searchName.val()) : "",
+                SoNha: $.trim($searchSoNha.val()).length > 0 ? $.trim($searchSoNha.val()) : "",
+                TenXaPhuong: $.trim($searchXaPhuong.val()).length > 0 ? $.trim($searchXaPhuong.val()) : "",
+                TenQuanHuyen: $.trim($searchQuanHuyen.val()).length > 0 ? $.trim($searchQuanHuyen.val()) : "",
+                TenTinhThanh: $.trim($searchTinhThanh.val()).length > 0 ? $.trim($searchTinhThanh.val()) : "",
+            };
+
+            pagingAjaxInstance = $.ajax({
+                url: `@Url.RouteUrl(DiemTiemController.RouteDataGrid)`,
+                method: "GET",
+                data: payload,
+                beforeSend: () => {
+                    $dataTable.FLoading("show");
+                },
+                success: (result) => {
+                    $dataTable.empty().append(result);
+                },
+                error: (jqXHR, textStatus, errorThrown) => {
+                    let error = { message: "Đã có lỗi xảy ra, vui lòng liên hệ quản trị!" };
+                    if ($.trim(jqXHR.responseText).length > 0) {
+                        try {
+                            error = (JSON.parse(jqXHR.responseText) ?? { error: { ...error } })
+                                .error;
+                        } catch {
+                            error.message = jqXHR.responseText;
+                        }
+                    }
+                    Swal.fire({
+                        icon: "error",
+                        title: "Ôi không...",
+                        text: error.message,
+                        //footer: '<a href="javascript:;">Why do I have this issue?</a>'
+                    });
+                },
+            }).always(() => {
+                $dataTable.FLoading("hide");
+            });
+        }
+
+        function openForm({ url }) {
+            detailAjaxInstance = $.ajax({
+                url,
+                method: "GET",
+                beforeSend: () => {
+                    $("#main").FLoading("show");
+                    //$detailModal.find(".modal-body").empty().append("Đang tải dữ liệu...");
+                },
+                success: (result) => {
+                    $detailModal.find(".modal-content").empty().append(result);
+
+
+
+                    detailModalInstance.show();
+                },
+                error: (jqXHR, textStatus, errorThrown) => {
+                    let error = { message: "Đã có lỗi xảy ra, vui lòng liên hệ quản trị!" };
+                    if ($.trim(jqXHR.responseText).length > 0) {
+                        try {
+                            error = (JSON.parse(jqXHR.responseText) ?? { error: { ...error } })
+                                .error;
+                        } catch {
+                            error.message = jqXHR.responseText;
+                        }
+                    }
+                    Swal.fire({
+                        icon: "error",
+                        title: "Ôi không...",
+                        text: error.message,
+                        //footer: '<a href="javascript:;">Why do I have this issue?</a>'
+                    });
+                },
+            }).always(() => {
+                $("#main").FLoading("hide");
+            });
+        }
+
+        function saveForm({ url, method }) {
+            if (!$("#pcName").val()) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Ôi không...',
+                    text: 'Vui lòng nhập tên điểm tiêm',
+                    //footer: '<a href="javascript:;">Why do I have this issue?</a>'
+                });
+                return;
+            }
+            if (!$("#pcTinhThanh").val()) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Ôi không...',
+                    text: 'Vui lòng chọn tên tỉnh thành',
+                    //footer: '<a href="javascript:;">Why do I have this issue?</a>'
+                });
+                return;
+            }
+            if (!$("#pcQuanHuyen").val()) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Ôi không...',
+                    text: 'Vui lòng chọn tên quận huyện',
+                    //footer: '<a href="javascript:;">Why do I have this issue?</a>'
+                });
+                return;
+            }
+            if (!$("#pcXaPhuong").val()) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Ôi không...',
+                    text: 'Vui lòng chọn tên xã phường',
+                    //footer: '<a href="javascript:;">Why do I have this issue?</a>'
+                });
+                return;
+            }
+            if (!$("#pcSoNha").val()) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Ôi không...',
+                    text: 'Vui lòng nhập số nhà',
+                    //footer: '<a href="javascript:;">Why do I have this issue?</a>'
+                });
+                return;
+            }
+            if (!$("#pcNguoiDungDau").val()) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Ôi không...',
+                    text: 'Vui lòng nhập người đứng đầu',
+                    //footer: '<a href="javascript:;">Why do I have this issue?</a>'
+                });
+                return;
+            }
+            if (!$("#pcNguoiTiem").val()) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Ôi không...',
+                    text: 'Vui lòng nhập người tiêm',
+                    //footer: '<a href="javascript:;">Why do I have this issue?</a>'
+                });
+                return;
+            }
+
+            $.ajax({
+                url,
+                method,
+                data: $(this).serialize(),
+                beforeSend: () => {
+                    //$detailModal.FLoading("show");
+                    //$detailModal.find(".modal-body").empty().append("Đang tải dữ liệu...");
+                },
+                success: (result) => {
+                    detailModalInstance.hide();
+                    getPaging();
+
+                    Swal.fire({
+                        icon: "success",
+                        title: "Thực hiện thành công",
+                    }).then((result) => {
+
+                    });
+                },
+                error: (jqXHR, textStatus, errorThrown) => {
+                    let error = { message: "Đã có lỗi xảy ra, vui lòng liên hệ quản trị!" };
+                    if ($.trim(jqXHR.responseText).length > 0) {
+                        try {
+                            error = (JSON.parse(jqXHR.responseText) ?? { error: { ...error } })
+                                .error;
+                        } catch {
+                            error.message = jqXHR.responseText;
+                        }
+                    }
+                    Swal.fire({
+                        icon: "error",
+                        title: "Ôi không...",
+                        text: error.message,
+                        //footer: '<a href="javascript:;">Why do I have this issue?</a>'
+                    });
+                },
+            }).always(() => {
+                //$detailModal.FLoading("hide");
+            });
+        }
+
+        function closeForm() {
+            Swal.fire({
+                icon: 'question',
+                title: "Bạn có chắc chắn muốn đóng cửa sổ này?",
+                text: "Nếu bạn đóng cửa sổ này, tất cả các thay đổi sẽ không được lưu!",
+                showCancelButton: true,
+                confirmButtonText: 'Có',
+                confirmButtonColor: '#d33',
+                cancelButtonText: 'Không',
+                cancelButtonColor: '#3085d6',
+                focusCancel: true,
+            }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    detailModalInstance.hide();
+                }
+            });
+        }
+
+        function confirmOnDelete({ url }) {
+            Swal.fire({
+                icon: 'question',
+                title: "Bạn có chắc chắn muốn xóa?",
+                showCancelButton: true,
+                confirmButtonText: 'Có',
+                confirmButtonColor: '#d33',
+                cancelButtonText: 'Không',
+                cancelButtonColor: '#3085d6',
+                focusCancel: true,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    deleteItem({ url });
+                }
+            });
+        }
+
+        function deleteItem({ url }) {
+            $.ajax({
+                url,
+                method: "DELETE",
+                beforeSend: () => {
+                    //$detailModal.FLoading("show");
+                    //$detailModal.find(".modal-body").empty().append("Đang tải dữ liệu...");
+                },
+                success: (result) => {
+                    getPaging();
+
+                    Swal.fire({
+                        icon: "success",
+                        title: "Thực hiện thành công",
+                    }).then((result) => {
+
+                    });
+                },
+                error: (jqXHR, textStatus, errorThrown) => {
+                    let error = { message: "Đã có lỗi xảy ra, vui lòng liên hệ quản trị!" };
+                    if ($.trim(jqXHR.responseText).length > 0) {
+                        try {
+                            error = (JSON.parse(jqXHR.responseText) ?? { error: { ...error } })
+                                .error;
+                        } catch {
+                            error.message = jqXHR.responseText;
+                        }
+                    }
+                    Swal.fire({
+                        icon: "error",
+                        title: "Ôi không...",
+                        text: error.message,
+                        //footer: '<a href="javascript:;">Why do I have this issue?</a>'
+                    });
+                },
+            }).always(() => {
+                //$detailModal.FLoading("hide");
+            });
+        }
+        function changeTinh() {
+            $.ajax({
+                url: `@Url.RouteUrl(QuanHuyenController.RouteGetByTinh)`,
+                method: "GET",
+                data: {
+                    maTinh: $.trim($("#pcTinhThanh").val()).length > 0 ? $.trim($("#pcTinhThanh").val()) : "",
+                },
+                beforeSend: () => {
+                    //$detailModal.FLoading("show");
+                    //$detailModal.find(".modal-body").empty().append("Đang tải dữ liệu...");
+                },
+                success: (result) => {
+
+                    let contentQuanHuyen = '<option value="">Chọn quận huyện</option>';
+                    for (let item of result) {
+                        contentQuanHuyen += `<option value=${item.maQuanHuyen} >${item.tenQuanHuyen}</option>`;
+                    }
+                     $("#pcQuanHuyen").empty().append(contentQuanHuyen);
+                    console.log(result);
+
+                },
+                error: (jqXHR, textStatus, errorThrown) => {
+                    let error = { message: "Đã có lỗi xảy ra, vui lòng liên hệ quản trị!" };
+                    if ($.trim(jqXHR.responseText).length > 0) {
+                        try {
+                            error = (JSON.parse(jqXHR.responseText) ?? { error: { ...error } })
+                                .error;
+                        } catch {
+                            error.message = jqXHR.responseText;
+                        }
+                    }
+                    Swal.fire({
+                        icon: "error",
+                        title: "Ôi không...",
+                        text: error.message,
+                        //footer: '<a href="javascript:;">Why do I have this issue?</a>'
+                    });
+                },
+            }).always(() => {
+                //$detailModal.FLoading("hide");
+            });
+        }
+        function changeHuyen() {
+            $.ajax({
+                url: `@Url.RouteUrl(XaPhuongController.RouteGetByHuyen)`,
+                method: "GET",
+                data: {
+                    maHuyen: $.trim($("#pcQuanHuyen").val()).length > 0 ? $.trim($("#pcQuanHuyen").val()) : "",
+                },
+                beforeSend: () => {
+                    //$detailModal.FLoading("show");
+                    //$detailModal.find(".modal-body").empty().append("Đang tải dữ liệu...");
+                },
+                success: (result) => {
+                    let contentXaPhuong = '<option value="">Chọn xã phường</option>';
+                    for (let item of result) {
+                        contentXaPhuong += `<option value=${item.maXaPhuong} >${item.tenXaPhuong}</option>`;
+                    }
+                     $("#pcXaPhuong").empty().append(contentXaPhuong);
+                    console.log(result);
+
+                },
+                error: (jqXHR, textStatus, errorThrown) => {
+                    let error = { message: "Đã có lỗi xảy ra, vui lòng liên hệ quản trị!" };
+                    if ($.trim(jqXHR.responseText).length > 0) {
+                        try {
+                            error = (JSON.parse(jqXHR.responseText) ?? { error: { ...error } })
+                                .error;
+                        } catch {
+                            error.message = jqXHR.responseText;
+                        }
+                    }
+                    Swal.fire({
+                        icon: "error",
+                        title: "Ôi không...",
+                        text: error.message,
+                        //footer: '<a href="javascript:;">Why do I have this issue?</a>'
+                    });
+                },
+            }).always(() => {
+                //$detailModal.FLoading("hide");
+            });
+        }
+    </script>
+}
