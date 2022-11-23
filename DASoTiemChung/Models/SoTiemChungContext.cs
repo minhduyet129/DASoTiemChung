@@ -59,7 +59,7 @@ namespace DASoTiemChung.Models
 
                 entity.Property(e => e.ThanhTien).HasColumnType("decimal(18, 0)");
 
-                entity.Property(e => e.ThoiGianNhap).HasColumnType("datetime");
+                
 
                 entity.HasOne(d => d.MaPhieuNhapNavigation)
                     .WithMany(p => p.ChiTietPhieuNhaps)
@@ -83,7 +83,7 @@ namespace DASoTiemChung.Models
 
                 entity.HasIndex(e => e.MaVacXinTheoLo, "IX_ChiTietPhieuXuat_MaVacXinTheoLo");
 
-                entity.Property(e => e.ThoiGianXuat).HasColumnType("datetime");
+                
 
                 entity.HasOne(d => d.MaPhieuXuatNavigation)
                     .WithMany(p => p.ChiTietPhieuXuats)
@@ -248,8 +248,8 @@ namespace DASoTiemChung.Models
                 entity.HasIndex(e => e.MaNhanVien, "IX_PhieuNhap_MaNhanVien");
 
                 entity.Property(e => e.Tongtien).HasColumnType("decimal(18, 0)");
+                entity.Property(e => e.ThoiGianNhap).HasColumnType("datetime");
 
-                
                 entity.HasOne(d => d.MaNhanVienNavigation)
                     .WithMany(p => p.PhieuNhaps)
                     .HasForeignKey(d => d.MaNhanVien)
@@ -310,7 +310,7 @@ namespace DASoTiemChung.Models
 
                 entity.HasIndex(e => e.MaDiemTiem, "IX_PhieuXuat_MaDiemTiem");
 
-                
+                entity.Property(e => e.ThoiGianXuat).HasColumnType("datetime");
 
                 entity.HasIndex(e => e.MaNhanVien, "IX_PhieuXuat_MaNhanVien");
 

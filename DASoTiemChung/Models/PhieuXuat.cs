@@ -13,7 +13,7 @@ namespace DASoTiemChung.Models
         }
 
         public int MaPhieuXuat { get; set; }
-        
+        public DateTime? ThoiGianXuat { get; set; }
         public int? MaDiemTiem { get; set; }
         public int? MaNhanVien { get; set; }
         public string GhiChu { get; set; }

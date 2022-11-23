@@ -8,7 +8,7 @@ namespace DASoTiemChung.Models
     public partial class ChiTietPhieuXuat
     {
         public int MaChiTietPhieuXuat { get; set; }
-        public DateTime? ThoiGianXuat { get; set; }
+        
         public int? SoLuong { get; set; }
         public int? MaPhieuXuat { get; set; }
         public int? MaVacXinTheoLo { get; set; }

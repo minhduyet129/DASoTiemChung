@@ -14,7 +14,7 @@ namespace DASoTiemChung.Models
 
         public int MaPhieuNhap { get; set; }
         public decimal? Tongtien { get; set; }
-       
+        public DateTime? ThoiGianNhap { get; set; }
         public int? MaNhanVien { get; set; }
       
         public string GhiChu { get; set; }
