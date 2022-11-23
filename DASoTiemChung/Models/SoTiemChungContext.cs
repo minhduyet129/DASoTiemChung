@@ -245,24 +245,11 @@ namespace DASoTiemChung.Models
 
                 entity.ToTable("PhieuNhap");
 
-                entity.HasIndex(e => e.MaKho, "IX_PhieuNhap_MaKho");
-
-                entity.HasIndex(e => e.MaNhaSanXuat, "IX_PhieuNhap_MaNhaSanXuat");
-
                 entity.HasIndex(e => e.MaNhanVien, "IX_PhieuNhap_MaNhanVien");
 
                 entity.Property(e => e.Tongtien).HasColumnType("decimal(18, 0)");
 
-                entity.HasOne(d => d.MaKhoNavigation)
-                    .WithMany(p => p.PhieuNhaps)
-                    .HasForeignKey(d => d.MaKho)
-                    .HasConstraintName("FK__PhieuNhap__MaKho__571DF1D5");
-
-                entity.HasOne(d => d.MaNhaSanXuatNavigation)
-                    .WithMany(p => p.PhieuNhaps)
-                    .HasForeignKey(d => d.MaNhaSanXuat)
-                    .HasConstraintName("FK__PhieuNhap__MaNha__5812160E");
-
+                
                 entity.HasOne(d => d.MaNhanVienNavigation)
                     .WithMany(p => p.PhieuNhaps)
                     .HasForeignKey(d => d.MaNhanVien)
@@ -323,31 +310,25 @@ namespace DASoTiemChung.Models
 
                 entity.HasIndex(e => e.MaDiemTiem, "IX_PhieuXuat_MaDiemTiem");
 
-                entity.HasIndex(e => e.MaKho, "IX_PhieuXuat_MaKho");
+                
 
                 entity.HasIndex(e => e.MaNhanVien, "IX_PhieuXuat_MaNhanVien");
 
-                entity.HasIndex(e => e.MaVacXin, "IX_PhieuXuat_MaVacXin");
+                
 
                 entity.HasOne(d => d.MaDiemTiemNavigation)
                     .WithMany(p => p.PhieuXuats)
                     .HasForeignKey(d => d.MaDiemTiem)
                     .HasConstraintName("FK__PhieuXuat__MaDie__5EBF139D");
 
-                entity.HasOne(d => d.MaKhoNavigation)
-                    .WithMany(p => p.PhieuXuats)
-                    .HasForeignKey(d => d.MaKho)
-                    .HasConstraintName("FK__PhieuXuat__MaKho__5FB337D6");
+                
 
                 entity.HasOne(d => d.MaNhanVienNavigation)
                     .WithMany(p => p.PhieuXuats)
                     .HasForeignKey(d => d.MaNhanVien)
                     .HasConstraintName("FK__PhieuXuat__MaNha__60A75C0F");
 
-                entity.HasOne(d => d.MaVacXinNavigation)
-                    .WithMany(p => p.PhieuXuats)
-                    .HasForeignKey(d => d.MaVacXin)
-                    .HasConstraintName("FK__PhieuXuat__MaVac__619B8048");
+                
             });
 
             modelBuilder.Entity<QuanHuyen>(entity =>

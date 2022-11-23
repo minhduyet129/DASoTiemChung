@@ -14,13 +14,12 @@ namespace DASoTiemChung.Models
 
         public int MaPhieuNhap { get; set; }
         public decimal? Tongtien { get; set; }
-        public int? MaNhaSanXuat { get; set; }
+       
         public int? MaNhanVien { get; set; }
-        public int? MaKho { get; set; }
+      
         public string GhiChu { get; set; }
 
-        public virtual Kho MaKhoNavigation { get; set; }
-        public virtual NhaSanXuat MaNhaSanXuatNavigation { get; set; }
+        
         public virtual NhanVien MaNhanVienNavigation { get; set; }
         public virtual ICollection<ChiTietPhieuNhap> ChiTietPhieuNhaps { get; set; }
     }

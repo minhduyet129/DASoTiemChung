@@ -9,7 +9,7 @@ namespace DASoTiemChung.Models
     {
         public NhaSanXuat()
         {
-            PhieuNhaps = new HashSet<PhieuNhap>();
+            
             VacXinTheoLos = new HashSet<VacXinTheoLo>();
         }
 
@@ -19,7 +19,7 @@ namespace DASoTiemChung.Models
         public string Email { get; set; }
         public string DiaChiHienTai { get; set; }
 
-        public virtual ICollection<PhieuNhap> PhieuNhaps { get; set; }
+        
         public virtual ICollection<VacXinTheoLo> VacXinTheoLos { get; set; }
     }
 }
