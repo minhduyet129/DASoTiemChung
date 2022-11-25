@@ -129,39 +129,54 @@ namespace DASoTiemChung.Controllers
         [HttpPost("[controller]/", Name = RouteCreate)]
         public async Task<IActionResult> Create(PhieuNhap dto)
         {
-
-            try
+            using (var transaction = _context.Database.BeginTransaction())
             {
-                dto.ThoiGianNhap = DateTime.Now;
-                decimal sum = 0;
-                foreach (var ctpn in dto.ChiTietPhieuNhaps)
-                {
-                    ctpn.ThanhTien = ctpn.DonGia * ctpn.SoLuong;
-                    sum += ctpn.ThanhTien.HasValue ? ctpn.ThanhTien.Value : 0;
-                    
-                }
-                dto.Tongtien=sum;
-                
-                _reposity.Insert(dto);
-                _reposity.Save();
-                foreach(var ctpn in dto.ChiTietPhieuNhaps)
+
+                try
                 {
                     
-                   ctpn.MaPhieuNhap = dto.MaPhieuNhap;
-                   //await _context.ChiTietPhieuNhaps.AddAsync(ctpn);
-                   
+                    decimal sum = 0;
+                    foreach (var ctpn in dto.ChiTietPhieuNhaps)
+                    {
+                        ctpn.ThanhTien = ctpn.DonGia * ctpn.SoLuong;
+                        sum += ctpn.ThanhTien.HasValue ? ctpn.ThanhTien.Value : 0;
+
+                    }
+                    dto.Tongtien = sum;
+
+                    _reposity.Insert(dto);
+                    _reposity.Save();
+                    foreach (var ctpn in dto.ChiTietPhieuNhaps)
+                    {
+                        
+                        ctpn.MaPhieuNhap = dto.MaPhieuNhap;
+                        //await _context.ChiTietPhieuNhaps.AddAsync(ctpn);
+                        var vacXinTheoLo = _context.VacXinTheoLos.Find(ctpn.MaVacXinTheoLo);
+                        if (vacXinTheoLo != null)
+                        {
+                            vacXinTheoLo.SoLuong+=ctpn.SoLuong;
+                            _context.Update(vacXinTheoLo);
+                        }
+                        else
+                        {
+                            transaction.Rollback();
+                            return BadRequest("Không tìm thấy vắc xin theo lô cần nhập");
+                        }
+
+      
+                    }
+
+                    await _context.SaveChangesAsync();
+                    transaction.Commit();
+                    return Ok();
                 }
-
-                await _context.SaveChangesAsync();
-
-                return Ok();
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    _logger.LogError(ex, ex.ToString());
+                }
             }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, ex.ToString());
-            }
-
-
+            
             return BadRequest("Có lỗi khi xử lý!");
 
         }
@@ -175,44 +190,81 @@ namespace DASoTiemChung.Controllers
             {
                 return BadRequest("Lỗi request!");
             }
-            try
+
+
+            using (var transaction = _context.Database.BeginTransaction())
             {
-                
-                var lo = _reposity.GetById(id);
-                if (lo != null)
+
+                try
                 {
-                    decimal sum = 0;
-                    foreach (var ctpn in dto.ChiTietPhieuNhaps)
+                    var lo = _reposity.GetById(id);
+                    if (lo != null)
                     {
-                        ctpn.ThanhTien = ctpn.DonGia * ctpn.SoLuong;
-                        sum += ctpn.ThanhTien.HasValue ? ctpn.ThanhTien.Value : 0;
+                        decimal sum = 0;
+                        foreach (var ctpn in dto.ChiTietPhieuNhaps)
+                        {
+                            ctpn.ThanhTien = ctpn.DonGia * ctpn.SoLuong;
+                            sum += ctpn.ThanhTien.HasValue ? ctpn.ThanhTien.Value : 0;
 
+                        }
+                        lo.Tongtien = sum;
+                        lo.GhiChu = dto.GhiChu;
+                        lo.MaNhanVien = dto.MaNhanVien;
+                        lo.ThoiGianNhap = dto.ThoiGianNhap;
+                      
+                        var childrens = dto.ChiTietPhieuNhaps;
+                        dto.ChiTietPhieuNhaps = null;
+                        _reposity.Update(lo);
+                        _reposity.Save();
+
+                        var detaillist = _context.ChiTietPhieuNhaps.Where(x => x.MaPhieuNhap == dto.MaPhieuNhap).ToList();
+                        foreach (var giam in detaillist)
+                        {
+
+                            
+                            //await _context.ChiTietPhieuNhaps.AddAsync(ctpn);
+                            var vacXinTheoLo = _context.VacXinTheoLos.Find(giam.MaVacXinTheoLo);
+                            if (vacXinTheoLo != null)
+                            {
+                                vacXinTheoLo.SoLuong -= giam.SoLuong;
+                                _context.Update(vacXinTheoLo);
+                            }
+                            
+
+                        }
+                        _context.ChiTietPhieuNhaps.RemoveRange(detaillist);
+
+                        foreach (var ctpn in childrens)
+                        {
+                            ctpn.MaPhieuNhap = dto.MaPhieuNhap;
+                            var vacXinTheoLo = _context.VacXinTheoLos.Find(ctpn.MaVacXinTheoLo);
+                            if (vacXinTheoLo != null)
+                            {
+                                vacXinTheoLo.SoLuong += ctpn.SoLuong;
+                                _context.Update(vacXinTheoLo);
+                            }
+                            else
+                            {
+                                transaction.Rollback();
+                                return BadRequest($"Không tìm thấy vắc xin theo lô có mã {ctpn.MaVacXinTheoLo} cần nhập");
+                            }
+                            _context.ChiTietPhieuNhaps.Add(ctpn);
+
+                        }
+                        _context.SaveChanges();
+                        transaction.Commit();
+                        return Ok();
                     }
-                    lo.Tongtien = sum;
-                    var childrens = dto.ChiTietPhieuNhaps;
-                    dto.ChiTietPhieuNhaps = null;
-                    _reposity.Update(lo);
-                    _reposity.Save();
-
-                    var detaillist= _context.ChiTietPhieuNhaps.Where(x => x.MaPhieuNhap == dto.MaPhieuNhap).ToList();
-                    _context.ChiTietPhieuNhaps.RemoveRange(detaillist);
-
-                    foreach (var ctpn in childrens)
-                    {
-                        ctpn.MaPhieuNhap = dto.MaPhieuNhap;
-                        _context.ChiTietPhieuNhaps.Add(ctpn);
-                       
-                    }
-                    _context.SaveChanges();
-                    return Ok();
+                    return NotFound("Không tìm thấy!");
                 }
-                return NotFound("Không tìm thấy!");
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    _logger.LogError(ex, ex.ToString());
+                }
+            }
 
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, ex.ToString());
-            }
+         
 
             return BadRequest("Có lỗi khi xử lý!");
         }
