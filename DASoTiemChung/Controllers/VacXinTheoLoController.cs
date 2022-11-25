@@ -113,6 +113,56 @@ namespace DASoTiemChung.Controllers
 
             return result;
         }
+        public  const string RouteDataJson = "VacXinTheoLoGetDataJson";
+        [HttpGet("[controller]/DataJson", Name = RouteDataJson)]
+        public async Task<IActionResult> DataJsonAsync(SearchVacXinTheoLoDto input)
+        {
+
+            try
+            {
+                if (input.SkipCount < 0)
+                {
+                    input.SkipCount = 0;
+                }
+                if (input.MaxResultCount <= 0)
+                {
+                    input.MaxResultCount = 10;
+                }
+                int skipRecord = (input.SkipCount - 1) * input.MaxResultCount;
+                var take = input.MaxResultCount;
+
+                var query = _context.VacXinTheoLos.AsQueryable();
+                if(!string.IsNullOrEmpty(input.TenVacXinTheoLo))
+                {
+                    query = query.Where(x => x.TenVacXinTheoLo.Contains(input.TenVacXinTheoLo));
+                }
+                PagedResultDto<VacXinTheoLo> result = new PagedResultDto<VacXinTheoLo>(0, input.SkipCount, take, new List<VacXinTheoLo>());
+                if (string.IsNullOrEmpty(input.TenVacXinTheoLo))
+                {
+                    query = query.OrderBy(x => x.TenVacXinTheoLo).Skip(skipRecord).Take(take);
+                }
+
+
+                query = query.OrderBy(x => x.TenVacXinTheoLo);
+
+                result.Items = query.ToList();
+
+                bool checkNull = (result != null);
+
+                if (checkNull)
+                {
+                    result.SkipCount = input.SkipCount;
+                    result.MaxResultCount = take;
+                }
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.ToString());
+            }
+
+            return Ok("Có lỗi !");
+        }
 
 
         public const string RouteForm = "VacXinTheoLoGetForm";

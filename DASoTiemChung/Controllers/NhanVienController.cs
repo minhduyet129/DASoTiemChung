@@ -1,4 +1,4 @@
-﻿using DASoTiemChung.Dtos.NhanVien;
+﻿using DASoTiemChung.Dtos;
 using DASoTiemChung.Filter;
 using DASoTiemChung.Models;
 using DASoTiemChung.Repositories;
