@@ -1,0 +1,97 @@
+﻿@using DASoTiemChung.Controllers
+@using Newtonsoft.Json
+@model PhieuXuat
+
+@{
+
+    var submitUrl = Model.MaPhieuXuat == 0 ? Url.RouteUrl(PhieuXuatController.RouteCreate) : Url.RouteUrl(PhieuXuatController.RouteUpdate, new { id = Model.MaPhieuXuat });
+    var submitMethod = Model.MaPhieuXuat == 0 ? "POST" : "PUT";
+}
+<div class="modal-header">
+    <h5 class="modal-title">@(Model.MaPhieuXuat==0 ? "Thêm mới" : "Sửa") phiếu nhập vắc xin</h5>
+</div>
+<div class="modal-body">
+    <div class="dropdown">
+        <input class="form-control me-2 dropdown-toggle" id="searchProductInput" placeholder="Tìm vắc xin theo lô..." aria-label="Search" type="search" onkeypress="searchProductInput(event)" data-bs-toggle="dropdown" aria-expanded="false" />
+
+
+        <ul id="showProduct" class="dropdown-menu w-100 overflow-auto" style="max-height: 200px;" aria-labelledby="searchProductInput">
+        </ul>
+    </div>
+
+
+    <hr />
+    <h3>Danh sách vắc xin theo lô nhập</h3>
+    <form id="detailsForm"
+          class="form"
+          onsubmit="event.preventDefault(); saveForm.call(this, { url: '@Html.Raw(submitUrl)', method: '@Html.Raw(submitMethod)' });">
+        <div class="form-group d-none">
+            <label for="pcId">Id</label>
+            <input type="number" readonly class="form-control" id="pcId" name="@Html.NameFor(x => x.MaPhieuXuat)" placeholder="" value="@Html.Raw(Model.MaPhieuXuat==0 ? 0 : Model.MaPhieuXuat)" />
+        </div>
+        <div class="form-group">
+            <label for="pcNhanVien">Nhân viên</label>
+            <select class="choices form-select" id="pcNhanVien" name="@Html.NameFor(x => x.MaNhanVien)">
+                <option value="">Chọn nhân viên nhập</option>
+                @foreach (NhanVien role in ViewBag.NhanViens ?? new List<NhanVien>())
+                {
+                    @*@Html.Raw(GenerateCategorySelectOptions(category, 1))*@
+                    <option value="@Html.Raw(role.MaNhanVien)" selected="@(Model.MaNhanVien==role.MaNhanVien)">@Html.Raw(role.TenTaiKhoan)</option>
+                }
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="pcDiemTiem">Điểm tiêm</label>
+            <select class="choices form-select" id="pcDiemTiem" name="@Html.NameFor(x => x.MaDiemTiem)">
+                <option value="">Chọn điểm tiêm xuất đến</option>
+                @foreach (DiemTiem role in ViewBag.DiemTiems ?? new List<DiemTiem>())
+                {
+                    @*@Html.Raw(GenerateCategorySelectOptions(category, 1))*@
+                    <option value="@Html.Raw(role.MaDiemTiem)" selected="@(Model.MaNhanVien==role.MaDiemTiem)">@Html.Raw(role.TenDiemTiem)</option>
+                }
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="pcThoiGianXuat">Ngày Xuất</label>
+            <input type="date" class="form-control" id="pcThoiGianXuat" name="@Html.NameFor(x => x.ThoiGianXuat)" value="@Model.ThoiGianXuat.Value.ToString("yyyy-MM-dd")">
+        </div>
+        <div class="form-group">
+            <label for="pcGhiChu">Ghi chú</label>
+            <textarea class="form-control" id="pcGhiChu" rows="3">@Model.GhiChu</textarea>
+        </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th class="d-none" scope="col">Id</th>
+
+                    <th scope="col">Tên vắc xin cần xuất </th>
+                    <th scope="col">Số lượng</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody id="comboBody">
+                @if (Model.ChiTietPhieuXuats != null)
+                {
+                    @foreach (var item in Model.ChiTietPhieuXuats)
+                    {
+                        <tr class="tr-@item.MaVacXinTheoLo">
+                            <th scope="row"></th>
+                            <td class="d-none maVacXinTheoLo">@item.MaVacXinTheoLo</td>
+                            <td>@item.MaVacXinTheoLoNavigation.TenVacXinTheoLo</td>
+                            <td><input type="number" min="0" value=@item.SoLuong class="form-control soLuongXuat" placeholder="Số lượng nhập"></td>
+                            <td><i style="cursor:pointer;" onclick="removeProduct('@item.MaChiTietPhieuXuat')" class="bi bi-trash-fill"></i></td>
+                        </tr>
+                    }
+                }
+
+            </tbody>
+        </table>
+
+    </form>
+</div>
+
+<div class="modal-footer">
+    <button type="submit" class="btn btn-primary" form="detailsForm">Lưu</button>
+    <button type="button" class="btn btn-secondary" @*data-bs-dismiss="modal"*@ onclick="closeForm()">Đóng</button>
+</div>
