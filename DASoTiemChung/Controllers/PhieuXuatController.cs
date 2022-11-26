@@ -151,6 +151,8 @@ namespace DASoTiemChung.Controllers
                         if (vacXinTheoLo != null)
                         {
                             vacXinTheoLo.SoLuong -= ctpn.SoLuong;
+                            if (vacXinTheoLo.SoLuong < 0)
+                                return BadRequest("vắc xin tại kho không đủ rồi");
                             _context.Update(vacXinTheoLo);
                         }
                         else
@@ -229,6 +231,8 @@ namespace DASoTiemChung.Controllers
                             if (vacXinTheoLo != null)
                             {
                                 vacXinTheoLo.SoLuong -= ctpn.SoLuong;
+                                if (vacXinTheoLo.SoLuong < 0)
+                                    return BadRequest("vắc xin tại kho không đủ rồi");
                                 _context.Update(vacXinTheoLo);
                             }
                             else
