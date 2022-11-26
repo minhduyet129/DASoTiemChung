@@ -61,7 +61,7 @@ namespace DASoTiemChung.Controllers
                 }
                 if (!string.IsNullOrEmpty(input.TenNhanVien))
                 {
-                    query = query.Where(x => x.MaNhanVienNavigation.TenNhanVien.Contains(input.TenNhanVien));
+                    query = query.Where(x => x.MaNhanVienNavigation.TenTaiKhoan.Contains(input.TenNhanVien));
                 }
                 if (input.ThoiGianNhap.HasValue)
                 {
