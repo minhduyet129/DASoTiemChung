@@ -150,7 +150,7 @@ namespace DASoTiemChung.Controllers
                         var vacXinTheoLo = _context.VacXinTheoLos.Find(ctpn.MaVacXinTheoLo);
                         if (vacXinTheoLo != null)
                         {
-                            vacXinTheoLo.SoLuong += ctpn.SoLuong;
+                            vacXinTheoLo.SoLuong -= ctpn.SoLuong;
                             _context.Update(vacXinTheoLo);
                         }
                         else
@@ -176,7 +176,6 @@ namespace DASoTiemChung.Controllers
             return BadRequest("Có lỗi khi xử lý!");
 
         }
-
         public const string RouteUpdate = "PhieuXuatPutUpdate";
         [HttpPut("[controller]/{id}", Name = RouteUpdate)]
         public async Task<IActionResult> Update(int id, PhieuXuat dto)
@@ -212,11 +211,10 @@ namespace DASoTiemChung.Controllers
                         {
 
 
-                            //await _context.ChiTietPhieuNhaps.AddAsync(ctpn);
                             var vacXinTheoLo = _context.VacXinTheoLos.Find(giam.MaVacXinTheoLo);
                             if (vacXinTheoLo != null)
                             {
-                                vacXinTheoLo.SoLuong -= giam.SoLuong;
+                                vacXinTheoLo.SoLuong += giam.SoLuong;
                                 _context.Update(vacXinTheoLo);
                             }
 
@@ -230,7 +228,7 @@ namespace DASoTiemChung.Controllers
                             var vacXinTheoLo = _context.VacXinTheoLos.Find(ctpn.MaVacXinTheoLo);
                             if (vacXinTheoLo != null)
                             {
-                                vacXinTheoLo.SoLuong += ctpn.SoLuong;
+                                vacXinTheoLo.SoLuong -= ctpn.SoLuong;
                                 _context.Update(vacXinTheoLo);
                             }
                             else
