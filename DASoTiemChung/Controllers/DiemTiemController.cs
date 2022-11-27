@@ -63,6 +63,7 @@ namespace DASoTiemChung.Controllers
                         join tinh in _context.TinhThanhPhos on diemtiemxaquan.MaTinhThanhPho equals tinh.MaTinhThanhPho into kxqt
 
                         from diemtiemxaquantinh in kxqt.DefaultIfEmpty()
+                        where !diemtiems.DaXoa
                         select new DiemTiemOutputDto()
                         {
                             MaDiemTiem = diemtiems.MaDiemTiem,
@@ -165,7 +166,7 @@ namespace DASoTiemChung.Controllers
 
             try
             {
-                var find = _reposity.GetAll().FirstOrDefault(x => x.TenDiemTiem == dto.TenDiemTiem);
+                var find = _reposity.GetAll().FirstOrDefault(x => x.TenDiemTiem == dto.TenDiemTiem && !x.DaXoa);
                 if (find != null)
                 {
                     return BadRequest("Tên điểm tiêm đã tồn tại!");
@@ -195,7 +196,7 @@ namespace DASoTiemChung.Controllers
             }
             try
             {
-                var find = _reposity.GetAll().FirstOrDefault(x => x.TenDiemTiem == dto.TenDiemTiem && x.MaDiemTiem != dto.MaDiemTiem);
+                var find = _reposity.GetAll().FirstOrDefault(x => x.TenDiemTiem == dto.TenDiemTiem && x.MaDiemTiem != dto.MaDiemTiem && !x.DaXoa);
                 if (find != null)
                 {
                     return BadRequest("Tên điểm tiêm đã tồn tại!");
@@ -231,7 +232,8 @@ namespace DASoTiemChung.Controllers
                     var lo = _reposity.GetById(id.Value);
                     if (lo != null)
                     {
-                        _reposity.Delete(id);
+                        lo.DaXoa = true;
+                        _reposity.Update(lo);
                         _reposity.Save();
                         return Ok();
                     }
