@@ -1,7 +1,7 @@
 ﻿using DASoTiemChung.Models;
 using System.Collections.Generic;
 
-namespace DASoTiemChung.Dtos.DiemTiem
+namespace DASoTiemChung.Dtos
 {
     public class DiemTiemOutputDto
     {

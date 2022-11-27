@@ -6,8 +6,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using DASoTiemChung.Dtos.DiemTiem;
 using DASoTiemChung.Filter;
+using DASoTiemChung.Dtos;
 
 namespace DASoTiemChung.Controllers
 {

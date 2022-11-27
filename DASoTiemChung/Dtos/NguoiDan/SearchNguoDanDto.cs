@@ -1,6 +1,6 @@
 ﻿using DASoTiemChung.Filter;
 
-namespace DASoTiemChung.Dtos.NguoiDan
+namespace DASoTiemChung.Dtos
 {
     public class SearchNguoiDanDto:PagedRequestDto
     {

@@ -1,7 +1,7 @@
 ﻿using DASoTiemChung.Models;
 using System.Collections.Generic;
 
-namespace DASoTiemChung.Dtos.Kho
+namespace DASoTiemChung.Dtos
 {
     public class KhoOutputDto
     {
