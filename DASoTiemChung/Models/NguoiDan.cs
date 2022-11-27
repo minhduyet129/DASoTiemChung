@@ -28,6 +28,7 @@ namespace DASoTiemChung.Models
         public int? MaXaPhuong { get; set; }
         public int? MaQuanHuyen { get; set; }
         public int? MaTinhThanhPho { get; set; }
+        public bool DaXoa { get; set; }
 
         public virtual ICollection<PhieuTiem> PhieuTiems { get; set; }
     }

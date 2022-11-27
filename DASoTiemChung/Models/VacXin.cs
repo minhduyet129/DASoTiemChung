@@ -16,6 +16,7 @@ namespace DASoTiemChung.Models
 
         public int MaVacXin { get; set; }
         public string TenVacXin { get; set; }
+        public bool DaXoa { get; set; }
 
         public virtual ICollection<PhieuTiem> PhieuTiems { get; set; }
         

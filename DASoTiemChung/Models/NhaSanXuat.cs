@@ -18,8 +18,8 @@ namespace DASoTiemChung.Models
         public string SoDienThoai { get; set; }
         public string Email { get; set; }
         public string DiaChiHienTai { get; set; }
+        public bool DaXoa { get; set; }
 
-        
         public virtual ICollection<VacXinTheoLo> VacXinTheoLos { get; set; }
     }
 }

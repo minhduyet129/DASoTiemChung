@@ -4,14 +4,16 @@ using DASoTiemChung.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DASoTiemChung.Migrations
 {
     [DbContext(typeof(SoTiemChungContext))]
-    partial class SoTiemChungContextModelSnapshot : ModelSnapshot
+    [Migration("20221127163710_ChangeEntity3")]
+    partial class ChangeEntity3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -393,6 +395,9 @@ namespace DASoTiemChung.Migrations
                     b.Property<bool>("DaXoa")
                         .HasColumnType("bit");
 
+                    b.Property<int?>("MaBenhLy")
+                        .HasColumnType("int");
+
                     b.Property<int?>("MaDiemTiem")
                         .HasColumnType("int");
 
@@ -413,6 +418,8 @@ namespace DASoTiemChung.Migrations
 
                     b.HasKey("MaPhieuTiem")
                         .HasName("PK__PhieuTie__0B08C00122297BB2");
+
+                    b.HasIndex(new[] { "MaBenhLy" }, "IX_PhieuTiem_MaBenhLy");
 
                     b.HasIndex(new[] { "MaDiemTiem" }, "IX_PhieuTiem_MaDiemTiem");
 

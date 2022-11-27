@@ -19,6 +19,7 @@ namespace DASoTiemChung.Models
         public string TenTaiKhoan { get; set; }
         public string MatKhau { get; set; }
         public int? MaQuyen { get; set; }
+        public bool DaXoa { get; set; }
 
         public virtual Quyen MaQuyenNavigation { get; set; }
         public virtual ICollection<PhieuNhap> PhieuNhaps { get; set; }

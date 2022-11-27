@@ -22,6 +22,7 @@ namespace DASoTiemChung.Models
         public string NguoiDungDau { get; set; }
         public string NguoiTiem { get; set; }
         public string SoNha { get; set; }
+        public bool DaXoa { get; set; }
 
         public virtual ICollection<PhieuTiem> PhieuTiems { get; set; }
         public virtual ICollection<PhieuXuat> PhieuXuats { get; set; }

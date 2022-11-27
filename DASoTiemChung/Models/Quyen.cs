@@ -14,6 +14,7 @@ namespace DASoTiemChung.Models
 
         public int MaQuyen { get; set; }
         public string TenQuyen { get; set; }
+        public bool DaXoa { get; set; }
 
         public virtual ICollection<NhanVien> NhanViens { get; set; }
     }

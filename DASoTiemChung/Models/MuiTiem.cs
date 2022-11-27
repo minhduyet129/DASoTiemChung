@@ -14,6 +14,7 @@ namespace DASoTiemChung.Models
 
         public int MaMuiTiem { get; set; }
         public string TenMuiTiem { get; set; }
+        public bool DaXoa { get; set; }
 
         public virtual ICollection<PhieuTiem> PhieuTiems { get; set; }
     }

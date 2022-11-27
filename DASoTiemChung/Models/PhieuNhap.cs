@@ -19,7 +19,7 @@ namespace DASoTiemChung.Models
       
         public string GhiChu { get; set; }
 
-        
+        public bool DaXoa { get; set; }
         public virtual NhanVien MaNhanVienNavigation { get; set; }
         public virtual ICollection<ChiTietPhieuNhap> ChiTietPhieuNhaps { get; set; }
     }

@@ -263,7 +263,7 @@ namespace DASoTiemChung.Models
 
                 entity.ToTable("PhieuTiem");
 
-                entity.HasIndex(e => e.MaBenhLy, "IX_PhieuTiem_MaBenhLy");
+                
 
                 entity.HasIndex(e => e.MaDiemTiem, "IX_PhieuTiem_MaDiemTiem");
 
@@ -275,10 +275,10 @@ namespace DASoTiemChung.Models
 
                 entity.Property(e => e.ThoiGianTiem).HasColumnType("datetime");
 
-                entity.HasOne(d => d.MaBenhLyNavigation)
-                    .WithMany(p => p.PhieuTiems)
-                    .HasForeignKey(d => d.MaBenhLy)
-                    .HasConstraintName("FK__PhieuTiem__MaBen__59FA5E80");
+                entity.HasMany(d => d.PhieuTiemBenhLys)
+                    .WithOne(p => p.MaPhieuTiemNavigation)
+                    .HasForeignKey(d => d.MaPhieuTiem);
+                    
 
                 entity.HasOne(d => d.MaDiemTiemNavigation)
                     .WithMany(p => p.PhieuTiems)
@@ -300,6 +300,18 @@ namespace DASoTiemChung.Models
                     .HasForeignKey(d => d.MaVacXin)
                     .HasConstraintName("FK__PhieuTiem__MaVac__5DCAEF64");
             });
+
+            modelBuilder.Entity<PhieuTiemBenhLy>(entity => {
+                entity.HasKey(e => e.MaPhieuTiemBenhLy);
+
+                entity.ToTable("PhieuTiemBenhLy");
+                entity.HasOne(d => d.MaTienSuBenhLyNavigation)
+                    .WithMany(p => p.PhieuTiemBenhLys)
+                    .HasForeignKey(d => d.MaBenhLy);
+
+
+            });
+            
 
             modelBuilder.Entity<PhieuXuat>(entity =>
             {

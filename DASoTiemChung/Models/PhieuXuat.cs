@@ -17,6 +17,7 @@ namespace DASoTiemChung.Models
         public int? MaDiemTiem { get; set; }
         public int? MaNhanVien { get; set; }
         public string GhiChu { get; set; }
+        public bool DaXoa { get; set; }
 
         public virtual DiemTiem MaDiemTiemNavigation { get; set; }
        

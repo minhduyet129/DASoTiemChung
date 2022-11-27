@@ -19,8 +19,9 @@ namespace DASoTiemChung.Models
         public int? MaTinhThanhPho { get; set; }
         public string TenKho { get; set; }
         public string SoNha { get; set; }
+        public bool DaXoa { get; set; }
 
-        
+
         public virtual ICollection<VacXinTheoLo> VacXinTheoLos { get; set; }
     }
 }

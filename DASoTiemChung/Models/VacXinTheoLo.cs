@@ -23,6 +23,7 @@ namespace DASoTiemChung.Models
         public int? MaNhaSanXuat { get; set; }
         public int? MaKho { get; set; }
         public string TenVacXinTheoLo { get; set; }
+        public bool DaXoa { get; set; }
 
         public virtual Kho MaKhoNavigation { get; set; }
         public virtual Lo MaLoNavigation { get; set; }

@@ -9,14 +9,15 @@ namespace DASoTiemChung.Models
     {
         public TienSuBenhLy()
         {
-            PhieuTiems = new HashSet<PhieuTiem>();
+            PhieuTiemBenhLys = new HashSet<PhieuTiemBenhLy>();
         }
 
         public int MaBenhLy { get; set; }
         public string TenBenhLy { get; set; }
-        public string TrieuChung { get; set; }
-        public string TinhTrang { get; set; }
+        
+        public bool DaXoa { get; set; }
 
-        public virtual ICollection<PhieuTiem> PhieuTiems { get; set; }
+        public virtual ICollection<PhieuTiemBenhLy> PhieuTiemBenhLys { get; set; }
+        
     }
 }
