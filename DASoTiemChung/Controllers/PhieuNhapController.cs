@@ -290,7 +290,7 @@ namespace DASoTiemChung.Controllers
                     }
                     else
                     {
-                        return NotFound($"Không tìm thấy lô với id {id}");
+                        return NotFound($"Không tìm thấy phiếu nhập với id {id}");
                     }
 
                 }

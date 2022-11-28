@@ -30,6 +30,7 @@ namespace DASoTiemChung.Models
         public virtual DbSet<PhieuTiem> PhieuTiems { get; set; }
         public virtual DbSet<PhieuXuat> PhieuXuats { get; set; }
         public virtual DbSet<QuanHuyen> QuanHuyens { get; set; }
+        public virtual DbSet<PhieuTiemBenhLy> PhieuTiemBenhLys { get; set; }
         public virtual DbSet<Quyen> Quyens { get; set; }
         public virtual DbSet<ThongKeVacXinTaiDiemTiem> ThongKeVacXinTaiDiemTiems { get; set; }
         public virtual DbSet<TienSuBenhLy> TienSuBenhLies { get; set; }

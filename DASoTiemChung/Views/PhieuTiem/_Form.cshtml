@@ -1,0 +1,129 @@
+﻿@using DASoTiemChung.Controllers
+@using DASoTiemChung.Dtos
+@using Newtonsoft.Json
+@model PhieuTiemInputDto
+
+@{
+
+    var submitUrl = Model.MaPhieuTiem == 0 ? Url.RouteUrl(PhieuTiemController.RouteCreate) : Url.RouteUrl(PhieuTiemController.RouteUpdate, new { id = Model.MaPhieuTiem });
+    var submitMethod = Model.MaPhieuTiem == 0 ? "POST" : "PUT";
+}
+<div class="modal-header">
+    <h5 class="modal-title">@(Model.MaPhieuTiem==0 ? "Thêm mới" : "Sửa") phiếu tiêm vắc xin</h5>
+</div>
+<div class="modal-body">
+    <form id="detailsForm"
+          class="row g-3"
+          onsubmit="event.preventDefault(); saveForm.call(this, { url: '@Html.Raw(submitUrl)', method: '@Html.Raw(submitMethod)' });">
+        <div class="form-group d-none">
+            <label for="pcId">Id</label>
+            <input type="text" readonly class="form-control" id="pcId" name="@Html.NameFor(x => x.MaPhieuTiem)" placeholder="" value="@Html.Raw(Model.MaPhieuTiem==0 ? 0 : Model.MaPhieuTiem)" />
+        </div>
+
+        <div class="form-group">
+            <label for="pcTenNguoiDan">Tên người dân</label>
+            <input type="text" class="form-control" id="pcTenNguoiDan" name="@Html.NameFor(x => x.TenNguoiDan)" placeholder="Tên người dân" value="@Model.TenNguoiDan">
+        </div><div class="form-group">
+            <label for="pcSoCccdhc">Số căn cước công dân</label>
+            <input type="text" class="form-control" id="pcSoCccdhc" name="@Html.NameFor(x => x.SoCccdhc)" placeholder="Số căn cước công dân" value="@Model.SoCccdhc">
+        </div>
+        <div class="form-group">
+            <label for="pcThoiGianTiem">Ngày tiêm</label>
+            <input type="date" class="form-control" id="pcThoiGianTiem" name="@Html.NameFor(x => x.ThoiGianTiem)" value="@Model.ThoiGianTiem.Value.ToString("yyyy-MM-dd")">
+        </div>
+        <div class="form-group">
+            <label for="pcMuiTiem">Mũi tiêm</label>
+            <select class="choices form-select" id="pcMuiTiem" name="@Html.NameFor(x => x.MaMuiTiem)">
+                <option value="">Chọn mũi tiêm</option>
+                @foreach (MuiTiem role in ViewBag.MuiTiems ?? new List<MuiTiem>())
+                {
+                    @*@Html.Raw(GenerateCategorySelectOptions(category, 1))*@
+                    <option value="@Html.Raw(role.MaMuiTiem)" selected="@(Model.MaMuiTiem.Equals(role.MaMuiTiem))">@Html.Raw(role.TenMuiTiem)</option>
+                }
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="pcDiemTiem">Điểm tiêm</label>
+            <select class="choices form-select" id="pcDiemTiem" name="@Html.NameFor(x => x.MaDiemTiem)">
+                <option value="">Chọn điểm tiêm</option>
+                @foreach (DiemTiem role in ViewBag.DiemTiems ?? new List<DiemTiem>())
+                {
+                    @*@Html.Raw(GenerateCategorySelectOptions(category, 1))*@
+                    <option value="@Html.Raw(role.MaDiemTiem)" selected="@(Model.MaDiemTiem.Equals(role.MaDiemTiem))">@Html.Raw(role.TenDiemTiem)</option>
+                }
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="pcVacXin">Vắc xin</label>
+            <select class="choices form-select" id="pcVacXin" name="@Html.NameFor(x => x.MaVacXin)">
+                <option value="">Chọn vắc xin</option>
+                @foreach (VacXin role in ViewBag.VacXins ?? new List<VacXin>())
+                {
+                    @*@Html.Raw(GenerateCategorySelectOptions(category, 1))*@
+                    <option value="@Html.Raw(role.MaVacXin)" selected="@(Model.MaVacXin.Equals(role.MaVacXin))">@Html.Raw(role.TenVacXin)</option>
+                }
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="pcPhanUngSauTiem">Phản ứng sau tiêm</label>
+            <textarea class="form-control" id="pcPhanUngSauTiem" rows="3">@Model.PhanUngSauTiem</textarea>
+        </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th class="d-none" scope="col">Id</th>
+
+                    <th class="col-6">Tên bệnh lý </th>
+                    <th class="col-2">Tình trạng</th>
+                    <th class="col-4">Triệu chứng</th>
+                    
+                </tr>
+            </thead>
+            <tbody id="comboBody">
+
+
+
+                @if (Model.PhieuTiemBenhLys != null)
+                {
+                    @foreach (var item in Model.PhieuTiemBenhLys)
+                    {
+                        <tr>
+                            <th scope="row"></th>
+                            <td class="d-none maBenhLy">@item.MaBenhLy</td>
+                            <td class="col-6">@Html.Raw(item.MaTienSuBenhLyNavigation.TenBenhLy)</td>
+                            <td class="col-2"><input type="text" value="@Html.Raw(item.TinhTrang)" class="form-control tinhTrang" placeholder="Tình trạng"></td>
+                            <td class="col-4"><input type="text" value="@Html.Raw(item.TrieuChung)" class="form-control trieuChung" placeholder="Triệu chứng"></td>
+
+                        </tr>
+                    }
+                }
+                else
+                {
+
+                    @foreach (var benhly in ViewBag.BenhLys)
+                    {
+
+                        <tr>
+                            <th scope="row"></th>
+                            <td class="d-none maBenhLy">@benhly.MaBenhLy</td>
+                            <td class="col-6">@Html.Raw(benhly.TenBenhLy)</td>
+                            <td class="col-2"><input type="text"  class="form-control tinhTrang" placeholder="Tình trạng"></td>
+                            <td class="col-4"><input type="text"  class="form-control trieuChung" placeholder="Triệu chứng"></td>
+
+                        </tr>
+
+                    }
+                }
+
+            </tbody>
+        </table>
+
+    </form>
+</div>
+
+<div class="modal-footer">
+    <button type="submit" class="btn btn-primary" form="detailsForm">Lưu</button>
+    <button type="button" class="btn btn-secondary" @*data-bs-dismiss="modal"*@ onclick="closeForm()">Đóng</button>
+</div>

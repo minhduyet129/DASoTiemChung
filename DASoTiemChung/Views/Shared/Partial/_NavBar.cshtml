@@ -23,36 +23,11 @@
                         <span>Quản lý lô</span>
                     </a>
                 </li>
-                <li class="sidebar-item">
-                    <a asp-route="@VacXinController.RouteIndex" class="sidebar-link">
-                        <i class="bi bi-columns-gap"></i>
-                        <span>Quản lý loại vắc xin</span>
-                    </a>
-                </li>
-                <li class="sidebar-item">
-                    <a asp-route="@MuiTiemController.RouteIndex" class="sidebar-link">
-                        <i class="bi bi-columns-gap"></i>
-                        <span>Quản lý mũi tiêm</span>
-                    </a>
-                </li>
-                <li class="sidebar-item">
-                    <a asp-route="@NhaSanXuatController.RouteIndex" class="sidebar-link">
-                        <i class="bi bi-columns-gap"></i>
-                        <span>Quản lý nhà sản xuất</span>
-                    </a>
-                </li>
-                <li class="sidebar-item">
-                    <a asp-route="@TienSuBenhLyController.RouteIndex" class="sidebar-link">
-                        <i class="bi bi-columns-gap"></i>
-                        <span>Quản lý tiền sử bệnh lý</span>
-                    </a>
-                </li>
-                <li class="sidebar-item">
-                    <a asp-route="@NhanVienController.RouteIndex" class="sidebar-link">
-                        <i class="bi bi-columns-gap"></i>
-                        <span>Quản lý nhân viên</span>
-                    </a>
-                </li>
+
+
+
+
+
                 <li class="sidebar-item">
                     <a asp-route="@KhoController.RouteIndex" class="sidebar-link">
                         <i class="bi bi-columns-gap"></i>
@@ -62,13 +37,13 @@
                 <li class="sidebar-item">
                     <a asp-route="@VacXinTheoLoController.RouteIndex" class="sidebar-link">
                         <i class="bi bi-columns-gap"></i>
-                        <span>Quản lý vắc xin theo lô</span>
+                        <span>Vắc xin theo lô</span>
                     </a>
                 </li>
                 <li class="sidebar-item">
                     <a asp-route="@DiemTiemController.RouteIndex" class="sidebar-link">
                         <i class="bi bi-columns-gap"></i>
-                        <span>Quản lý điểm tiêm</span>
+                        <span>Điểm tiêm</span>
                     </a>
                 </li>
                 <li class="sidebar-item">
@@ -80,15 +55,63 @@
                 <li class="sidebar-item">
                     <a asp-route="@PhieuNhapController.RouteIndex" class="sidebar-link">
                         <i class="bi bi-columns-gap"></i>
-                        <span>Quản lý nhập vắc xin</span>
+                        <span>Nhập vắc xin</span>
                     </a>
                 </li>
-                </li>
+
                 <li class="sidebar-item">
                     <a asp-route="@PhieuXuatController.RouteIndex" class="sidebar-link">
                         <i class="bi bi-columns-gap"></i>
-                        <span>Quản lý xuất vắc xin</span>
+                        <span>Xuất vắc xin</span>
                     </a>
+                </li>
+                <li class="sidebar-item">
+                    <a asp-route="@PhieuTiemController.RouteIndex" class="sidebar-link">
+                        <i class="bi bi-columns-gap"></i>
+                        <span>Phiếu tiêm vắc xin</span>
+                    </a>
+                </li>
+                
+                <li class="sidebar-item">
+
+                    <div class="btn btn-toggle collapsed sidebar-link" data-bs-toggle="collapse" data-bs-target="#dashboard-collapse" aria-expanded="false">
+                        <i class="bi bi-sliders"></i>
+                        <span>Quản lý tổng hợp</span>
+                    </div>
+                    <div class="collapse" id="dashboard-collapse">
+                        <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                            <li class="sidebar-item">
+                                <a asp-route="@MuiTiemController.RouteIndex" class="sidebar-link">
+                                    <i class="bi bi-columns-gap"></i>
+                                    <span>Mũi tiêm</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-item">
+                                <a asp-route="@NhaSanXuatController.RouteIndex" class="sidebar-link">
+                                    <i class="bi bi-columns-gap"></i>
+                                    <span>Nhà sản xuất</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-item">
+                                <a asp-route="@TienSuBenhLyController.RouteIndex" class="sidebar-link">
+                                    <i class="bi bi-columns-gap"></i>
+                                    <span>Tiền sử bệnh lý</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-item">
+                                <a asp-route="@VacXinController.RouteIndex" class="sidebar-link">
+                                    <i class="bi bi-columns-gap"></i>
+                                    <span>Loại vắc xin</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-item">
+                                <a asp-route="@NhanVienController.RouteIndex" class="sidebar-link">
+                                    <i class="bi bi-columns-gap"></i>
+                                    <span>Nhân viên</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </li>
                 <li class="sidebar-item">
                     <a asp-route="@DangNhapController.LogoutExcute" class="sidebar-link">
@@ -97,42 +120,6 @@
                     </a>
                 </li>
 
-                @*<li class="sidebar-item">
-
-            <div class="btn btn-toggle collapsed sidebar-link" data-bs-toggle="collapse" data-bs-target="#dashboard-collapse" aria-expanded="false">
-                <i class="bi bi-sliders"></i>
-                <span>Cấu hình hệ thống</span>
-            </div>
-            <div class="collapse" id="dashboard-collapse">
-                <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                    <li class="sidebar-item">
-                        <a asp-route="@SystemParameterController.AboutUsPage" class="sidebar-link">
-                            <span>Giới thiệu về shop</span>
-                        </a>
-                    </li>
-                    <li class="sidebar-item">
-                        <a asp-route="@SystemParameterController.ShippingPolicyPage" class="sidebar-link">
-                            <span>Đặt hàng & vận chuyển</span>
-                        </a>
-                    </li>
-                    <li class="sidebar-item">
-                        <a asp-route="@SystemParameterController.ReturnPolicyPage" class="sidebar-link">
-                            <span>Trả hàng - hoàn tiền</span>
-                        </a>
-                    </li>
-                    <li class="sidebar-item">
-                        <a asp-route="@SystemParameterController.CooporatePage" class="sidebar-link">
-                            <span>Hợp tác</span>
-                        </a>
-                    </li>
-                    <li class="sidebar-item">
-                        <a asp-route="@SystemParameterController.HomeSliderConfig" asp-route-code="HOME_SLIDER" class="sidebar-link">
-                            <span>Slide ảnh trang chủ</span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </li>*@
             </ul>
         </div>
         <button class="sidebar-toggler btn x"><i data-feather="x"></i></button>
