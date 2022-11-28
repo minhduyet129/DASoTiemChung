@@ -52,7 +52,7 @@ namespace DASoTiemChung.Controllers
             }
             int skipRecord = (input.SkipCount - 1) * input.MaxResultCount;
             var take = input.MaxResultCount;
-            var query = _context.PhieuNhaps.Include(x => x.MaNhanVienNavigation).AsQueryable();
+            var query = _context.PhieuNhaps.Include(x => x.MaNhanVienNavigation).AsQueryable().Where(x=>!x.DaXoa);
             try
             {
                 if (!string.IsNullOrEmpty(input.MaPhieuNhap))
@@ -283,8 +283,8 @@ namespace DASoTiemChung.Controllers
                     {
                         var detaillist = _context.ChiTietPhieuNhaps.Where(x => x.MaPhieuNhap == lo.MaPhieuNhap).ToList();
                         _context.ChiTietPhieuNhaps.RemoveRange(detaillist);
-
-                        _reposity.Delete(id);
+                        lo.DaXoa = true;
+                        _reposity.Update(lo);
                         _reposity.Save();
                         return Ok();
                     }

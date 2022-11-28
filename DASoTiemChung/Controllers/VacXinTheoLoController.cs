@@ -52,7 +52,7 @@ namespace DASoTiemChung.Controllers
             }
             int skipRecord = (input.SkipCount - 1) * input.MaxResultCount;
             var take = input.MaxResultCount;
-            var query = _context.VacXinTheoLos.Include(x => x.MaKhoNavigation).Include(x => x.MaLoNavigation).Include(x => x.MaVacXinNavigation).Include(x => x.MaNhaSanXuatNavigation).AsQueryable();
+            var query = _context.VacXinTheoLos.Include(x => x.MaKhoNavigation).Include(x => x.MaLoNavigation).Include(x => x.MaVacXinNavigation).Include(x => x.MaNhaSanXuatNavigation).AsQueryable().Where(x=>!x.DaXoa);
             try
             {
                 if (!string.IsNullOrEmpty(input.TenVacXinTheoLo))
@@ -205,7 +205,7 @@ namespace DASoTiemChung.Controllers
 
             try
             {
-                var find = _reposity.GetAll().FirstOrDefault(x => x.TenVacXinTheoLo == dto.TenVacXinTheoLo);
+                var find = _reposity.GetAll().FirstOrDefault(x => x.TenVacXinTheoLo == dto.TenVacXinTheoLo&&!x.DaXoa);
                 if (find != null)
                 {
                     return BadRequest("Tên đã tồn tại!");
@@ -235,7 +235,7 @@ namespace DASoTiemChung.Controllers
             }
             try
             {
-                var find = _reposity.GetAll().FirstOrDefault(x => x.TenVacXinTheoLo == dto.TenVacXinTheoLo  && x.MaVacXinTheoLo != dto.MaVacXinTheoLo);
+                var find = _reposity.GetAll().FirstOrDefault(x => x.TenVacXinTheoLo == dto.TenVacXinTheoLo  && x.MaVacXinTheoLo != dto.MaVacXinTheoLo&&!x.DaXoa);
                 if (find != null)
                 {
                     return BadRequest("Tên đã tồn tại!");
@@ -271,7 +271,8 @@ namespace DASoTiemChung.Controllers
                     var lo = _reposity.GetById(id.Value);
                     if (lo != null)
                     {
-                        _reposity.Delete(id);
+                        lo.DaXoa = true;
+                        _reposity.Update(lo);
                         _reposity.Save();
                         return Ok();
                     }

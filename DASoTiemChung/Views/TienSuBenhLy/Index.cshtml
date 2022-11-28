@@ -246,24 +246,8 @@
                 });
                 return;
             }
-            if (!$("#pcTrieuChung").val()) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Ôi không...',
-                    text: 'Vui lòng nhập triệu chứng',
-                    //footer: '<a href="javascript:;">Why do I have this issue?</a>'
-                });
-                return;
-            }
-            if (!$("#pcTinhTrang").val()) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Ôi không...',
-                    text: 'Vui lòng nhập tình trạng',
-                    //footer: '<a href="javascript:;">Why do I have this issue?</a>'
-                });
-                return;
-            }
+            
+            
 
             $.ajax({
                 url,

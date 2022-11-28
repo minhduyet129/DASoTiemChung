@@ -53,7 +53,7 @@ namespace DASoTiemChung.Controllers
             }
             int skipRecord = (input.SkipCount - 1) * input.MaxResultCount;
             var take = input.MaxResultCount;
-            var query = _context.NhanViens.Include(y=>y.MaQuyenNavigation).AsQueryable();
+            var query = _context.NhanViens.Include(y=>y.MaQuyenNavigation).AsQueryable().Where(x=>!x.DaXoa);
             try
             {
                 if (!string.IsNullOrEmpty(input.TenNhanVien))
@@ -135,7 +135,7 @@ namespace DASoTiemChung.Controllers
 
             try
             {
-                var find = _reposity.GetAll().FirstOrDefault(x => x.TenTaiKhoan == dto.TenTaiKhoan);
+                var find = _reposity.GetAll().FirstOrDefault(x => x.TenTaiKhoan == dto.TenTaiKhoan&&!x.DaXoa);
                 if (find != null)
                 {
                     return BadRequest("Tên tài khoản đã tồn tại!");
@@ -165,7 +165,7 @@ namespace DASoTiemChung.Controllers
             }
             try
             {
-                var find = _reposity.GetAll().FirstOrDefault(x => x.TenTaiKhoan == dto.TenTaiKhoan&& x.MaNhanVien != dto.MaNhanVien);
+                var find = _reposity.GetAll().FirstOrDefault(x => x.TenTaiKhoan == dto.TenTaiKhoan&& x.MaNhanVien != dto.MaNhanVien&&!x.DaXoa);
                 if (find != null)
                 {
                     return BadRequest("Tên tài khoản đã tồn tại!");
@@ -201,7 +201,8 @@ namespace DASoTiemChung.Controllers
                     var lo = _reposity.GetById(id.Value);
                     if (lo != null)
                     {
-                        _reposity.Delete(id);
+                        lo.DaXoa = true;
+                        _reposity.Update(lo);
                         _reposity.Save();
                         return Ok();
                     }

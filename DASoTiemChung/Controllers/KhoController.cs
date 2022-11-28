@@ -64,6 +64,8 @@ namespace DASoTiemChung.Controllers
                         join tinh in _context.TinhThanhPhos on khoxaquan.MaTinhThanhPho equals tinh.MaTinhThanhPho into kxqt
 
                         from khoxaquantinh in kxqt.DefaultIfEmpty()
+                        where !khos.DaXoa
+
                         select new KhoOutputDto()
                         {
                             MaKho = khos.MaKho,
@@ -163,7 +165,7 @@ namespace DASoTiemChung.Controllers
 
             try
             {
-                var find = _reposity.GetAll().FirstOrDefault(x => x.TenKho == dto.TenKho );
+                var find = _reposity.GetAll().FirstOrDefault(x => x.TenKho == dto.TenKho && !x.DaXoa );
                 if (find != null)
                 {
                     return BadRequest("Tên kho đã tồn tại!");
@@ -193,7 +195,7 @@ namespace DASoTiemChung.Controllers
             }
             try
             {
-                var find = _reposity.GetAll().FirstOrDefault(x => x.TenKho == dto.TenKho  && x.MaKho != dto.MaKho);
+                var find = _reposity.GetAll().FirstOrDefault(x => x.TenKho == dto.TenKho  && x.MaKho != dto.MaKho && !x.DaXoa);
                 if (find != null)
                 {
                     return BadRequest("Tên kho đã tồn tại!");
@@ -203,6 +205,7 @@ namespace DASoTiemChung.Controllers
                 {
 
                     _reposity.Update(dto);
+
                     _reposity.Save();
                     return Ok();
                 }
@@ -229,7 +232,8 @@ namespace DASoTiemChung.Controllers
                     var lo = _reposity.GetById(id.Value);
                     if (lo != null)
                     {
-                        _reposity.Delete(id);
+                        lo.DaXoa = true;
+                        _reposity.Update(lo);
                         _reposity.Save();
                         return Ok();
                     }

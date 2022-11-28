@@ -52,7 +52,7 @@ namespace DASoTiemChung.Controllers
             }
             int skipRecord = (input.SkipCount - 1) * input.MaxResultCount;
             var take = input.MaxResultCount;
-            var query = _context.PhieuXuats.Include(x => x.MaNhanVienNavigation).Include(x=>x.MaDiemTiemNavigation).AsQueryable();
+            var query = _context.PhieuXuats.Include(x => x.MaNhanVienNavigation).Include(x=>x.MaDiemTiemNavigation).AsQueryable().Where(x=>!x.DaXoa);
 
             try
             {
@@ -275,7 +275,8 @@ namespace DASoTiemChung.Controllers
                     {
                         var detaillist = _context.ChiTietPhieuXuats.Where(x => x.MaPhieuXuat == lo.MaPhieuXuat).ToList();
                         _context.ChiTietPhieuXuats.RemoveRange(detaillist);
-                        _reposity.Delete(id);
+                        lo.DaXoa = true;
+                        _reposity.Update(lo);
                         _reposity.Save();
                         return Ok();
                     }

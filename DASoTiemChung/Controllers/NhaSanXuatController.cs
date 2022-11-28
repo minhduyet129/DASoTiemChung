@@ -52,7 +52,7 @@ namespace DASoTiemChung.Controllers
             }
             int skipRecord = (input.SkipCount - 1) * input.MaxResultCount;
             var take = input.MaxResultCount;
-            var query = _reposity.GetAll();
+            var query = _reposity.GetAll().Where(x=>!x.DaXoa);
             try
             {
                 if (!string.IsNullOrEmpty(input.TenNhaSanXuat))
@@ -122,7 +122,7 @@ namespace DASoTiemChung.Controllers
 
             try
             {
-                var find = _reposity.GetAll().FirstOrDefault(x => x.TenNhaSanXuat == dto.TenNhaSanXuat || x.SoDienThoai == dto.SoDienThoai || x.Email == dto.Email);
+                var find = _reposity.GetAll().FirstOrDefault(x => x.TenNhaSanXuat == dto.TenNhaSanXuat && x.SoDienThoai == dto.SoDienThoai && x.Email == dto.Email &&!x.DaXoa);
                 if (find != null)
                 {
                     return BadRequest("Tên, số điện thoại hoặc email đã tồn tại!");
@@ -152,7 +152,7 @@ namespace DASoTiemChung.Controllers
             }
             try
             {
-                var find = _reposity.GetAll().FirstOrDefault(x => (x.TenNhaSanXuat == dto.TenNhaSanXuat || x.SoDienThoai == dto.SoDienThoai || x.Email == dto.Email) && x.MaNhaSanXuat != dto.MaNhaSanXuat);
+                var find = _reposity.GetAll().FirstOrDefault(x => (x.TenNhaSanXuat == dto.TenNhaSanXuat || x.SoDienThoai == dto.SoDienThoai || x.Email == dto.Email) && x.MaNhaSanXuat != dto.MaNhaSanXuat&&!x.DaXoa);
                 if (find != null)
                 {
                     return BadRequest("Tên, địa chỉ, số điện thoại hoặc email đã tồn tại!");
@@ -188,7 +188,8 @@ namespace DASoTiemChung.Controllers
                     var lo = _reposity.GetById(id.Value);
                     if (lo != null)
                     {
-                        _reposity.Delete(id);
+                        lo.DaXoa = true;
+                        _reposity.Update(lo);
                         _reposity.Save();
                         return Ok();
                     }

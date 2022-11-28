@@ -63,6 +63,7 @@ namespace DASoTiemChung.Controllers
                         join tinh in _context.TinhThanhPhos on nguoidanxaquan.MaTinhThanhPho equals tinh.MaTinhThanhPho into kxqt
 
                         from nguoidanxaquantinh in kxqt.DefaultIfEmpty()
+                        where !nguoidans.DaXoa
                         select new NguoiDanOutputDto()
                         {
                             MaNguoiDan = nguoidans.MaNguoiDan,
@@ -184,7 +185,7 @@ namespace DASoTiemChung.Controllers
 
             try
             {
-                var find = _reposity.GetAll().FirstOrDefault(x => x.SoCccdhc.Trim() == dto.SoCccdhc.Trim() || x.SoTheBaoHiemYte.Trim() == dto.SoTheBaoHiemYte.Trim());
+                var find = _reposity.GetAll().FirstOrDefault(x => x.SoCccdhc.Trim() == dto.SoCccdhc.Trim() && x.SoTheBaoHiemYte.Trim() == dto.SoTheBaoHiemYte.Trim() && !x.DaXoa);
                 if (find != null)
                 {
                     return BadRequest(" số điện thoại hoặc số thẻ bảo hiểm y tế đã tồn tại!");
@@ -214,7 +215,7 @@ namespace DASoTiemChung.Controllers
             }
             try
             {
-                var find = _reposity.GetAll().FirstOrDefault(x => x.SoCccdhc.Trim() == dto.SoCccdhc.Trim() && x.MaNguoiDan != dto.MaNguoiDan);
+                var find = _reposity.GetAll().FirstOrDefault(x => x.SoCccdhc.Trim() == dto.SoCccdhc.Trim() && x.MaNguoiDan != dto.MaNguoiDan&& !x.DaXoa);
                 if (find != null)
                 {
                     return BadRequest("Người dân đã tồn tại!");
@@ -222,8 +223,8 @@ namespace DASoTiemChung.Controllers
                 var lo = _reposity.GetById(id);
                 if (lo != null)
                 {
-
-                    _reposity.Update(dto);
+                    lo.DaXoa = true;
+                    _reposity.Update(lo);
                     _reposity.Save();
                     return Ok();
                 }
