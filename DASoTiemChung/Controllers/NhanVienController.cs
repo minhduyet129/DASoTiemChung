@@ -28,7 +28,7 @@ namespace DASoTiemChung.Controllers
         [HttpGet("[controller]/", Name = RouteIndex)]
         public async Task<IActionResult> Index()
         {
-            ViewBag.Roles = _context.Quyens.ToList();
+            ViewBag.Roles = _context.Quyens.ToList().Where(x => !x.DaXoa);
 
             return View();
         }
@@ -105,7 +105,7 @@ namespace DASoTiemChung.Controllers
         {
             NhanVien result = new NhanVien();
 
-            ViewBag.Roles = _context.Quyens.ToList();
+            ViewBag.Roles = _context.Quyens.ToList().Where(x => !x.DaXoa);
 
             if (id == 0)
             {

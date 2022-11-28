@@ -101,7 +101,7 @@ namespace DASoTiemChung.Controllers
         {
             PhieuNhap result = new PhieuNhap();
             
-            ViewBag.NhanViens = _context.NhanViens.OrderBy(x => x.TenNhanVien).ToList();
+            ViewBag.NhanViens = _context.NhanViens.OrderBy(x => x.TenNhanVien).ToList().Where(x=>!x.DaXoa);
 
             if (id == 0)
             {

@@ -171,10 +171,10 @@ namespace DASoTiemChung.Controllers
         {
             VacXinTheoLo result = new VacXinTheoLo();
 
-            ViewBag.Los = _context.Los.OrderBy(x=>x.TenLo).ToList();
-            ViewBag.Khos = _context.Khos.OrderBy(x=>x.TenKho).ToList();
-            ViewBag.NhaSanXuats = _context.NhaSanXuats.OrderBy(x=>x.TenNhaSanXuat).ToList();
-            ViewBag.VacXins = _context.VacXins.OrderBy(x=>x.TenVacXin).ToList();
+            ViewBag.Los = _context.Los.OrderBy(x=>x.TenLo).ToList().Where(x => !x.DaXoa);
+            ViewBag.Khos = _context.Khos.OrderBy(x=>x.TenKho).ToList().Where(x => !x.DaXoa);
+            ViewBag.NhaSanXuats = _context.NhaSanXuats.OrderBy(x=>x.TenNhaSanXuat).ToList().Where(x => !x.DaXoa);
+            ViewBag.VacXins = _context.VacXins.OrderBy(x=>x.TenVacXin).ToList().Where(x => !x.DaXoa);
 
             if (id == 0)
             {

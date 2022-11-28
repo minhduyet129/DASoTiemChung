@@ -105,8 +105,8 @@ namespace DASoTiemChung.Controllers
         {
             PhieuXuat result = new PhieuXuat();
 
-            ViewBag.NhanViens = _context.NhanViens.OrderBy(x => x.TenNhanVien).ToList();
-            ViewBag.DiemTiems = _context.DiemTiems.OrderBy(x => x.TenDiemTiem).ToList();
+            ViewBag.NhanViens = _context.NhanViens.OrderBy(x => x.TenNhanVien).ToList().Where(x=>!x.DaXoa);
+            ViewBag.DiemTiems = _context.DiemTiems.OrderBy(x => x.TenDiemTiem).ToList().Where(x => !x.DaXoa);
 
 
             if (id == 0)
