@@ -75,15 +75,15 @@
         </div>
         <div class="form-group">
             <label for="pcTheBDYT">Số thẻ bảo hiểm y tế</label>
-            <input type="text" class="form-control" id="pcTheBDYT" name="@Html.NameFor(x => x.SoTheBaoHiemYte)" placeholder="số thẻ bảo hiểm y tế" value="@Model.SoTheBaoHiemYte">
+            <input type="text" class="form-control" id="pcTheBDYT" name="@Html.NameFor(x => x.SoTheBaoHiemYte)" placeholder="số thẻ bảo hiểm y tế" value="@Model.SoTheBaoHiemYte.Trim()">
         </div>
         <div class="form-group">
             <label for="pcSDT">Số điện thoại</label>
-            <input type="text" class="form-control" id="pcSDT" name="@Html.NameFor(x => x.SoDienThoai)" placeholder="số điện thoại" value="@Model.SoDienThoai">
+            <input type="text" class="form-control" id="pcSDT" name="@Html.NameFor(x => x.SoDienThoai)" placeholder="số điện thoại" value="@Model.SoDienThoai.Trim()">
         </div>
         <div class="form-group">
             <label for="pcCCCD">Số CCCD/HC</label>
-            <input type="text" class="form-control" id="pcCCCD" name="@Html.NameFor(x => x.SoCccdhc)" placeholder="Số CCCD/HC" value="@Model.SoCccdhc">
+            <input type="text" class="form-control" id="pcCCCD" name="@Html.NameFor(x => x.SoCccdhc)" placeholder="Số CCCD/HC" value="@Model.SoCccdhc.Trim()">
         </div>
         <div class="form-group">
             <label for="pcNgheNghiep">Nghề nghiệp</label>
@@ -102,7 +102,7 @@
             <input type="text" class="form-control" id="pcEmail" name="@Html.NameFor(x => x.Email)" placeholder="Email" value="@Model.Email">
         </div>
         <div class="form-group">
-            <label for="pcDT">Dân tộc / Quốc tịch</label>
+            <label for="pcDT">Quốc tịch</label>
             <input type="text" class="form-control" id="pcDT" name="@Html.NameFor(x => x.DanTocQuocTich)" placeholder="Dân tộc/ quốc tịch" value="@Model.DanTocQuocTich">
         </div>
         <div class="form-group">

@@ -223,8 +223,8 @@ namespace DASoTiemChung.Controllers
                 var lo = _reposity.GetById(id);
                 if (lo != null)
                 {
-                    lo.DaXoa = true;
-                    _reposity.Update(lo);
+                    
+                    _reposity.Update(dto);
                     _reposity.Save();
                     return Ok();
                 }
