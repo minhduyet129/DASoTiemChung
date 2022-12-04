@@ -205,7 +205,7 @@ namespace DASoTiemChung.Controllers
                 var lo = _reposity.GetById(id);
                 if (lo != null)
                 {
-
+                    dto.Kieu = true;
                     _reposity.Update(dto);
                     _reposity.Save();
                     return Ok();

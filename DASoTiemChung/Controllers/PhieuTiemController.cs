@@ -72,7 +72,6 @@ namespace DASoTiemChung.Controllers
                     query = query.Where(x => x.MaVacXinTheoLoNavigation.TenVacXinTheoLo.Contains(input.TenVacXin));
                 }
 
-
             }
 
             catch (Exception ex)
@@ -109,7 +108,7 @@ namespace DASoTiemChung.Controllers
             ViewBag.BenhLys = _context.TienSuBenhLies.Where(x => !x.DaXoa).OrderBy(x => x.MaBenhLy).ToList();
             ViewBag.MuiTiems = _context.MuiTiems.Where(x => !x.DaXoa).OrderBy(x => x.TenMuiTiem).ToList();
             ViewBag.DiemTiems = _context.Khos.Where(x => !x.DaXoa&&x.Kieu).OrderBy(x => x.TenKho).ToList();
-            ViewBag.VacXins = _context.VacXins.Where(x => !x.DaXoa).OrderBy(x => x.TenVacXin).ToList();
+            ViewBag.VacXins = _context.VacXinTheoLos.Where(x => !x.DaXoa).OrderBy(x => x.TenVacXinTheoLo).ToList();
 
 
 
@@ -170,8 +169,32 @@ namespace DASoTiemChung.Controllers
 
 
                     };
+
                     _context.PhieuTiems.Add(phieutiem);
                     _context.SaveChanges();
+                    var vacXinTheoLoTiem=_context.VacXinTheoLos.Find(dto.MaVacXinTheoLo);
+                    if (vacXinTheoLoTiem != null)
+                    {
+                        if (vacXinTheoLoTiem.SoLuong < 1)
+                        {
+                            transaction.Rollback();
+                            return BadRequest("Vắc xin này hiện đã hết tại điểm tiêm");
+                        }
+                        else
+                        {
+                            vacXinTheoLoTiem.SoLuong -= 1;
+                            _context.VacXinTheoLos.Update(vacXinTheoLoTiem);
+                            _context.SaveChanges();
+
+                        }
+                    }
+                    else
+                    {
+                        transaction.Rollback();
+                        return NotFound("Vắc xin không được tìm thấy!");
+                    }
+
+
                     transaction.Commit();
                     return Ok();
                 }
