@@ -54,6 +54,17 @@
             <input type="text" class="form-control" id="pcPhone" name="@Html.NameFor(x => x.SoDienThoai)" placeholder="Số điện thoại" value="@Html.Raw(Model.SoDienThoai)">
         </div>
         <div class="form-group">
+            <label for="pcKho">Nơi làm việc</label>
+            <select class="choices form-select" id="pcKho" name="@Html.NameFor(x => x.MaKho)">
+                <option value="" >Chọn nơi làm việc</option>
+                @foreach (Kho role in ViewBag.Khos ?? new List<Kho>())
+                {
+                    @*@Html.Raw(GenerateCategorySelectOptions(category, 1))*@
+                    <option value="@Html.Raw(role.MaKho)" selected="@(Model.MaKho.Equals(role.MaKho))">@Html.Raw(role.TenKho)</option>
+                }
+            </select>
+        </div>
+        <div class="form-group">
             <label for="pcRole">Quyền</label>
             <select class="choices form-select" id="pcRole" name="@Html.NameFor(x => x.MaQuyen)">
                 <option value="" >Chọn quyền</option>

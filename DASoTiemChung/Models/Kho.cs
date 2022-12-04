@@ -29,6 +29,7 @@ namespace DASoTiemChung.Models
         public virtual ICollection<PhieuXuat> PhieuXuats2 { get; set; }
         public virtual ICollection<VacXinTheoLo> VacXinTheoLos { get; set; }
         public virtual ICollection<ThongKeVacXinTaiDiemTiem> ThongKeVacXinTaiDiems { get; set; }
+        public virtual ICollection<NhanVien> NhanViens { get; set; }
 
         
     }

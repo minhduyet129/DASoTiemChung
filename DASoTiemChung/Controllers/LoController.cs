@@ -3,6 +3,7 @@ using DASoTiemChung.Dtos.Lo;
 using DASoTiemChung.Filter;
 using DASoTiemChung.Models;
 using DASoTiemChung.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -12,6 +13,7 @@ using System.Threading.Tasks;
 
 namespace DASoTiemChung.Controllers
 {
+    [Authorize(Roles = Quyens.ThuKhoVaQuanLy)]
     public class LoController : Controller
     {
         private readonly ILogger<LoController> _logger;

@@ -2,6 +2,7 @@
 using DASoTiemChung.Filter;
 using DASoTiemChung.Models;
 using DASoTiemChung.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -12,6 +13,7 @@ using System.Threading.Tasks;
 
 namespace DASoTiemChung.Controllers
 {
+    [Authorize(Roles = Quyens.QuanLy)]
     public class NhanVienController : Controller
     {
         private readonly ILogger<NhanVienController> _logger;
@@ -53,7 +55,23 @@ namespace DASoTiemChung.Controllers
             }
             int skipRecord = (input.SkipCount - 1) * input.MaxResultCount;
             var take = input.MaxResultCount;
-            var query = _context.NhanViens.Include(y=>y.MaQuyenNavigation).AsQueryable().Where(x=>!x.DaXoa);
+            var query = _context.NhanViens.Include(y=>y.MaQuyenNavigation).Where(x=>!x.DaXoa).AsQueryable();
+            query = from nhanviens in query
+                    join khos in _context.Khos on nhanviens.MaKho equals khos.MaKho into tonghop
+                    from nhanvienKho in tonghop.DefaultIfEmpty()
+                    select new NhanVien()
+                    {
+                        MaNhanVien = nhanviens.MaNhanVien,
+                        MaKho = nhanviens.MaKho,
+                        DaXoa = nhanviens.DaXoa,
+                        MaQuyen = nhanviens.MaQuyen,
+                        MaKhoNavigation = nhanvienKho,
+                        MaQuyenNavigation = nhanviens.MaQuyenNavigation,
+                        MatKhau = nhanviens.MatKhau,
+                        SoDienThoai = nhanviens.SoDienThoai,
+                        TenNhanVien = nhanviens.TenNhanVien,
+                        TenTaiKhoan = nhanviens.TenTaiKhoan
+                    };
             try
             {
                 if (!string.IsNullOrEmpty(input.TenNhanVien))
@@ -105,7 +123,8 @@ namespace DASoTiemChung.Controllers
         {
             NhanVien result = new NhanVien();
 
-            ViewBag.Roles = _context.Quyens.ToList().Where(x => !x.DaXoa);
+            ViewBag.Roles = _context.Quyens.Where(x => !x.DaXoa).ToList();
+            ViewBag.Khos= _context.Khos.Where(x=>!x.DaXoa).ToList();
 
             if (id == 0)
             {

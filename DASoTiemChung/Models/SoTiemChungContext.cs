@@ -225,6 +225,10 @@ namespace DASoTiemChung.Models
                     .WithMany(p => p.NhanViens)
                     .HasForeignKey(d => d.MaQuyen)
                     .HasConstraintName("FK__NhanVien__MaQuye__5629CD9C");
+                entity.HasOne(d => d.MaKhoNavigation)
+                    .WithMany(p => p.NhanViens)
+                    .HasForeignKey(d => d.MaKho)
+                    ;
             });
 
             modelBuilder.Entity<PhieuNhap>(entity =>

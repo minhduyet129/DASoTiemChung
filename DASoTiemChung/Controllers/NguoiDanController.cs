@@ -2,6 +2,7 @@
 using DASoTiemChung.Filter;
 using DASoTiemChung.Models;
 using DASoTiemChung.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -11,6 +12,7 @@ using System.Threading.Tasks;
 
 namespace DASoTiemChung.Controllers
 {
+    [Authorize(Roles =Quyens.NhanVienVaQuanLy)]
     public class NguoiDanController : Controller
     {
         private readonly ILogger<NguoiDanController> _logger;

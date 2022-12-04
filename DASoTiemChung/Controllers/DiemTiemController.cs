@@ -8,9 +8,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using DASoTiemChung.Filter;
 using DASoTiemChung.Dtos;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DASoTiemChung.Controllers
 {
+    [Authorize(Roles =Quyens.All)]
     public class DiemTiemController : Controller
     {
         private readonly ILogger<DiemTiemController> _logger;

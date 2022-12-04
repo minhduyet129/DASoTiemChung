@@ -13,10 +13,11 @@
         <thead>
             <tr>
                 <th class="text-center">#</th>
-                <th class="text-center col-lg-3">Tên nhân viên</th>
-                 <th class="text-center col-lg-3">Tên tài khoản</th>
-                 <th class="text-center col-lg-3">Số điện thoại</th>
-                 <th class="text-center col-lg-3">Quyền</th>
+                <th class="text-center col-lg-2">Tên nhân viên</th>
+                 <th class="text-center col-lg-2">Tên tài khoản</th>
+                 <th class="text-center col-lg-2">Số điện thoại</th>
+                 <th class="text-center col-lg-2">Đơn vị làm việc</th>
+                 <th class="text-center col-lg-2">Quyền</th>
                 <th class="text-center">Thao tác</th>
             </tr>
         </thead>
@@ -30,6 +31,7 @@
                         <td class="ps-4"> @Html.Raw(category.TenNhanVien)</td>
                         <td class="ps-4"> @Html.Raw(category.TenTaiKhoan)</td>
                         <td class="ps-4"> @Html.Raw(category.SoDienThoai)</td>
+                        <td class="ps-4"> @Html.Raw(category.MaKhoNavigation?.TenKho)</td>
                         <td class="ps-4"> @Html.Raw(category.MaQuyenNavigation.TenQuyen)</td>
                       
                     
