@@ -1,4 +1,5 @@
-﻿@using DASoTiemChung.Controllers
+﻿                
+@using DASoTiemChung.Controllers
 
 <div id="sidebar" class="active">
     <div class="sidebar-wrapper active border">
@@ -18,88 +19,83 @@
             <ul class="menu">
                 @*<li class="sidebar-title">Menu</li>*@
                 <li class="sidebar-item">
+                    <a asp-route="@VacXinController.RouteIndex" class="sidebar-link">
+                        <i class="fas fa-crutch"></i>
+                        <span>Loại vắc xin</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a asp-route="@LoController.RouteIndex" class="sidebar-link">
+                        <i class="fas fa-dice-d6"></i>
+                        <span>Lô</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a asp-route="@VacXinTheoLoController.RouteIndex" class="sidebar-link">
+                        <i class="fas fa-briefcase-medical"></i>
+                        <span>Vắc xin theo lô</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a asp-route="@KhoController.RouteIndex" class="sidebar-link">
+                        <i class="fas fa-warehouse"></i>
+                        <span>Kho</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
 
                     <div class="btn btn-toggle collapsed sidebar-link" data-bs-toggle="collapse" data-bs-target="#dashboard-collapsea" aria-expanded="false">
-                        <i class="bi bi-sliders"></i>
+                        <i class="bi bi-person-check"></i>
                         <span>Đăng Ký Tiêm</span>
                     </div>
                     <div class="collapse" id="dashboard-collapsea">
                         <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
                             <li class="sidebar-item">
                                 <a asp-route="@NguoiDanController.RouteIndex" class="sidebar-link">
-                                    <i class="bi bi-columns-gap"></i>
+                                    <i class="bi bi-person-bounding-box"></i>
                                     <span>Người dân đăng ký tiêm</span>
                                 </a>
                             </li>
                             <li class="sidebar-item">
-                                <a asp-route="@MuiTiemController.RouteIndex" class="sidebar-link">
-                                    <i class="bi bi-columns-gap"></i>
-                                    <span>Mũi Tiêm</span>
+                                <a asp-route="@PhieuTiemController.RouteIndex" class="sidebar-link">
+                                    <i class="bi bi-person-plus-fill"></i>
+                                    <span>Đăng ký tiêm</span>
                                 </a>
                             </li>
                             <li class="sidebar-item">
-                                <a asp-route="@PhieuTiemController.RouteIndex" class="sidebar-link">
-                                    <i class="bi bi-columns-gap"></i>
-                                    <span>Đăng ký tiêm cho người dân</span>
+                                <a asp-route="@MuiTiemController.RouteIndex" class="sidebar-link">
+                                    <i class="bi bi-heart-arrow"></i>
+                                    <span>Mũi tiêm số</span>
                                 </a>
                             </li>
                             <li class="sidebar-item">
                                 <a asp-route="@TienSuBenhLyController.RouteIndex" class="sidebar-link">
-                                    <i class="bi bi-columns-gap"></i>
+                                    <i class="bi bi-book"></i>
                                     <span>Tiền sử bệnh lý</span>
                                 </a>
                             </li>
-                            <li class="sidebar-item">
-                                <a asp-route="@VacXinController.RouteIndex" class="sidebar-link">
-                                    <i class="bi bi-columns-gap"></i>
-                                    <span>Loại vắc xin</span>
-                                </a>
-                            </li>
+                            
                         </ul>
                     </div>
                 </li>
                 <li class="sidebar-item">
 
                     <div class="btn btn-toggle collapsed sidebar-link" data-bs-toggle="collapse" data-bs-target="#dashboard-collapseb" aria-expanded="false">
-                        <i class="bi bi-sliders"></i>
+                        <i class="bi bi-receipt-cutoff"></i>
                         <span>Nhập vắc xin</span>
                     </div>
                     <div class="collapse" id="dashboard-collapseb">
                         <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
                             <li class="sidebar-item">
                                 <a asp-route="@PhieuNhapController.RouteIndex" class="sidebar-link">
-                                    <i class="bi bi-columns-gap"></i>
-                                    <span>Phiếu nhập vắc xin</span>
-                                </a>
-                            </li>
-                            <li class="sidebar-item">
-                                <a asp-route="@KhoController.RouteIndex" class="sidebar-link">
-                                    <i class="bi bi-columns-gap"></i>
-                                    <span>Kho nhập vắc xin</span>
+                                    <i class="bi bi-receipt"></i>
+                                    <span>Phiếu nhập</span>
                                 </a>
                             </li>
                             <li class="sidebar-item">
                                 <a asp-route="@NhaSanXuatController.RouteIndex" class="sidebar-link">
-                                    <i class="bi bi-columns-gap"></i>
-                                    <span>Nhà sản xuất vắc xin</span>
-                                </a>
-                            </li>
-                            <li class="sidebar-item">
-                                <a asp-route="@LoController.RouteIndex" class="sidebar-link">
-                                    <i class="bi bi-columns-gap"></i>
-                                    <span>Lô vắc xin nhập</span>
-                                </a>
-                            </li>
-                            <li class="sidebar-item">
-                                <a asp-route="@VacXinController.RouteIndex" class="sidebar-link">
-                                    <i class="bi bi-columns-gap"></i>
-                                    <span>vắc xin nhập</span>
-                                </a>
-                            </li>
-                            <li class="sidebar-item">
-                                <a asp-route="@VacXinTheoLoController.RouteIndex" class="sidebar-link">
-                                    <i class="bi bi-columns-gap"></i>
-                                    <span>Vắc xin nhập từ lô</span>
+                                    <i class="bi bi-house"></i>
+                                    <span>Nhà sản xuất</span>
                                 </a>
                             </li>
                         </ul>
@@ -108,45 +104,21 @@
                 <li class="sidebar-item">
 
                     <div class="btn btn-toggle collapsed sidebar-link" data-bs-toggle="collapse" data-bs-target="#dashboard-collapsec" aria-expanded="false">
-                        <i class="bi bi-sliders"></i>
+                        <i class="bi bi-receipt"></i>
                         <span>Xuất vắc xin</span>
                     </div>
                     <div class="collapse" id="dashboard-collapsec">
                         <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
                             <li class="sidebar-item">
                                 <a asp-route="@PhieuXuatController.RouteIndex" class="sidebar-link">
-                                    <i class="bi bi-columns-gap"></i>
-                                    <span>Phiếu xuất vắc xin</span>
-                                </a>
-                            </li>
-                            <li class="sidebar-item">
-                                <a asp-route="@KhoController.RouteIndex" class="sidebar-link">
-                                    <i class="bi bi-columns-gap"></i>
-                                    <span>Kho xuất vắc xin</span>
+                                    <i class="bi bi-receipt-cutoff"></i>
+                                    <span>Phiếu xuất</span>
                                 </a>
                             </li>
                             <li class="sidebar-item">
                                 <a asp-route="@DiemTiemController.RouteIndex" class="sidebar-link">
-                                    <i class="bi bi-columns-gap"></i>
-                                    <span>Điểm tiêm vắc xin</span>
-                                </a>
-                            </li>
-                            <li class="sidebar-item">
-                                <a asp-route="@LoController.RouteIndex" class="sidebar-link">
-                                    <i class="bi bi-columns-gap"></i>
-                                    <span>Lô xuất vắc xin</span>
-                                </a>
-                            </li>
-                            <li class="sidebar-item">
-                                <a asp-route="@VacXinController.RouteIndex" class="sidebar-link">
-                                    <i class="bi bi-columns-gap"></i>
-                                    <span>vắc xin xuất</span>
-                                </a>
-                            </li>
-                            <li class="sidebar-item">
-                                <a asp-route="@VacXinTheoLoController.RouteIndex" class="sidebar-link">
-                                    <i class="bi bi-columns-gap"></i>
-                                    <span>Vắc xin theo lô xuất</span>
+                                    <i class="bi bi-house-door"></i>
+                                    <span>Điểm tiêm</span>
                                 </a>
                             </li>
                         </ul>
@@ -155,14 +127,14 @@
                 <li class="sidebar-item">
 
                     <div class="btn btn-toggle collapsed sidebar-link" data-bs-toggle="collapse" data-bs-target="#dashboard-collapsed" aria-expanded="false">
-                        <i class="bi bi-sliders"></i>
+                        <i class="fas fa-memory"></i>
                         <span>Quản lý tổng hợp</span>
                     </div>
                     <div class="collapse" id="dashboard-collapsed">
                         <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
                             <li class="sidebar-item">
                                 <a asp-route="@NhanVienController.RouteIndex" class="sidebar-link">
-                                    <i class="bi bi-columns-gap"></i>
+                                    <i class="bi bi-file-earmark-person-fill"></i>
                                     <span>Nhân viên</span>
                                 </a>
                             </li>
@@ -171,10 +143,11 @@
                 </li>
                 <li class="sidebar-item">
                     <a asp-route="@DangNhapController.LogoutExcute" class="sidebar-link">
-                        <i class="bi bi-columns-gap"></i>
+                        <i class="fas fa-sign-out-alt"></i>
                         <span>Đăng xuất</span>
                     </a>
                 </li>
+
 
             </ul>
         </div>
