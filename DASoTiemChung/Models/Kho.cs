@@ -19,9 +19,17 @@ namespace DASoTiemChung.Models
         public int? MaTinhThanhPho { get; set; }
         public string TenKho { get; set; }
         public string SoNha { get; set; }
+        public string NguoiDungDau { get; set; }
+        public string NguoiTiem { get; set; }
+        public bool Kieu { get; set; }
         public bool DaXoa { get; set; }
 
-
+        public virtual ICollection<PhieuTiem> PhieuTiems { get; set; }
+        public virtual ICollection<PhieuXuat> PhieuXuats1 { get; set; }
+        public virtual ICollection<PhieuXuat> PhieuXuats2 { get; set; }
         public virtual ICollection<VacXinTheoLo> VacXinTheoLos { get; set; }
+        public virtual ICollection<ThongKeVacXinTaiDiemTiem> ThongKeVacXinTaiDiems { get; set; }
+
+        
     }
 }

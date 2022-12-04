@@ -38,7 +38,7 @@ namespace DASoTiemChung.Controllers
         public async Task<IActionResult> Login(LoginDto input)
         {
 
-            var a= Request.QueryString.Value;
+            
             if (string.IsNullOrWhiteSpace(input.TenTaiKhoan) || string.IsNullOrWhiteSpace(input.MatKhau))
             {
                 TempData["Message"] = "Tên tài khoản và mật khẩu không được bỏ trống!";
@@ -73,7 +73,7 @@ namespace DASoTiemChung.Controllers
         }
 
         [HttpGet("AccessDenied")]
-        public async Task<IActionResult> AccessDenied()
+        public  IActionResult AccessDenied()
         {
             
             return View();

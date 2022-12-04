@@ -15,9 +15,9 @@ namespace DASoTiemChung.Controllers
     {
         private readonly ILogger<DiemTiemController> _logger;
         private readonly SoTiemChungContext _context;
-        private readonly IGenericRepository<DiemTiem> _reposity;
+        private readonly IGenericRepository<Kho> _reposity;
 
-        public DiemTiemController(ILogger<DiemTiemController> logger, SoTiemChungContext context, IGenericRepository<DiemTiem> reposity)
+        public DiemTiemController(ILogger<DiemTiemController> logger, SoTiemChungContext context, IGenericRepository<Kho> reposity)
         {
             _logger = logger;
             _context = context;
@@ -51,7 +51,7 @@ namespace DASoTiemChung.Controllers
             }
             int skipRecord = (input.SkipCount - 1) * input.MaxResultCount;
             var take = input.MaxResultCount;
-            var query = from diemtiems in _context.DiemTiems
+            var query = from diemtiems in _context.Khos
                         join xaphuongs in _context.XaPhuongs on diemtiems.MaXaPhuong equals xaphuongs.MaXaPhuong into kxp
 
                         from diemtiemxa in kxp.DefaultIfEmpty()
@@ -63,11 +63,11 @@ namespace DASoTiemChung.Controllers
                         join tinh in _context.TinhThanhPhos on diemtiemxaquan.MaTinhThanhPho equals tinh.MaTinhThanhPho into kxqt
 
                         from diemtiemxaquantinh in kxqt.DefaultIfEmpty()
-                        where !diemtiems.DaXoa
+                        where !diemtiems.DaXoa && diemtiems.Kieu
                         select new DiemTiemOutputDto()
                         {
-                            MaDiemTiem = diemtiems.MaDiemTiem,
-                            TenDiemTiem = diemtiems.TenDiemTiem,
+                            MaDiemTiem = diemtiems.MaKho,
+                            TenDiemTiem = diemtiems.TenKho,
                             SoNha = diemtiems.SoNha,
                             MaXaPhuong = diemtiems.MaXaPhuong,
                             MaQuanHuyen = diemtiems.MaQuanHuyen,
@@ -133,7 +133,7 @@ namespace DASoTiemChung.Controllers
         [HttpGet("[controller]/{id}", Name = RouteForm)]
         public async Task<IActionResult> Form(int id)
         {
-            DiemTiem result = new DiemTiem();
+            Kho result = new Kho();
 
             ViewBag.TinhThanhs = _context.TinhThanhPhos.ToList();
 
@@ -161,16 +161,17 @@ namespace DASoTiemChung.Controllers
 
         public const string RouteCreate = "DiemTiemPostCreate";
         [HttpPost("[controller]/", Name = RouteCreate)]
-        public async Task<IActionResult> Create(DiemTiem dto)
+        public async Task<IActionResult> Create(Kho dto)
         {
 
             try
             {
-                var find = _reposity.GetAll().FirstOrDefault(x => x.TenDiemTiem == dto.TenDiemTiem && !x.DaXoa);
+                var find = _reposity.GetAll().FirstOrDefault(x => x.TenKho == dto.TenKho && !x.DaXoa&&x.Kieu);
                 if (find != null)
                 {
                     return BadRequest("Tên điểm tiêm đã tồn tại!");
                 }
+                dto.Kieu = true;
                 _reposity.Insert(dto);
                 _reposity.Save();
                 return Ok();
@@ -187,16 +188,16 @@ namespace DASoTiemChung.Controllers
 
         public const string RouteUpdate = "DiemTiemPutUpdate";
         [HttpPut("[controller]/{id}", Name = RouteUpdate)]
-        public async Task<IActionResult> Update(int id, DiemTiem dto)
+        public async Task<IActionResult> Update(int id, Kho dto)
         {
 
-            if (id != dto.MaDiemTiem)
+            if (id != dto.MaKho)
             {
                 return BadRequest("Lỗi request!");
             }
             try
             {
-                var find = _reposity.GetAll().FirstOrDefault(x => x.TenDiemTiem == dto.TenDiemTiem && x.MaDiemTiem != dto.MaDiemTiem && !x.DaXoa);
+                var find = _reposity.GetAll().FirstOrDefault(x => x.TenKho == dto.TenKho && x.MaKho != dto.MaKho && !x.DaXoa&&x.Kieu);
                 if (find != null)
                 {
                     return BadRequest("Tên điểm tiêm đã tồn tại!");

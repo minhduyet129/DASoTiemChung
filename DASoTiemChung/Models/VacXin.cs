@@ -9,7 +9,7 @@ namespace DASoTiemChung.Models
     {
         public VacXin()
         {
-            PhieuTiems = new HashSet<PhieuTiem>();
+            
             
             VacXinTheoLos = new HashSet<VacXinTheoLo>();
         }
@@ -18,7 +18,7 @@ namespace DASoTiemChung.Models
         public string TenVacXin { get; set; }
         public bool DaXoa { get; set; }
 
-        public virtual ICollection<PhieuTiem> PhieuTiems { get; set; }
+        
         
         public virtual ICollection<VacXinTheoLo> VacXinTheoLos { get; set; }
     }

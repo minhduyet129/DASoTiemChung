@@ -52,7 +52,7 @@ namespace DASoTiemChung.Controllers
             }
             int skipRecord = (input.SkipCount - 1) * input.MaxResultCount;
             var take = input.MaxResultCount;
-            var query = _context.PhieuTiems.Include(x => x.MaVacXinNavigation).Include(x => x.MaNguoiDanNavigation).Include(x => x.MaMuiTiemNavigation).Include(x => x.MaDiemTiemNavigation).Where(x => !x.DaXoa).AsQueryable();
+            var query = _context.PhieuTiems.Include(x => x.MaVacXinTheoLoNavigation).Include(x => x.MaNguoiDanNavigation).Include(x => x.MaMuiTiemNavigation).Include(x => x.MaKhoNavigation).Where(x => !x.DaXoa).AsQueryable();
             try
             {
                 if (!string.IsNullOrEmpty(input.TenNguoiDan))
@@ -61,7 +61,7 @@ namespace DASoTiemChung.Controllers
                 }
                 if (!string.IsNullOrEmpty(input.TenDiemTiem))
                 {
-                    query = query.Where(x => x.MaDiemTiemNavigation.TenDiemTiem.Contains(input.TenDiemTiem));
+                    query = query.Where(x => x.MaKhoNavigation.TenKho.Contains(input.TenDiemTiem));
                 }
                 if (!string.IsNullOrEmpty(input.SoCccdhc))
                 {
@@ -69,7 +69,7 @@ namespace DASoTiemChung.Controllers
                 }
                 if (!string.IsNullOrEmpty(input.TenVacXin))
                 {
-                    query = query.Where(x => x.MaVacXinNavigation.TenVacXin.Contains(input.TenVacXin));
+                    query = query.Where(x => x.MaVacXinTheoLoNavigation.TenVacXinTheoLo.Contains(input.TenVacXin));
                 }
 
 
@@ -108,7 +108,7 @@ namespace DASoTiemChung.Controllers
 
             ViewBag.BenhLys = _context.TienSuBenhLies.Where(x => !x.DaXoa).OrderBy(x => x.MaBenhLy).ToList();
             ViewBag.MuiTiems = _context.MuiTiems.Where(x => !x.DaXoa).OrderBy(x => x.TenMuiTiem).ToList();
-            ViewBag.DiemTiems = _context.DiemTiems.Where(x => !x.DaXoa).OrderBy(x => x.TenDiemTiem).ToList();
+            ViewBag.DiemTiems = _context.Khos.Where(x => !x.DaXoa&&x.Kieu).OrderBy(x => x.TenKho).ToList();
             ViewBag.VacXins = _context.VacXins.Where(x => !x.DaXoa).OrderBy(x => x.TenVacXin).ToList();
 
 
@@ -128,8 +128,8 @@ namespace DASoTiemChung.Controllers
                     SoCccdhc = x.MaNguoiDanNavigation.SoCccdhc,
                     ThoiGianTiem = x.ThoiGianTiem,
                     MaMuiTiem = x.MaMuiTiem,
-                    MaDiemTiem = x.MaDiemTiem,
-                    MaVacXin = x.MaVacXin,
+                    MaKho = x.MaKho,
+                    MaVacXinTheoLo = x.MaVacXinTheoLo,
                     PhanUngSauTiem = x.PhanUngSauTiem,
                     PhieuTiemBenhLys = x.PhieuTiemBenhLys
 
@@ -161,10 +161,10 @@ namespace DASoTiemChung.Controllers
                     PhieuTiem phieutiem = new PhieuTiem()
                     {
                         MaNguoiDan = nguoidan.MaNguoiDan,
-                        MaDiemTiem = dto.MaDiemTiem,
+                        MaKho = dto.MaKho,
                         MaMuiTiem = dto.MaMuiTiem,
                         ThoiGianTiem = dto.ThoiGianTiem,
-                        MaVacXin = dto.MaVacXin,
+                        MaVacXinTheoLo = dto.MaVacXinTheoLo,
                         PhieuTiemBenhLys = dto.PhieuTiemBenhLys,
                         PhanUngSauTiem = dto.PhanUngSauTiem,
 
@@ -211,8 +211,8 @@ namespace DASoTiemChung.Controllers
                     var phieutiem = _context.PhieuTiems.Find(id);
                     if (phieutiem != null)
                     {
-                        phieutiem.MaVacXin = dto.MaVacXin;
-                        phieutiem.MaDiemTiem = dto.MaDiemTiem;
+                        phieutiem.MaVacXinTheoLo = dto.MaVacXinTheoLo;
+                        phieutiem.MaKho = dto.MaKho;
                         phieutiem.MaMuiTiem = dto.MaMuiTiem;
                         phieutiem.MaNguoiDan = nguoidan.MaNguoiDan;
                         phieutiem.PhanUngSauTiem = dto.PhanUngSauTiem;

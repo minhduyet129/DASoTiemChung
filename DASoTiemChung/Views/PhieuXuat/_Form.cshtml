@@ -40,12 +40,12 @@
         </div>
         <div class="form-group">
             <label for="pcDiemTiem">Điểm tiêm</label>
-            <select class="choices form-select" id="pcDiemTiem" name="@Html.NameFor(x => x.MaDiemTiem)">
+            <select class="choices form-select" id="pcDiemTiem" name="@Html.NameFor(x => x.MaKhoNhan)">
                 <option value="">Chọn điểm tiêm xuất đến</option>
-                @foreach (DiemTiem role in ViewBag.DiemTiems ?? new List<DiemTiem>())
+                @foreach (Kho role in ViewBag.DiemTiems ?? new List<Kho>())
                 {
                     @*@Html.Raw(GenerateCategorySelectOptions(category, 1))*@
-                    <option value="@Html.Raw(role.MaDiemTiem)" selected="@(Model.MaNhanVien==role.MaDiemTiem)">@Html.Raw(role.TenDiemTiem)</option>
+                    <option value="@Html.Raw(role.MaKho)" selected="@(Model.MaKhoNhan==role.MaKho)">@Html.Raw(role.TenKho)</option>
                 }
             </select>
         </div>

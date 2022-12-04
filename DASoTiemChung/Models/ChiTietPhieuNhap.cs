@@ -10,7 +10,7 @@ namespace DASoTiemChung.Models
         public int MaChiTietPhieuNhap { get; set; }
         
         public decimal? DonGia { get; set; }
-        public int? SoLuong { get; set; }
+        public long? SoLuong { get; set; }
         public decimal? ThanhTien { get; set; }
         public int? MaPhieuNhap { get; set; }
         public int? MaVacXinTheoLo { get; set; }

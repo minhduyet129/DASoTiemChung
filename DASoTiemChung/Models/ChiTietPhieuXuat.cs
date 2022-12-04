@@ -9,7 +9,7 @@ namespace DASoTiemChung.Models
     {
         public int MaChiTietPhieuXuat { get; set; }
         
-        public int? SoLuong { get; set; }
+        public long? SoLuong { get; set; }
         public int? MaPhieuXuat { get; set; }
         public int? MaVacXinTheoLo { get; set; }
 

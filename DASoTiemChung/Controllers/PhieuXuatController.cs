@@ -52,7 +52,7 @@ namespace DASoTiemChung.Controllers
             }
             int skipRecord = (input.SkipCount - 1) * input.MaxResultCount;
             var take = input.MaxResultCount;
-            var query = _context.PhieuXuats.Include(x => x.MaNhanVienNavigation).Include(x=>x.MaDiemTiemNavigation).AsQueryable().Where(x=>!x.DaXoa);
+            var query = _context.PhieuXuats.Include(x => x.MaNhanVienNavigation).Include(x=>x.MaKhoNhanNavigation).AsQueryable().Where(x=>!x.DaXoa);
 
             try
             {
@@ -66,7 +66,7 @@ namespace DASoTiemChung.Controllers
                 }
                 if (!string.IsNullOrEmpty(input.TenDiemTiem))
                 {
-                    query = _context.PhieuXuats.Include(x => x.MaDiemTiemNavigation).AsQueryable();
+                    query = _context.PhieuXuats.Include(x => x.MaKhoNhanNavigation).AsQueryable();
                 }
 
                 if (input.ThoiGianXuat.HasValue)
@@ -105,8 +105,8 @@ namespace DASoTiemChung.Controllers
         {
             PhieuXuat result = new PhieuXuat();
 
-            ViewBag.NhanViens = _context.NhanViens.OrderBy(x => x.TenNhanVien).ToList().Where(x=>!x.DaXoa);
-            ViewBag.DiemTiems = _context.DiemTiems.OrderBy(x => x.TenDiemTiem).ToList().Where(x => !x.DaXoa);
+            ViewBag.NhanViens = _context.NhanViens.OrderBy(x => x.TenNhanVien).Where(x=>!x.DaXoa).ToList();
+            ViewBag.DiemTiems = _context.Khos.OrderBy(x => x.TenKho).Where(x => !x.DaXoa &&x.Kieu).ToList();
 
 
             if (id == 0)
@@ -200,7 +200,7 @@ namespace DASoTiemChung.Controllers
                         
                         lo.GhiChu = dto.GhiChu;
                         lo.MaNhanVien = dto.MaNhanVien;
-                        lo.MaDiemTiem = dto.MaDiemTiem;
+                        lo.MaKhoNhan = dto.MaKhoNhan;
                         lo.ThoiGianXuat = dto.ThoiGianXuat;
 
                         var childrens = dto.ChiTietPhieuXuats;

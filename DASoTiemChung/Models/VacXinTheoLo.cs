@@ -9,6 +9,7 @@ namespace DASoTiemChung.Models
     {
         public VacXinTheoLo()
         {
+            PhieuTiems = new HashSet<PhieuTiem>();
             ChiTietPhieuNhaps = new HashSet<ChiTietPhieuNhap>();
             ChiTietPhieuXuats = new HashSet<ChiTietPhieuXuat>();
         }
@@ -18,7 +19,7 @@ namespace DASoTiemChung.Models
         public int? MaLo { get; set; }
         public DateTime? NgayHetHan { get; set; }
         public DateTime? NgaySanXuat { get; set; }
-        public int? SoLuong { get; set; }
+        public long? SoLuong { get; set; }
         public string XuatXu { get; set; }
         public int? MaNhaSanXuat { get; set; }
         public int? MaKho { get; set; }
@@ -31,5 +32,6 @@ namespace DASoTiemChung.Models
         public virtual VacXin MaVacXinNavigation { get; set; }
         public virtual ICollection<ChiTietPhieuNhap> ChiTietPhieuNhaps { get; set; }
         public virtual ICollection<ChiTietPhieuXuat> ChiTietPhieuXuats { get; set; }
+        public virtual ICollection<PhieuTiem> PhieuTiems { get; set; }
     }
 }

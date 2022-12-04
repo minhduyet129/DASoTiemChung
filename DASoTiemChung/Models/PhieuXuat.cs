@@ -14,12 +14,14 @@ namespace DASoTiemChung.Models
 
         public int MaPhieuXuat { get; set; }
         public DateTime? ThoiGianXuat { get; set; }
-        public int? MaDiemTiem { get; set; }
+        public int? MaKhoXuat { get; set; }
+        public int? MaKhoNhan { get; set; }
         public int? MaNhanVien { get; set; }
         public string GhiChu { get; set; }
         public bool DaXoa { get; set; }
 
-        public virtual DiemTiem MaDiemTiemNavigation { get; set; }
+        public virtual Kho MaKhoXuatNavigation { get; set; }
+        public virtual Kho MaKhoNhanNavigation { get; set; }
        
         public virtual NhanVien MaNhanVienNavigation { get; set; }
        

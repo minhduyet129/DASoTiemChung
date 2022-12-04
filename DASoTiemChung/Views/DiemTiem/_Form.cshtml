@@ -1,6 +1,6 @@
 ﻿@using DASoTiemChung.Controllers
 
-@model DiemTiem
+@model Kho
 @functions {
     //public string GenerateCategorySelectOptions(CategoryDto item, int level)
     //{
@@ -20,11 +20,11 @@
 }
 @{
 
-    var submitUrl = Model.MaDiemTiem == 0 ? Url.RouteUrl(DiemTiemController.RouteCreate) : Url.RouteUrl(DiemTiemController.RouteUpdate, new { id = Model.MaDiemTiem });
-    var submitMethod = Model.MaDiemTiem == 0 ? "POST" : "PUT";
+    var submitUrl = Model.MaKho == 0 ? Url.RouteUrl(DiemTiemController.RouteCreate) : Url.RouteUrl(DiemTiemController.RouteUpdate, new { id = Model.MaKho });
+    var submitMethod = Model.MaKho == 0 ? "POST" : "PUT";
 }
 <div class="modal-header">
-    <h5 class="modal-title">@(Model.MaDiemTiem==0 ? "Thêm mới" : "Sửa") điểm tiêm vắc xin</h5>
+    <h5 class="modal-title">@(Model.MaKho==0 ? "Thêm mới" : "Sửa") điểm tiêm vắc xin</h5>
     @*<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>*@
 </div>
 <div class="modal-body">
@@ -33,11 +33,11 @@
           onsubmit="event.preventDefault(); saveForm.call(this, { url: '@Html.Raw(submitUrl)', method: '@Html.Raw(submitMethod)' });">
         <div class="form-group d-none">
             <label for="pcId">Id</label>
-            <input type="text" readonly class="form-control" id="pcId" name="@Html.NameFor(x => x.MaDiemTiem)" placeholder="" value="@Html.Raw(Model.MaDiemTiem==0 ? 0 : Model.MaDiemTiem)" />
+            <input type="text" readonly class="form-control" id="pcId" name="@Html.NameFor(x => x.MaKho)" placeholder="" value="@Html.Raw(Model.MaKho==0 ? 0 : Model.MaKho)" />
         </div>
         <div class="form-group">
             <label for="pcName">Tên điểm tiêm</label>
-            <input type="text" class="form-control" id="pcName" name="@Html.NameFor(x => x.TenDiemTiem)" placeholder="Tên điểm tiêm" value="@Model.TenDiemTiem">
+            <input type="text" class="form-control" id="pcName" name="@Html.NameFor(x => x.TenKho)" placeholder="Tên điểm tiêm" value="@Model.TenKho">
         </div>
         <div class="form-group">
             <label for="pcTinhThanh">Tỉnh thành</label>
