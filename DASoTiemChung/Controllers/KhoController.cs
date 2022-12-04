@@ -64,7 +64,7 @@ namespace DASoTiemChung.Controllers
                         join tinh in _context.TinhThanhPhos on khoxaquan.MaTinhThanhPho equals tinh.MaTinhThanhPho into kxqt
 
                         from khoxaquantinh in kxqt.DefaultIfEmpty()
-                        where !khos.DaXoa
+                        where !khos.DaXoa && !khos.Kieu
 
                         select new KhoOutputDto()
                         {
@@ -165,7 +165,7 @@ namespace DASoTiemChung.Controllers
 
             try
             {
-                var find = _reposity.GetAll().FirstOrDefault(x => x.TenKho == dto.TenKho && !x.DaXoa );
+                var find = _reposity.GetAll().FirstOrDefault(x => x.TenKho == dto.TenKho && !x.DaXoa &&!x.Kieu );
                 if (find != null)
                 {
                     return BadRequest("Tên kho đã tồn tại!");
@@ -195,7 +195,7 @@ namespace DASoTiemChung.Controllers
             }
             try
             {
-                var find = _reposity.GetAll().FirstOrDefault(x => x.TenKho == dto.TenKho  && x.MaKho != dto.MaKho && !x.DaXoa);
+                var find = _reposity.GetAll().FirstOrDefault(x => x.TenKho == dto.TenKho  && x.MaKho != dto.MaKho && !x.DaXoa && !x.Kieu);
                 if (find != null)
                 {
                     return BadRequest("Tên kho đã tồn tại!");
