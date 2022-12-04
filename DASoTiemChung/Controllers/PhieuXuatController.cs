@@ -52,7 +52,7 @@ namespace DASoTiemChung.Controllers
             }
             int skipRecord = (input.SkipCount - 1) * input.MaxResultCount;
             var take = input.MaxResultCount;
-            var query = _context.PhieuXuats.Include(x => x.MaNhanVienNavigation).Include(x=>x.MaKhoNhanNavigation).AsQueryable().Where(x=>!x.DaXoa);
+            var query = _context.PhieuXuats.Include(x => x.MaNhanVienNavigation).Include(x=>x.MaKhoNhanNavigation).Include(x=>x.MaKhoXuatNavigation).Where(x=>!x.DaXoa).AsQueryable();
 
             try
             {
@@ -64,9 +64,13 @@ namespace DASoTiemChung.Controllers
                 {
                     query = query.Where(x => x.MaNhanVienNavigation.TenNhanVien.Contains(input.TenNhanVien));
                 }
-                if (!string.IsNullOrEmpty(input.TenDiemTiem))
+                if (!string.IsNullOrEmpty(input.TenDiemNhan))
                 {
-                    query = _context.PhieuXuats.Include(x => x.MaKhoNhanNavigation).AsQueryable();
+                    query = query.Where(x=>x.MaKhoNhanNavigation.TenKho.Contains(input.TenDiemNhan));
+                }
+                if (!string.IsNullOrEmpty(input.TenDiemXuat))
+                {
+                    query = query.Where(x=>x.MaKhoXuatNavigation.TenKho.Contains(input.TenDiemXuat));
                 }
 
                 if (input.ThoiGianXuat.HasValue)
@@ -107,6 +111,7 @@ namespace DASoTiemChung.Controllers
 
             ViewBag.NhanViens = _context.NhanViens.OrderBy(x => x.TenNhanVien).Where(x=>!x.DaXoa).ToList();
             ViewBag.DiemTiems = _context.Khos.OrderBy(x => x.TenKho).Where(x => !x.DaXoa &&x.Kieu).ToList();
+            ViewBag.Khos = _context.Khos.OrderBy(x => x.TenKho).Where(x => !x.DaXoa &&!x.Kieu).ToList();
 
 
             if (id == 0)
@@ -147,13 +152,40 @@ namespace DASoTiemChung.Controllers
                     {
 
                         ctpn.MaPhieuXuat = dto.MaPhieuXuat;
-                        var vacXinTheoLo = _context.VacXinTheoLos.Find(ctpn.MaVacXinTheoLo);
+                        var vacXinTheoLo = _context.VacXinTheoLos.Include(x=>x.MaNhaSanXuatNavigation).Include(x=>x.MaLoNavigation).Include(x=>x.MaVacXinNavigation).FirstOrDefault(x=>x.MaVacXinTheoLo==ctpn.MaVacXinTheoLo);
                         if (vacXinTheoLo != null)
                         {
                             vacXinTheoLo.SoLuong -= ctpn.SoLuong;
                             if (vacXinTheoLo.SoLuong < 0)
                                 return BadRequest("vắc xin tại kho không đủ rồi");
                             _context.Update(vacXinTheoLo);
+
+                            var vacXinTheoLoDiemTiem= _context.VacXinTheoLos.FirstOrDefault(x => x.MaLo == vacXinTheoLo.MaLo && x.MaVacXin == vacXinTheoLo.MaVacXin && x.MaKho == dto.MaKhoNhan&&x.MaNhaSanXuat==vacXinTheoLo.MaNhaSanXuat);
+
+                            if (vacXinTheoLoDiemTiem != null)
+                            {
+                                vacXinTheoLoDiemTiem.SoLuong += ctpn.SoLuong;
+                                _context.VacXinTheoLos.Update(vacXinTheoLoDiemTiem);
+                            }
+                            else
+                            {
+                                var diemTiem = _context.Khos.Find(dto.MaKhoNhan);
+                                var vacXinTheoLoNew = new VacXinTheoLo()
+                                {
+                                    MaLo = vacXinTheoLo.MaLo,
+                                    MaNhaSanXuat = vacXinTheoLo.MaNhaSanXuat,
+                                    MaKho = dto.MaKhoNhan,
+                                    MaVacXin = vacXinTheoLo.MaVacXin,
+                                    NgayHetHan = vacXinTheoLo.NgayHetHan,
+                                    NgaySanXuat = vacXinTheoLo.NgaySanXuat,
+                                    XuatXu = vacXinTheoLo.XuatXu,
+                                    SoLuong = ctpn.SoLuong,
+                                    TenVacXinTheoLo = $"{vacXinTheoLo.MaVacXinNavigation.TenVacXin}-{vacXinTheoLo.MaLoNavigation.TenLo}-{vacXinTheoLo.MaNhaSanXuatNavigation.TenNhaSanXuat}-{diemTiem.TenKho}"
+
+
+                                };
+                                _context.VacXinTheoLos.Add(vacXinTheoLoNew);
+                            }
                         }
                         else
                         {

@@ -55,6 +55,7 @@
                 <th class="text-center col-lg-2">Nhân viên xuất</th>
 
                 <th class="text-center col-lg-2">Điểm tiêm</th>
+                <th class="text-center col-lg-2">Kho xuất</th>
 
                 <th class="text-center col-lg-4">Ghi chú</th>
 
@@ -74,6 +75,7 @@
                 <td align="center">@Html.Raw(combo.ThoiGianXuat.Value.ToString("dd/MM/yyyy"))</td>
                 <td align="center">@Html.Raw(combo.MaNhanVienNavigation.TenTaiKhoan)</td>
                 <td align="center">@Html.Raw(combo.MaKhoNhanNavigation.TenKho)</td>
+                <td align="center">@Html.Raw(combo.MaKhoXuatNavigation.TenKho)</td>
 
                 <td align="center">@Html.Raw(combo.GhiChu)</td>
                 <td align="center">

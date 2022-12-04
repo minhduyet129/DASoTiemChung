@@ -9,7 +9,8 @@ namespace DASoTiemChung.Dtos
     public class SearchPhieuXuatDto : PagedRequestDto
     {
         public string MaPhieuXuat { get; set; }
-        public string TenDiemTiem { get; set; }
+        public string TenDiemXuat { get; set; }
+        public string TenDiemNhan { get; set; }
 
 
         public DateTime? ThoiGianXuat { get; set; }

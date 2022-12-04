@@ -60,6 +60,24 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="col-md-3 col-12">
+                                <div class="form-group">
+                                    <label for="searchTenDiemXuat">Từ kho</label>
+                                    <div class="position-relative">
+                                        <input type="text" id="searchTenDiemXuat" class="form-control"
+                                               placeholder="Nhập kho muốn tìm" name="school-name">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-12">
+                                <div class="form-group">
+                                    <label for="searchTenDiemNhan">Đến điểm tiêm</label>
+                                    <div class="position-relative">
+                                        <input type="text" id="searchTenDiemNhan" class="form-control"
+                                               placeholder="Nhập điểm tiêm muốn tìm" name="school-name">
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="row">
                             <div class="col-12 d-flex justify-content-end">
@@ -110,7 +128,8 @@
         let $dataTable;
         let $searchMaPhieuXuat;
         let $searchTenNhanVien;
-        let $searchTenDiemTiem;
+        let $searchTenDiemNhan;
+        let $searchTenDiemXuat;
 
         let $searchNgayHetHan;
         let $detailModal;
@@ -124,8 +143,8 @@
             $dataTable = $("#dataTable");
             $searchMaPhieuXuat = $("#searchMaPhieuXuat");
             $searchTenNhanVien = $("#searchTenNhanVien");
-            $searchTenDiemTiem = $("#searchTenDiemTiem");
-
+            $searchTenDiemNhan = $("#searchTenDiemNhan");
+            $searchTenDiemXuat=$("#searchTenDiemXuat");
 
             $searchNgayHetHan = $("#searchNgayHetHan");
 
@@ -175,7 +194,8 @@
                 MaxResultCount,
                 MaPhieuXuat: $.trim($searchMaPhieuXuat.val()).length > 0 ? $.trim($searchMaPhieuXuat.val()) : "",
                 TenNhanVien: $.trim($searchTenNhanVien.val()).length > 0 ? $.trim($searchTenNhanVien.val()) : "",
-                TenDiemTiem: $.trim($searchTenDiemTiem.val()).length > 0 ? $.trim($searchTenDiemTiem.val()) : "",
+                TenDiemNhan: $.trim($searchTenDiemNhan.val()).length > 0 ? $.trim($searchTenDiemNhan.val()) : "",
+                TenDiemXuat: $.trim($searchTenDiemXuat.val()).length > 0 ? $.trim($searchTenDiemXuat.val()) : "",
 
                 ThoiGianXuat: $.trim($searchNgayHetHan.val()).length > 0 ? $.trim($searchNgayHetHan.val()) : "",
 
@@ -277,10 +297,20 @@
                 });
                 return;
             }
+            if (!$("#pcKhoXuat").val()) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Ôi không...',
+                    text: 'Vui lòng chọn kho xuất đi',
+                    //footer: '<a href="javascript:;">Why do I have this issue?</a>'
+                });
+                return;
+            }
             
             let pcId = $("#pcId").val();
             let pcNhanVien = $("#pcNhanVien").val();
             let pcDiemTiem = $("#pcDiemTiem").val();
+            let pcKhoXuat = $("#pcKhoXuat").val();
 
             let pcThoiGianXuat = $("#pcThoiGianXuat").val();
             let pcGhiChu = $("#pcGhiChu").val();
@@ -303,7 +333,8 @@
                 data: {
                     MaPhieuXuat:pcId,
                     MaNhanVien: pcNhanVien,
-                    MaDiemTiem: pcDiemTiem,
+                    MaKhoNhan: pcDiemTiem,
+                    MaKhoXuat: pcKhoXuat,
                     ThoiGianXuat: pcThoiGianXuat,
                     ChiTietPhieuXuats: detail,
                     GhiChu: pcGhiChu
