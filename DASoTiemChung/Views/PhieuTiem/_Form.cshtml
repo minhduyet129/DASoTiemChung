@@ -43,6 +43,17 @@
             </select>
         </div>
         <div class="form-group">
+            <label for="pcNhanVien">Nhân viên</label>
+            <select class="choices form-select" id="pcNhanVien" name="@Html.NameFor(x => x.MaNhanVien)">
+                <option value="">Chọn nhân viên</option>
+                @foreach (NhanVien role in ViewBag.NhanViens ?? new List<NhanVien>())
+                {
+                    @*@Html.Raw(GenerateCategorySelectOptions(category, 1))*@
+                    <option value="@Html.Raw(role.MaNhanVien)" selected="@(Model.MaNhanVien.Equals(role.MaNhanVien))">@Html.Raw(role.TenNhanVien)</option>
+                }
+            </select>
+        </div>
+        <div class="form-group">
             <label for="pcDiemTiem">Điểm tiêm</label>
             <select class="choices form-select" id="pcDiemTiem" name="@Html.NameFor(x => x.MaKho)">
                 <option value="">Chọn điểm tiêm</option>

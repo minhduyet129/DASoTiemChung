@@ -293,7 +293,7 @@
                 url,
                 method,
                 data: {
-                    MaPhieuNhap:pcId,
+                    MaPhieuNhap: pcId,
                     MaNhanVien: pcNhanVien,
                     ThoiGianNhap: pcThoiGianNhap,
                     ChiTietPhieuNhaps: detail,
@@ -317,10 +317,14 @@
                 },
                 error: (jqXHR, textStatus, errorThrown) => {
                     let error = { message: "Đã có lỗi xảy ra, vui lòng liên hệ quản trị!" };
+                    if (jqXHR.status == 403) {
+                        error.message = "Bạn không có quyền thực hiện thao tác này!";
+                    };
                     if ($.trim(jqXHR.responseText).length > 0) {
                         try {
                             error = (JSON.parse(jqXHR.responseText) ?? { error: { ...error } })
                                 .error;
+
                         } catch {
                             error.message = jqXHR.responseText;
                         }
@@ -472,14 +476,14 @@
                 tr = `<tr class="tr-${id}">
 
 
-                            <th scope="row"></th>
-                                    <td class="d-none maVacXinTheoLo">${id}</td>
-                                    <td>${name}</td>
-                                    <td><input type="number" min="0" value="0" class="form-control donGiaNhap" placeholder="Giá nhập"></td>
-                                    <td><input type="number" min="0" value="0" class="form-control soLuongNhap" placeholder="Số lượng nhập"></td>
-                                    <td><i style="cursor:pointer;" onclick="removeProduct('${id}')" class="bi bi-trash-fill"></i></td>
-                        </tr>
-                        `;
+                                    <th scope="row"></th>
+                                            <td class="d-none maVacXinTheoLo">${id}</td>
+                                            <td>${name}</td>
+                                            <td><input type="number" min="0" value="0" class="form-control donGiaNhap" placeholder="Giá nhập"></td>
+                                            <td><input type="number" min="0" value="0" class="form-control soLuongNhap" placeholder="Số lượng nhập"></td>
+                                            <td><i style="cursor:pointer;" onclick="removeProduct('${id}')" class="bi bi-trash-fill"></i></td>
+                                </tr>
+                                `;
                 $("#comboBody").append(tr);
             }
 

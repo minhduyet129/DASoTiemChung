@@ -291,6 +291,11 @@ namespace DASoTiemChung.Models
                 entity.HasOne(d => d.MaVacXinTheoLoNavigation)
                     .WithMany(p => p.PhieuTiems)
                     .HasForeignKey(d => d.MaVacXinTheoLo);
+                
+                entity.HasOne(d => d.MaNhanVienNavigation)
+                    .WithMany(p => p.PhieuTiems)
+                    .HasForeignKey(d => d.MaNhanVien);
+
                     
             });
 

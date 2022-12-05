@@ -291,6 +291,15 @@
                 });
                 return;
             }
+            if (!$("#pcNhanVien").val()) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Ôi không...',
+                    text: 'Vui lòng chọn nhân viên',
+                    //footer: '<a href="javascript:;">Why do I have this issue?</a>'
+                });
+                return;
+            }
             if (!$("#pcSoCccdhc").val()) {
                 Swal.fire({
                     icon: 'error',
@@ -343,6 +352,7 @@
             let pcMuiTiem = $("#pcMuiTiem").val();
             let pcThoiGianTiem = $("#pcThoiGianTiem").val();
             let pcDiemTiem = $("#pcDiemTiem").val();
+            let pcNhanVien = $("#pcNhanVien").val();
             let pcVacXin = $("#pcVacXin").val();
             let pcPhanUngSauTiem = $("#pcPhanUngSauTiem").val();
             let detail = [];
@@ -369,7 +379,7 @@
                     SoCccdhc: pcSoCccdhc,
                     ThoiGianTiem:pcThoiGianTiem,
                     MaMuiTiem:pcMuiTiem,
-
+                    MaNhanVien:pcNhanVien,
                     MaKho:pcDiemTiem,
                     MaVacXinTheoLo: pcVacXin,
                     PhanUngSauTiem:pcPhanUngSauTiem,
@@ -394,6 +404,9 @@
                 },
                 error: (jqXHR, textStatus, errorThrown) => {
                     let error = { message: "Đã có lỗi xảy ra, vui lòng liên hệ quản trị!" };
+                    if (jqXHR.status == 403) {
+                        error.message = "Bạn không có quyền thực hiện thao tác này!";
+                    };
                     if ($.trim(jqXHR.responseText).length > 0) {
                         try {
                             error = (JSON.parse(jqXHR.responseText) ?? { error: { ...error } })

@@ -6,39 +6,7 @@
     int orderNum = (Model.SkipCount - 1) * Model.MaxResultCount + 1;
 }
 @functions {
-    //public string GeneratecomboTableRow(comboDto item, int level)
-    //{
-    //    var html = @"<tr>
-    //            <td align='center'>" + (level == 1 ? Model.OrderNum++ : "") + @"</td>
-    //            <td align='left'>"
-    //            + @"<div " + (level > 1 ? "style='margin-left: " + level + @"0px;'" : "")
-    //            + @"><i style='line-height: 0 !important;' class='bi bi-" + (item.Childrens.Count() > 0 ? "folder" : "file-earmark") + " align-middle'></i> "
-    //            + @"<span class='align-middle'>" + item.Name + @"</span>"
-    //            + @"</div>"
-    //            + @"</td>
-    //            <td align='center'>" + (item.Active ? "Đang" : "Không") + " sử dụng" + @"</td>
-    //            <td align='center'>" + (item.CreationTime.ToString("HH:mm:ss dd/MM/yyyy")) + @"</td>
-    //            <td align='center'>" + (item.LastModificationTime?.ToString("HH:mm:ss dd/MM/yyyy")) + @"</td>
-    //            <td align='center'>
-    //                <button type='button' class='btn btn-primary' onclick=""openForm({ id: '" + item.Id + @"' })"">
-    //                    Cập nhật
-    //                </button>
-    //                <button type='button' class='btn btn-danger' onclick=""deleteItem({ id: '" + item.Id + @"' })"">
-    //                    Xóa
-    //                </button>
-    //            </td>
-    //        </tr>
-    //        ";
-    //    if (item.Childrens != null && item.Childrens.Count() > 0)
-    //    {
-    //        level++;
-    //        foreach (var child in item.Childrens)
-    //        {
-    //            html += GeneratecomboTableRow(child, level);
-    //        }
-    //    }
-    //    return html;
-    //}
+   
 }
 <!-- table striped -->
 <div class="table-responsive">
@@ -53,6 +21,7 @@
                  <th class="text-center col-lg-2">Mũi tiêm</th>
                  <th class="text-center col-lg-2">Điểm tiêm</th>
                  <th class="text-center col-lg-2">Vắc xin</th>
+                 <th class="text-center col-lg-2">Nhân viên</th>
                  <th class="text-center col-lg-2">Thời điểm tiêm</th>
 
                 
@@ -69,9 +38,10 @@
                     <td class="center"> @Html.Raw(combo.MaNguoiDanNavigation.HoTen)</td>
                     <td class="center"> @Html.Raw(combo.MaNguoiDanNavigation.SoCccdhc)</td>
                     
-                    <td align="center">@Html.Raw(combo.MaMuiTiemNavigation.TenMuiTiem)</td>
-                    <td align="center">@Html.Raw(combo.MaKhoNavigation.TenKho)</td>
-                    <td align="center">@Html.Raw(combo.MaVacXinTheoLoNavigation.TenVacXinTheoLo)</td>
+                    <td align="center">@Html.Raw(combo.MaMuiTiemNavigation?.TenMuiTiem)</td>
+                    <td align="center">@Html.Raw(combo.MaKhoNavigation?.TenKho)</td>
+                    <td align="center">@Html.Raw(combo.MaVacXinTheoLoNavigation?.TenVacXinTheoLo)</td>
+                    <td align="center">@Html.Raw(combo.MaNhanVienNavigation?.TenNhanVien)</td>
                     <td align="center">@Html.Raw(combo.ThoiGianTiem.Value.ToString("dd/MM/yyyy"))</td>
                     <td align="center">
                         <div class="btn-group">

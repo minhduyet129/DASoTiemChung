@@ -24,6 +24,7 @@ namespace DASoTiemChung.Models
         public virtual Kho MaKhoNavigation { get; set; }
         public virtual Quyen MaQuyenNavigation { get; set; }
         public virtual ICollection<PhieuNhap> PhieuNhaps { get; set; }
+        public virtual ICollection<PhieuTiem> PhieuTiems { get; set; }
         public virtual ICollection<PhieuXuat> PhieuXuats { get; set; }
     }
 }

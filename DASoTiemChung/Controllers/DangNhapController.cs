@@ -54,7 +54,7 @@ namespace DASoTiemChung.Controllers
             var claims = new List<Claim>
                 {
                     new Claim(ClaimTypes.Name, nhanVien.TenTaiKhoan),
-
+                    new Claim(ClaimTypes.NameIdentifier, nhanVien.MaNhanVien.ToString()),
                      new Claim(ClaimTypes.Role, nhanVien.MaQuyenNavigation.TenQuyen)
                 };
             var claimsIdentity = new ClaimsIdentity(claims, "Login");

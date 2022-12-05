@@ -4,14 +4,16 @@ using DASoTiemChung.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DASoTiemChung.Migrations
 {
     [DbContext(typeof(SoTiemChungContext))]
-    partial class SoTiemChungContextModelSnapshot : ModelSnapshot
+    [Migration("20221205163331_AddNhanVienToPhieuTiem")]
+    partial class AddNhanVienToPhieuTiem
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -506,9 +508,6 @@ namespace DASoTiemChung.Migrations
 
                     b.Property<bool>("DaXoa")
                         .HasColumnType("bit");
-
-                    b.Property<string>("Mota")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("TenQuyen")
                         .HasMaxLength(30)

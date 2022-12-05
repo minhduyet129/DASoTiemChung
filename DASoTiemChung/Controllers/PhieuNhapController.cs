@@ -2,6 +2,7 @@
 using DASoTiemChung.Filter;
 using DASoTiemChung.Models;
 using DASoTiemChung.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -12,6 +13,7 @@ using System.Threading.Tasks;
 
 namespace DASoTiemChung.Controllers
 {
+    [Authorize(Roles =Quyens.ThuKhoVaQuanLy)]
     public class PhieuNhapController : Controller
     {
         private readonly ILogger<PhieuNhapController> _logger;
@@ -28,7 +30,7 @@ namespace DASoTiemChung.Controllers
         [HttpGet("[controller]/", Name = RouteIndex)]
         public async Task<IActionResult> Index()
         {
-
+           
             return View();
         }
 
@@ -70,6 +72,7 @@ namespace DASoTiemChung.Controllers
 
 
             }
+            
 
             catch (Exception ex)
             {
@@ -100,8 +103,36 @@ namespace DASoTiemChung.Controllers
         public async Task<IActionResult> Form(int id)
         {
             PhieuNhap result = new PhieuNhap();
+
+            var userName=User.Identity.Name;
+            if (!string.IsNullOrEmpty(userName))
+            {
+                var currentUser= _context.NhanViens.Include(x=>x.MaQuyenNavigation).FirstOrDefault(x => x.TenTaiKhoan == userName);
+                if (currentUser != null)
+                {
+                    if ((bool)(currentUser.MaQuyenNavigation?.TenQuyen.Equals(Quyens.ThuKho)))
+                    {
+                        result.MaNhanVien = currentUser.MaNhanVien;
+                        ViewBag.NhanViens = new List<NhanVien>() { currentUser };
+                    }
+                    if ((bool)(currentUser.MaQuyenNavigation?.TenQuyen.Equals(Quyens.QuanLy)))
+                    {
+
+                        ViewBag.NhanViens = _context.NhanViens.OrderBy(x => x.TenNhanVien).Where(x => !x.DaXoa).ToList();
+
+                    }
+                }
+                else
+                {
+                    return BadRequest("Bạn cần đăng nhập lại để xác nhận lại người dùng!");
+                }
+            }
+            else
+            {
+                return BadRequest("Bạn cần đăng nhập lại để xác nhận lại người dùng!");
+            }
+
             
-            ViewBag.NhanViens = _context.NhanViens.OrderBy(x => x.TenNhanVien).ToList().Where(x=>!x.DaXoa);
 
             if (id == 0)
             {
@@ -182,6 +213,7 @@ namespace DASoTiemChung.Controllers
         }
 
         public const string RouteUpdate = "PhieuNhapPutUpdate";
+        [Authorize(Roles =Quyens.QuanLy)]
         [HttpPut("[controller]/{id}", Name = RouteUpdate)]
         public async Task<IActionResult> Update(int id, PhieuNhap dto)
         {
