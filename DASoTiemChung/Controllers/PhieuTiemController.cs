@@ -74,6 +74,25 @@ namespace DASoTiemChung.Controllers
                     query = query.Where(x => x.MaVacXinTheoLoNavigation.TenVacXinTheoLo.Contains(input.TenVacXin));
                 }
 
+                var userName = User.Identity.Name;
+                if (!string.IsNullOrEmpty(userName))
+                {
+                    var currentUser = _context.NhanViens.Include(x => x.MaQuyenNavigation).FirstOrDefault(x => x.TenTaiKhoan == userName);
+                    
+                    if (currentUser != null)
+                    {
+                        if ((bool)(currentUser.MaQuyenNavigation?.TenQuyen.Equals(Quyens.NhanVien)))
+                        {
+                            query = query.Where(x => x.MaKho == currentUser.MaKho);
+                        }
+                        if ((bool)(currentUser.MaQuyenNavigation?.TenQuyen.Equals(Quyens.QuanLy)))
+                        {
+                            
+
+                        }
+                    }
+                    
+                }
             }
 
             catch (Exception ex)
