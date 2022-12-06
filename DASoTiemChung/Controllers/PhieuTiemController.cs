@@ -314,7 +314,7 @@ namespace DASoTiemChung.Controllers
                         _context.PhieuTiemBenhLys.RemoveRange(listPhieuTiemRemove);
                         _context.SaveChanges();
 
-                        foreach (var detail in dto.PhieuTiemBenhLys)
+                        foreach (var detail in (dto.PhieuTiemBenhLys ?? new List<PhieuTiemBenhLy>()))
                         {
                             detail.MaPhieuTiem = phieutiem.MaPhieuTiem;
                             _context.PhieuTiemBenhLys.Add(detail);
