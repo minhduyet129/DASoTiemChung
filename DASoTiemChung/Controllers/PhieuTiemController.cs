@@ -264,6 +264,7 @@ namespace DASoTiemChung.Controllers
         }
 
         public const string RouteUpdate = "PhieuTiemPutUpdate";
+        [Authorize(Roles = Quyens.QuanLy)]
         [HttpPut("[controller]/{id}", Name = RouteUpdate)]
         public async Task<IActionResult> Update(int id, PhieuTiemInputDto dto)
         {

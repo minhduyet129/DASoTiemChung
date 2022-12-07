@@ -2,6 +2,7 @@
 using DASoTiemChung.Filter;
 using DASoTiemChung.Models;
 using DASoTiemChung.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -109,9 +110,44 @@ namespace DASoTiemChung.Controllers
         {
             PhieuXuat result = new PhieuXuat();
 
-            ViewBag.NhanViens = _context.NhanViens.OrderBy(x => x.TenNhanVien).Where(x=>!x.DaXoa).ToList();
+
+
+
+            var userName = User.Identity.Name;
+            if (!string.IsNullOrEmpty(userName))
+            {
+                var currentUser = _context.NhanViens.Include(x => x.MaQuyenNavigation).FirstOrDefault(x => x.TenTaiKhoan == userName);
+                if (currentUser != null)
+                {
+                    if ((bool)(currentUser.MaQuyenNavigation?.TenQuyen.Equals(Quyens.ThuKho)))
+                    {
+                        result.MaKhoXuat = currentUser.MaKho;
+                        var kho = _context.Khos.FirstOrDefault(x => x.MaKho == result.MaKhoXuat);
+                        result.MaNhanVien = currentUser.MaNhanVien;
+                        ViewBag.DiemTiems = new List<Kho>() { kho };
+                        ViewBag.NhanViens = new List<NhanVien>() { currentUser };
+                    }
+                    if ((bool)(currentUser.MaQuyenNavigation?.TenQuyen.Equals(Quyens.QuanLy)))
+                    {
+                        ViewBag.Khos = _context.Khos.Where(x => !x.DaXoa && !x.Kieu).OrderBy(x => x.TenKho).ToList();
+                        ViewBag.NhanViens = _context.NhanViens.OrderBy(x => x.TenNhanVien).Where(x => !x.DaXoa).ToList();
+
+                    }
+                }
+                else
+                {
+                    return BadRequest("Bạn cần đăng nhập lại để xác nhận lại người dùng!");
+                }
+            }
+            else
+            {
+                return BadRequest("Bạn cần đăng nhập lại để xác nhận lại người dùng!");
+            }
+
+
+           
             ViewBag.DiemTiems = _context.Khos.OrderBy(x => x.TenKho).Where(x => !x.DaXoa &&x.Kieu).ToList();
-            ViewBag.Khos = _context.Khos.OrderBy(x => x.TenKho).Where(x => !x.DaXoa &&!x.Kieu).ToList();
+            
 
 
             if (id == 0)
@@ -155,10 +191,12 @@ namespace DASoTiemChung.Controllers
                         var vacXinTheoLo = _context.VacXinTheoLos.Include(x=>x.MaNhaSanXuatNavigation).Include(x=>x.MaLoNavigation).Include(x=>x.MaVacXinNavigation).FirstOrDefault(x=>x.MaVacXinTheoLo==ctpn.MaVacXinTheoLo);
                         if (vacXinTheoLo != null)
                         {
+                            if (vacXinTheoLo.SoLuong < ctpn.SoLuong)
+                                return BadRequest($"vắc xin tại kho không đủ rồi.Số lượng còn lại {vacXinTheoLo.SoLuong}");
                             vacXinTheoLo.SoLuong -= ctpn.SoLuong;
-                            if (vacXinTheoLo.SoLuong < 0)
-                                return BadRequest("vắc xin tại kho không đủ rồi");
+                            
                             _context.Update(vacXinTheoLo);
+
 
                             var vacXinTheoLoDiemTiem= _context.VacXinTheoLos.FirstOrDefault(x => x.MaLo == vacXinTheoLo.MaLo && x.MaVacXin == vacXinTheoLo.MaVacXin && x.MaKho == dto.MaKhoNhan&&x.MaNhaSanXuat==vacXinTheoLo.MaNhaSanXuat);
 
@@ -211,6 +249,7 @@ namespace DASoTiemChung.Controllers
 
         }
         public const string RouteUpdate = "PhieuXuatPutUpdate";
+        [Authorize(Roles = Quyens.QuanLy)]
         [HttpPut("[controller]/{id}", Name = RouteUpdate)]
         public async Task<IActionResult> Update(int id, PhieuXuat dto)
         {
