@@ -228,7 +228,7 @@ namespace DASoTiemChung.Controllers
                         else
                         {
                             transaction.Rollback();
-                            return BadRequest("Không tìm thấy vắc xin theo lô cần nhập");
+                            return BadRequest($"Không tìm thấy vắc xin theo lô {ctpn.MaVacXinTheoLo} cần nhập");
                         }
 
 
@@ -273,6 +273,7 @@ namespace DASoTiemChung.Controllers
                         lo.MaNhanVien = dto.MaNhanVien;
                         lo.MaKhoNhan = dto.MaKhoNhan;
                         lo.ThoiGianXuat = dto.ThoiGianXuat;
+                        lo.MaKhoXuat = dto.MaKhoXuat;
 
                         var childrens = dto.ChiTietPhieuXuats;
                         dto.ChiTietPhieuXuats = null;
@@ -301,10 +302,40 @@ namespace DASoTiemChung.Controllers
                             var vacXinTheoLo = _context.VacXinTheoLos.Find(ctpn.MaVacXinTheoLo);
                             if (vacXinTheoLo != null)
                             {
+                                if (vacXinTheoLo.SoLuong < ctpn.SoLuong)
+                                    return BadRequest($"vắc xin tại kho không đủ rồi.Số lượng còn lại {vacXinTheoLo.SoLuong}");
                                 vacXinTheoLo.SoLuong -= ctpn.SoLuong;
-                                if (vacXinTheoLo.SoLuong < 0)
-                                    return BadRequest("vắc xin tại kho không đủ rồi");
+
                                 _context.Update(vacXinTheoLo);
+
+
+                                var vacXinTheoLoDiemTiem = _context.VacXinTheoLos.FirstOrDefault(x => x.MaLo == vacXinTheoLo.MaLo && x.MaVacXin == vacXinTheoLo.MaVacXin && x.MaKho == dto.MaKhoNhan && x.MaNhaSanXuat == vacXinTheoLo.MaNhaSanXuat);
+
+                                if (vacXinTheoLoDiemTiem != null)
+                                {
+                                    vacXinTheoLoDiemTiem.SoLuong += ctpn.SoLuong;
+                                    _context.VacXinTheoLos.Update(vacXinTheoLoDiemTiem);
+                                }
+                                else
+                                {
+                                    var diemTiem = _context.Khos.Find(dto.MaKhoNhan);
+                                    var vacXinTheoLoNew = new VacXinTheoLo()
+                                    {
+                                        MaLo = vacXinTheoLo.MaLo,
+                                        MaNhaSanXuat = vacXinTheoLo.MaNhaSanXuat,
+                                        MaKho = dto.MaKhoNhan,
+                                        MaVacXin = vacXinTheoLo.MaVacXin,
+                                        NgayHetHan = vacXinTheoLo.NgayHetHan,
+                                        NgaySanXuat = vacXinTheoLo.NgaySanXuat,
+                                        XuatXu = vacXinTheoLo.XuatXu,
+                                        SoLuong = ctpn.SoLuong,
+                                        TenVacXinTheoLo = $"{vacXinTheoLo.MaVacXinNavigation.TenVacXin}-{vacXinTheoLo.MaLoNavigation.TenLo}-{vacXinTheoLo.MaNhaSanXuatNavigation.TenNhaSanXuat}-{diemTiem.TenKho}"
+
+
+                                    };
+                                    _context.VacXinTheoLos.Add(vacXinTheoLoNew);
+                                }
+
                             }
                             else
                             {
@@ -318,7 +349,7 @@ namespace DASoTiemChung.Controllers
                         transaction.Commit();
                         return Ok();
                     }
-                    return NotFound("Không tìm thấy!");
+                    return NotFound("Không tìm thấy phiếu xuất!");
                 }
                 catch (Exception ex)
                 {
