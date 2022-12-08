@@ -71,7 +71,7 @@
                 @foreach (Quyen role in ViewBag.Roles ?? new List<Quyen>())
                 {
                     @*@Html.Raw(GenerateCategorySelectOptions(category, 1))*@
-                    <option value="@Html.Raw(role.MaQuyen)" selected="@(Model.MaQuyen.Equals(role.MaQuyen))">@Html.Raw(role.TenQuyen)</option>
+                    <option value="@Html.Raw(role.MaQuyen)" selected="@(Model.MaQuyen.Equals(role.MaQuyen))">@Html.Raw(role.Mota)</option>
                 }
             </select>
         </div>

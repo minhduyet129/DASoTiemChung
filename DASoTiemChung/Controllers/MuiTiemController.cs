@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace DASoTiemChung.Controllers
 {
-    [Authorize(Roles =Quyens.NhanVienVaQuanLy)]
+    [Authorize(Roles =Quyens.ThemThuTucTiem)]
     public class MuiTiemController : Controller
     {
         private readonly ILogger<MuiTiemController> _logger;
@@ -144,6 +144,8 @@ namespace DASoTiemChung.Controllers
         }
 
         public const string RouteUpdate = "MuiTiemPutUpdate";
+        [Authorize(Roles = Quyens.ChinhSuaThuTucTiem)]
+
         [HttpPut("[controller]/{id}", Name = RouteUpdate)]
         public async Task<IActionResult> Update(int id, MuiTiem dto)
         {
@@ -179,6 +181,7 @@ namespace DASoTiemChung.Controllers
         }
 
         public const string RouteDelete = "MuiTiemDelete";
+        [Authorize(Roles = Quyens.ChinhSuaThuTucTiem)]
         [HttpDelete("[controller]/{id}", Name = RouteDelete)]
         public async Task<IActionResult> Delete(int? id)
         {

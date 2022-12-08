@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace DASoTiemChung.Controllers
 {
-    [Authorize(Roles =Quyens.ThuKhoVaQuanLy)]
+    [Authorize(Roles =Quyens.ThemKho)]
     public class PhieuNhapController : Controller
     {
         private readonly ILogger<PhieuNhapController> _logger;
@@ -38,10 +38,27 @@ namespace DASoTiemChung.Controllers
         [HttpGet("[controller]/DataGrid", Name = RouteDataGrid)]
         public async Task<IActionResult> DataGridAsync(SearchPhieuNhapDto input)
         {
-            return PartialView("_DataGrid", await GetPagingLos(input));
+            var userName = User.Identity.Name;
+            if (!string.IsNullOrEmpty(userName))
+            {
+                var currentUser = _context.NhanViens.Include(x => x.MaQuyenNavigation).FirstOrDefault(x => x.TenTaiKhoan == userName);
+                if (currentUser != null)
+                {
+                    return PartialView("_DataGrid", await GetPagingLos(input,currentUser));
+                }
+                else
+                {
+                    return BadRequest("Bạn cần đăng nhập lại để xác nhận lại người dùng!");
+                }
+            }
+            else
+            {
+                return BadRequest("Bạn cần đăng nhập lại để xác nhận lại người dùng!");
+            }
+            
         }
 
-        private async Task<PagedResultDto<PhieuNhap>> GetPagingLos(SearchPhieuNhapDto input)
+        private async Task<PagedResultDto<PhieuNhap>> GetPagingLos(SearchPhieuNhapDto input,NhanVien currentUser)
         {
 
             if (input.SkipCount < 0)
@@ -70,6 +87,11 @@ namespace DASoTiemChung.Controllers
                     query = query.Where(x => x.ThoiGianNhap.Equals(input.ThoiGianNhap));
                 }
 
+                if (currentUser.MaQuyenNavigation.TenQuyen.Equals(Quyens.NhanVienCapCao) || currentUser.MaQuyenNavigation.TenQuyen.Equals(Quyens.NhanVien))
+                {
+                    query = query.Where(x => x.MaKho == currentUser.MaKho);
+                }
+                
 
             }
             
@@ -102,6 +124,7 @@ namespace DASoTiemChung.Controllers
         [HttpGet("[controller]/{id}", Name = RouteForm)]
         public async Task<IActionResult> Form(int id)
         {
+            
             PhieuNhap result = new PhieuNhap();
 
             var userName=User.Identity.Name;
@@ -110,17 +133,67 @@ namespace DASoTiemChung.Controllers
                 var currentUser= _context.NhanViens.Include(x=>x.MaQuyenNavigation).FirstOrDefault(x => x.TenTaiKhoan == userName);
                 if (currentUser != null)
                 {
-                    if ((bool)(currentUser.MaQuyenNavigation?.TenQuyen.Equals(Quyens.ThuKho)))
+                    if (id == 0)
                     {
-                        result.MaNhanVien = currentUser.MaNhanVien;
-                        ViewBag.NhanViens = new List<NhanVien>() { currentUser };
+                        if (currentUser.MaQuyenNavigation.TenQuyen.Equals(Quyens.NhanVienCapCao) || currentUser.MaQuyenNavigation.TenQuyen.Equals(Quyens.NhanVien))
+                        {
+                            result.MaKho = currentUser.MaKho;
+                            var currentKho = _context.Khos.Find(result.MaKho);
+                            ViewBag.Khos = new List<Kho>() { currentKho };
+                            result.MaNhanVien = currentUser.MaNhanVien;
+                            ViewBag.NhanViens = new List<NhanVien>() { currentUser };
+                        }
+                        if (currentUser.MaQuyenNavigation.TenQuyen.Equals(Quyens.QuanLy))
+                        {
+                            ViewBag.Khos = _context.Khos.Where(x => !x.DaXoa&&!x.Kieu).OrderBy(x => x.TenKho).ToList();
+                            
+                            
+
+                        }
+                        result.ThoiGianNhap = DateTime.Now;
+                        return PartialView("_Form", result);
                     }
-                    if ((bool)(currentUser.MaQuyenNavigation?.TenQuyen.Equals(Quyens.QuanLy)))
+
+                    try
                     {
+                        result = _context.PhieuNhaps.Include(x => x.MaKhoNavigation).Include(x => x.MaNhanVienNavigation).Include(x => x.ChiTietPhieuNhaps).ThenInclude(x => x.MaVacXinTheoLoNavigation).FirstOrDefault(x => x.MaPhieuNhap == id);
 
-                        ViewBag.NhanViens = _context.NhanViens.OrderBy(x => x.TenNhanVien).Where(x => !x.DaXoa).ToList();
+
+
+
+                        if (result != null)
+                        {
+                            if (currentUser.MaQuyenNavigation.TenQuyen.Equals(Quyens.NhanVienCapCao) || currentUser.MaQuyenNavigation.TenQuyen.Equals(Quyens.NhanVien))
+                            {
+                                var userInPhieuNhap = _context.NhanViens.Find(result.MaNhanVien);
+                                
+                                ViewBag.NhanViens = new List<NhanVien>() { currentUser,userInPhieuNhap };
+                                var currentKho = _context.Khos.Find(result.MaKho);
+                                ViewBag.Khos = new List<Kho>() { currentKho };
+                            }
+                            if (currentUser.MaQuyenNavigation.TenQuyen.Equals(Quyens.QuanLy))
+                            {
+                                var currentKho = _context.Khos.Find(result.MaKho);
+                                ViewBag.Khos = new List<Kho>() { currentKho };
+                                ViewBag.NhanViens = _context.NhanViens.OrderBy(x => x.TenNhanVien).Where(x => !x.DaXoa&&x.MaKho==result.MaKho).ToList();
+
+                            }
+
+                            return PartialView("_Form", result);
+                        }
+                        else
+                        {
+                            return BadRequest("Phiếu nhập không tồn tại!.");
+                        }
+
 
                     }
+                    catch (Exception ex)
+                    {
+                        _logger.LogError(ex, ex.ToString());
+                    }
+
+
                 }
                 else
                 {
@@ -133,27 +206,7 @@ namespace DASoTiemChung.Controllers
             }
 
             
-
-            if (id == 0)
-            {
-
-                result.ThoiGianNhap = DateTime.Now;
-                return PartialView("_Form", result);
-            }
-
-
-            try
-            {
-                result = _context.PhieuNhaps.Include(x => x.MaNhanVienNavigation).Include(x => x.ChiTietPhieuNhaps).ThenInclude(x=>x.MaVacXinTheoLoNavigation).FirstOrDefault(x=>x.MaPhieuNhap==id);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, ex.ToString());
-            }
-
-
-
-            return PartialView("_Form", result);
+            return Ok();
         }
 
         public const string RouteCreate = "PhieuNhapPostCreate";
@@ -213,7 +266,7 @@ namespace DASoTiemChung.Controllers
         }
 
         public const string RouteUpdate = "PhieuNhapPutUpdate";
-        [Authorize(Roles =Quyens.QuanLy)]
+        [Authorize(Roles =Quyens.ChinhSuaThuTucTiem)]
         [HttpPut("[controller]/{id}", Name = RouteUpdate)]
         public async Task<IActionResult> Update(int id, PhieuNhap dto)
         {
@@ -243,7 +296,7 @@ namespace DASoTiemChung.Controllers
                         lo.GhiChu = dto.GhiChu;
                         lo.MaNhanVien = dto.MaNhanVien;
                         lo.ThoiGianNhap = dto.ThoiGianNhap;
-                      
+                        
                         var childrens = dto.ChiTietPhieuNhaps;
                         dto.ChiTietPhieuNhaps = null;
                         _reposity.Update(lo);
@@ -302,6 +355,7 @@ namespace DASoTiemChung.Controllers
         }
 
         public const string RouteDelete = "PhieuNhapDelete";
+        [Authorize(Roles = Quyens.ChinhSuaThuTucTiem)]
         [HttpDelete("[controller]/{id}", Name = RouteDelete)]
         public async Task<IActionResult> Delete(int? id)
         {

@@ -278,6 +278,7 @@
             let maVacXinTheoLos = $(".maVacXinTheoLo");
             let donGiaNhaps = $(".donGiaNhap");
             let soLuongNhaps = $(".soLuongNhap");
+            let pcKho= $("#pcKho").val();
 
             for (let i = 0; i < maVacXinTheoLos.length; i++) {
                 let data = {
@@ -297,7 +298,8 @@
                     MaNhanVien: pcNhanVien,
                     ThoiGianNhap: pcThoiGianNhap,
                     ChiTietPhieuNhaps: detail,
-                    GhiChu: pcGhiChu
+                    GhiChu: pcGhiChu,
+                    MaKho:pcKho
 
                 },
                 beforeSend: () => {
@@ -397,6 +399,9 @@
                 },
                 error: (jqXHR, textStatus, errorThrown) => {
                     let error = { message: "Đã có lỗi xảy ra, vui lòng liên hệ quản trị!" };
+                    if (jqXHR.status == 403) {
+                        error.message = "Bạn không có quyền thực hiện thao tác này!";
+                    };
                     if ($.trim(jqXHR.responseText).length > 0) {
                         try {
                             error = (JSON.parse(jqXHR.responseText) ?? { error: { ...error } })

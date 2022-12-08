@@ -2,13 +2,25 @@
 {
     public static class Quyens
     {
-        public const string NhanVien = "NhanVien";
-        public const string ThuKho = "ThuKho";
+
         public const string QuanLy = "QuanLy";
-        public const string NhanVienVaThuKho = "NhanVien,ThuKho";
-        public const string NhanVienVaQuanLy = "NhanVien,QuanLy";
-        public const string ThuKhoVaQuanLy = "ThuKho,QuanLy";
-        public const string All = "ThuKho,QuanLy,NhanVien";
+        //Quản lý thủ tục tiêm
+        public const string NhanVienCapCao = "NhanVienCapCao";
+        //--Thêm
+        public const string NhanVien = "NhanVien";
+        public const string ThemThuTucTiem = "NhanVien,NhanVienCapCao,QuanLy";
+        //--Sửa và xoá
+        public const string ChinhSuaThuTucTiem = "NhanVienCapCao,QuanLy";
+
+        //Quản lý liên quan đến kho
+        public const string TruongKho = "TruongKho";
+        //--Thêm
+        public const string ThuKho = "ThuKho";
+        public const string ThemKho = "ThuKho,TruongKho,QuanLy";
+        //--Sửa và xoá
+        public const string ChinhSuaKho = "TruongKho,QuanLy";
+
+
 
     }
 }

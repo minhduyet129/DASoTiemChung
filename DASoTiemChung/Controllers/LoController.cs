@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace DASoTiemChung.Controllers
 {
-    [Authorize(Roles = Quyens.ThuKhoVaQuanLy)]
+    [Authorize(Roles = Quyens.ThemKho)]
     public class LoController : Controller
     {
         private readonly ILogger<LoController> _logger;
@@ -144,6 +144,7 @@ namespace DASoTiemChung.Controllers
         }
 
         public const string RouteUpdate = "LoPutUpdate";
+        [Authorize(Roles = Quyens.ChinhSuaKho)]
         [HttpPut("[controller]/{id}", Name = RouteUpdate)]
         public async Task<IActionResult> Update(int id, Lo dto)
         {
@@ -179,6 +180,7 @@ namespace DASoTiemChung.Controllers
         }
 
         public const string RouteDelete = "LoDelete";
+        [Authorize(Roles = Quyens.ChinhSuaKho)]
         [HttpDelete("[controller]/{id}", Name = RouteDelete)]
         public async Task<IActionResult> Delete(int? id)
         {

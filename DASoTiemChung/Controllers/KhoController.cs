@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace DASoTiemChung.Controllers
 {
-    [Authorize(Roles =Quyens.ThuKhoVaQuanLy)]
+    [Authorize(Roles =Quyens.QuanLy)]
     public class KhoController : Controller
     {
         private readonly ILogger<KhoController> _logger;

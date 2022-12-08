@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace DASoTiemChung.Controllers
 {
-    [Authorize(Roles =Quyens.All)]
+    [Authorize(Roles =Quyens.QuanLy)]
     public class DiemTiemController : Controller
     {
         private readonly ILogger<DiemTiemController> _logger;

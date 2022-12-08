@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace DASoTiemChung.Controllers
 {
-    [Authorize(Roles =Quyens.NhanVienVaQuanLy)]
+    [Authorize(Roles =Quyens.ThemThuTucTiem)]
     public class PhieuTiemController : Controller
     {
         private readonly ILogger<PhieuTiemController> _logger;

@@ -18,9 +18,10 @@ namespace DASoTiemChung.Models
         public int? MaNhanVien { get; set; }
       
         public string GhiChu { get; set; }
-
+        public int? MaKho { get; set; }
         public bool DaXoa { get; set; }
         public virtual NhanVien MaNhanVienNavigation { get; set; }
+        public virtual Kho MaKhoNavigation { get; set; }
         public virtual ICollection<ChiTietPhieuNhap> ChiTietPhieuNhaps { get; set; }
     }
 }
