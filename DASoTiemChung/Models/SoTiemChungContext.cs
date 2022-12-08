@@ -106,9 +106,9 @@ namespace DASoTiemChung.Models
 
                 entity.ToTable("Kho");
 
-                entity.Property(e => e.SoNha).HasMaxLength(40);
+                entity.Property(e => e.SoNha).HasMaxLength(100);
 
-                entity.Property(e => e.TenKho).HasMaxLength(50);
+                entity.Property(e => e.TenKho).HasMaxLength(100);
             });
 
             modelBuilder.Entity<Lo>(entity =>
@@ -123,7 +123,7 @@ namespace DASoTiemChung.Models
                     .IsUnicode(false)
                     .IsFixedLength(true);
 
-                entity.Property(e => e.TenLo).HasMaxLength(30);
+                entity.Property(e => e.TenLo).HasMaxLength(50);
             });
 
             modelBuilder.Entity<MuiTiem>(entity =>
@@ -133,7 +133,7 @@ namespace DASoTiemChung.Models
 
                 entity.ToTable("MuiTiem");
 
-                entity.Property(e => e.TenMuiTiem).HasMaxLength(20);
+                entity.Property(e => e.TenMuiTiem).HasMaxLength(50);
             });
 
             modelBuilder.Entity<NguoiDan>(entity =>
@@ -143,22 +143,22 @@ namespace DASoTiemChung.Models
 
                 entity.ToTable("NguoiDan");
 
-                entity.Property(e => e.DanTocQuocTich).HasMaxLength(40);
+                entity.Property(e => e.DanTocQuocTich).HasMaxLength(50);
 
-                entity.Property(e => e.DonViCongTac).HasMaxLength(40);
+                entity.Property(e => e.DonViCongTac).HasMaxLength(50);
 
-                entity.Property(e => e.Email).HasMaxLength(30);
+                entity.Property(e => e.Email).HasMaxLength(50);
 
-                entity.Property(e => e.HoTen).HasMaxLength(50);
+                entity.Property(e => e.HoTen).HasMaxLength(200);
 
-                entity.Property(e => e.NgheNghiep).HasMaxLength(40);
+                entity.Property(e => e.NgheNghiep).HasMaxLength(200);
 
-                entity.Property(e => e.NguoiDamHo).HasMaxLength(40);
+                entity.Property(e => e.NguoiDamHo).HasMaxLength(200);
 
-                entity.Property(e => e.QuanHeNguoiDamHo).HasMaxLength(40);
+                entity.Property(e => e.QuanHeNguoiDamHo).HasMaxLength(100);
 
                 entity.Property(e => e.SoCccdhc)
-                    .HasMaxLength(15)
+                    .HasMaxLength(20)
                     .IsUnicode(false)
                     .HasColumnName("SoCCCDHC")
                     .IsFixedLength(true);
@@ -169,14 +169,14 @@ namespace DASoTiemChung.Models
                     .IsFixedLength(true);
 
                 entity.Property(e => e.SoDienThoaiNguoiDamHo)
-                    .HasMaxLength(40)
+                    .HasMaxLength(10)
                     .IsUnicode(false)
                     .IsFixedLength(true);
 
                 entity.Property(e => e.SoNha).HasMaxLength(40);
 
                 entity.Property(e => e.SoTheBaoHiemYte)
-                    .HasMaxLength(20)
+                    .HasMaxLength(100)
                     .IsUnicode(false)
                     .HasColumnName("SoTheBaoHiemYTe")
                     .IsFixedLength(true);
@@ -190,7 +190,7 @@ namespace DASoTiemChung.Models
                 entity.ToTable("NhaSanXuat");
 
                 entity.Property(e => e.Email)
-                    .HasMaxLength(30)
+                    .HasMaxLength(50)
                     .IsUnicode(false);
 
                 entity.Property(e => e.SoDienThoai)
@@ -198,7 +198,7 @@ namespace DASoTiemChung.Models
                     .IsUnicode(false)
                     .IsFixedLength(true);
 
-                entity.Property(e => e.TenNhaSanXuat).HasMaxLength(30);
+                entity.Property(e => e.TenNhaSanXuat).HasMaxLength(100);
             });
 
             modelBuilder.Entity<NhanVien>(entity =>
@@ -217,7 +217,7 @@ namespace DASoTiemChung.Models
                     .IsUnicode(false)
                     .IsFixedLength(true);
 
-                entity.Property(e => e.TenNhanVien).HasMaxLength(30);
+                entity.Property(e => e.TenNhanVien).HasMaxLength(100);
 
                 entity.Property(e => e.TenTaiKhoan).HasMaxLength(50);
 
@@ -398,7 +398,7 @@ namespace DASoTiemChung.Models
 
                 entity.ToTable("TienSuBenhLy");
 
-                entity.Property(e => e.TenBenhLy).HasMaxLength(50);
+                
             });
 
             modelBuilder.Entity<TinhThanhPho>(entity =>
@@ -418,7 +418,7 @@ namespace DASoTiemChung.Models
 
                 entity.ToTable("VacXin");
 
-                entity.Property(e => e.TenVacXin).HasMaxLength(100);
+                entity.Property(e => e.TenVacXin).HasMaxLength(200);
             });
 
             modelBuilder.Entity<VacXinTheoLo>(entity =>
@@ -440,7 +440,7 @@ namespace DASoTiemChung.Models
 
                 entity.Property(e => e.NgaySanXuat).HasColumnType("datetime");
 
-                entity.Property(e => e.TenVacXinTheoLo).HasMaxLength(50);
+                
 
                 entity.Property(e => e.XuatXu).HasMaxLength(50);
 

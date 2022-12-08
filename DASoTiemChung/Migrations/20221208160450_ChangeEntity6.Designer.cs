@@ -4,14 +4,16 @@ using DASoTiemChung.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DASoTiemChung.Migrations
 {
     [DbContext(typeof(SoTiemChungContext))]
-    partial class SoTiemChungContextModelSnapshot : ModelSnapshot
+    [Migration("20221208160450_ChangeEntity6")]
+    partial class ChangeEntity6
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -107,12 +109,12 @@ namespace DASoTiemChung.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SoNha")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)");
 
                     b.Property<string>("TenKho")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("MaKho")
                         .HasName("PK__Kho__3BDA9350EA7E3CF4");
@@ -137,8 +139,8 @@ namespace DASoTiemChung.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("TenLo")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.HasKey("MaLo")
                         .HasName("PK__Lo__2725C75681A945BD");
@@ -157,8 +159,8 @@ namespace DASoTiemChung.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("TenMuiTiem")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.HasKey("MaMuiTiem")
                         .HasName("PK__MuiTiem__8685ED46CBF763BD");
@@ -177,20 +179,20 @@ namespace DASoTiemChung.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("DanTocQuocTich")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)");
 
                     b.Property<string>("DonViCongTac")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)");
 
                     b.Property<string>("Email")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<string>("HoTen")
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<int?>("MaQuanHuyen")
                         .HasColumnType("int");
@@ -202,21 +204,21 @@ namespace DASoTiemChung.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("NgheNghiep")
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)");
 
                     b.Property<string>("NguoiDamHo")
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)");
 
                     b.Property<string>("QuanHeNguoiDamHo")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)");
 
                     b.Property<string>("SoCccdhc")
-                        .HasMaxLength(20)
+                        .HasMaxLength(15)
                         .IsUnicode(false)
-                        .HasColumnType("char(20)")
+                        .HasColumnType("char(15)")
                         .HasColumnName("SoCCCDHC")
                         .IsFixedLength(true);
 
@@ -227,9 +229,9 @@ namespace DASoTiemChung.Migrations
                         .IsFixedLength(true);
 
                     b.Property<string>("SoDienThoaiNguoiDamHo")
-                        .HasMaxLength(10)
+                        .HasMaxLength(40)
                         .IsUnicode(false)
-                        .HasColumnType("char(10)")
+                        .HasColumnType("char(40)")
                         .IsFixedLength(true);
 
                     b.Property<string>("SoNha")
@@ -237,9 +239,9 @@ namespace DASoTiemChung.Migrations
                         .HasColumnType("nvarchar(40)");
 
                     b.Property<string>("SoTheBaoHiemYte")
-                        .HasMaxLength(100)
+                        .HasMaxLength(20)
                         .IsUnicode(false)
-                        .HasColumnType("char(100)")
+                        .HasColumnType("char(20)")
                         .HasColumnName("SoTheBaoHiemYTe")
                         .IsFixedLength(true);
 
@@ -263,9 +265,9 @@ namespace DASoTiemChung.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
-                        .HasMaxLength(50)
+                        .HasMaxLength(30)
                         .IsUnicode(false)
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("varchar(30)");
 
                     b.Property<string>("SoDienThoai")
                         .HasMaxLength(15)
@@ -274,8 +276,8 @@ namespace DASoTiemChung.Migrations
                         .IsFixedLength(true);
 
                     b.Property<string>("TenNhaSanXuat")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.HasKey("MaNhaSanXuat")
                         .HasName("PK__NhaSanXu__838C17A19310DD9D");
@@ -310,8 +312,8 @@ namespace DASoTiemChung.Migrations
                         .IsFixedLength(true);
 
                     b.Property<string>("TenNhanVien")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<string>("TenTaiKhoan")
                         .HasMaxLength(50)
@@ -564,7 +566,8 @@ namespace DASoTiemChung.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("TenBenhLy")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("MaBenhLy")
                         .HasName("PK__TienSuBe__4AA71879F7FA85E0");
@@ -600,8 +603,8 @@ namespace DASoTiemChung.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("TenVacXin")
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("MaVacXin")
                         .HasName("PK__VacXin__92F66267C4D5D6AF");
@@ -641,7 +644,8 @@ namespace DASoTiemChung.Migrations
                         .HasColumnType("bigint");
 
                     b.Property<string>("TenVacXinTheoLo")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("XuatXu")
                         .HasMaxLength(50)
