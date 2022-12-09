@@ -2,7 +2,6 @@
 using DASoTiemChung.Filter;
 using DASoTiemChung.Models;
 using DASoTiemChung.Repositories;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -13,7 +12,6 @@ using System.Threading.Tasks;
 
 namespace DASoTiemChung.Controllers
 {
-    [Authorize(Roles = Quyens.ThemThuTucTiem)]
     public class TraCuuTiemChungController : Controller
     {
         private readonly ILogger<TraCuuTiemChungController> _logger;
@@ -74,25 +72,25 @@ namespace DASoTiemChung.Controllers
                     query = query.Where(x => x.MaVacXinTheoLoNavigation.TenVacXinTheoLo.Contains(input.TenVacXin));
                 }
 
-                var userName = User.Identity.Name;
-                if (!string.IsNullOrEmpty(userName))
-                {
-                    var currentUser = _context.NhanViens.Include(x => x.MaQuyenNavigation).FirstOrDefault(x => x.TenTaiKhoan == userName);
+                //var userName = User.Identity.Name;
+                //if (!string.IsNullOrEmpty(userName))
+                //{
+                //    var currentUser = _context.NhanViens.Include(x => x.MaQuyenNavigation).FirstOrDefault(x => x.TenTaiKhoan == userName);
 
-                    if (currentUser != null)
-                    {
-                        if ((bool)(currentUser.MaQuyenNavigation?.TenQuyen.Equals(Quyens.NhanVien)))
-                        {
-                            query = query.Where(x => x.MaKho == currentUser.MaKho);
-                        }
-                        if ((bool)(currentUser.MaQuyenNavigation?.TenQuyen.Equals(Quyens.QuanLy)))
-                        {
+                //    if (currentUser != null)
+                //    {
+                //        if ((bool)(currentUser.MaQuyenNavigation?.TenQuyen.Equals(Quyens.NhanVien)))
+                //        {
+                //            query = query.Where(x => x.MaKho == currentUser.MaKho);
+                //        }
+                //        if ((bool)(currentUser.MaQuyenNavigation?.TenQuyen.Equals(Quyens.QuanLy)))
+                //        {
 
 
-                        }
-                    }
+                //        }
+                //    }
 
-                }
+                //}
             }
 
             catch (Exception ex)
@@ -131,36 +129,36 @@ namespace DASoTiemChung.Controllers
 
 
 
-            var userName = User.Identity.Name;
-            if (!string.IsNullOrEmpty(userName))
-            {
-                var currentUser = _context.NhanViens.Include(x => x.MaQuyenNavigation).FirstOrDefault(x => x.TenTaiKhoan == userName);
-                if (currentUser != null)
-                {
-                    if ((bool)(currentUser.MaQuyenNavigation?.TenQuyen.Equals(Quyens.ThuKho)))
-                    {
-                        result.MaKho = currentUser.MaKho;
-                        var kho = _context.Khos.FirstOrDefault(x => x.MaKho == result.MaKho);
-                        result.MaNhanVien = currentUser.MaNhanVien;
-                        ViewBag.DiemTiems = new List<Kho>() { kho };
-                        ViewBag.NhanViens = new List<NhanVien>() { currentUser };
-                    }
-                    if ((bool)(currentUser.MaQuyenNavigation?.TenQuyen.Equals(Quyens.QuanLy)))
-                    {
-                        ViewBag.DiemTiems = _context.Khos.Where(x => !x.DaXoa && x.Kieu).OrderBy(x => x.TenKho).ToList();
-                        ViewBag.NhanViens = _context.NhanViens.OrderBy(x => x.TenNhanVien).Where(x => !x.DaXoa).ToList();
+            //var userName = User.Identity.Name;
+            //if (!string.IsNullOrEmpty(userName))
+            //{
+            //    var currentUser = _context.NhanViens.Include(x => x.MaQuyenNavigation).FirstOrDefault(x => x.TenTaiKhoan == userName);
+            //    if (currentUser != null)
+            //    {
+            //        if ((bool)(currentUser.MaQuyenNavigation?.TenQuyen.Equals(Quyens.ThuKho)))
+            //        {
+            //            result.MaKho = currentUser.MaKho;
+            //            var kho = _context.Khos.FirstOrDefault(x => x.MaKho == result.MaKho);
+            //            result.MaNhanVien = currentUser.MaNhanVien;
+            //            ViewBag.DiemTiems = new List<Kho>() { kho };
+            //            ViewBag.NhanViens = new List<NhanVien>() { currentUser };
+            //        }
+            //        if ((bool)(currentUser.MaQuyenNavigation?.TenQuyen.Equals(Quyens.QuanLy)))
+            //        {
+            //            ViewBag.DiemTiems = _context.Khos.Where(x => !x.DaXoa && x.Kieu).OrderBy(x => x.TenKho).ToList();
+            //            ViewBag.NhanViens = _context.NhanViens.OrderBy(x => x.TenNhanVien).Where(x => !x.DaXoa).ToList();
 
-                    }
-                }
-                else
-                {
-                    return BadRequest("Bạn cần đăng nhập lại để xác nhận lại người dùng!");
-                }
-            }
-            else
-            {
-                return BadRequest("Bạn cần đăng nhập lại để xác nhận lại người dùng!");
-            }
+            //        }
+            //    }
+            //    else
+            //    {
+            //        return BadRequest("Bạn cần đăng nhập lại để xác nhận lại người dùng!");
+            //    }
+            //}
+            //else
+            //{
+            //    return BadRequest("Bạn cần đăng nhập lại để xác nhận lại người dùng!");
+            //}
 
             if (id == 0)
             {
@@ -264,7 +262,6 @@ namespace DASoTiemChung.Controllers
         }
 
         public const string RouteUpdate = "TraCuuTiemChungPutUpdate";
-        [Authorize(Roles = Quyens.QuanLy)]
         [HttpPut("[controller]/{id}", Name = RouteUpdate)]
         public async Task<IActionResult> Update(int id, PhieuTiemInputDto dto)
         {

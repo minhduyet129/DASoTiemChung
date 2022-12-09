@@ -23,7 +23,6 @@
                 <th class="text-center col-lg-2">Vắc xin</th>
                 <th class="text-center col-lg-2">Nhân viên</th>
                 <th class="text-center col-lg-2">Thời điểm tiêm</th>
-                <th class="text-center">Chức năng</th>
 
 
             </tr>
@@ -44,15 +43,6 @@
                     <td align="center">@Html.Raw(combo.MaNhanVienNavigation?.TenNhanVien)</td>
                     <td align="center">@Html.Raw(combo.ThoiGianTiem.Value.ToString("dd/MM/yyyy"))</td>
 
-                    <td align="center">
-                        <div class="btn-group">
-                            <button type="button" class="btn btn-primary"
-                                onclick="openForm({ url: '@Url.RouteUrl(TraCuuTiemChungController.RouteForm, new { id = combo.MaPhieuTiem })' })">
-                                Detail
-                            </button>
-
-                        </div>
-                    </td>
                 </tr>
 
 
