@@ -163,7 +163,7 @@ namespace DASoTiemChung.Controllers
                 var lo=_reposity.GetById(id);
                 if (lo != null)
                 {
-                    
+                       
                     _reposity.Update(dto);
                     _reposity.Save();
                     return Ok();
@@ -193,6 +193,7 @@ namespace DASoTiemChung.Controllers
                     if (lo != null)
                     {
                         lo.DaXoa = true;
+                        lo.TenLo+= " (Đã xóa)";
                         _reposity.Update(lo);
                         _reposity.Save();
                         return Ok();

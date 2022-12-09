@@ -7,6 +7,7 @@
 
     <!-- Bootstrap CSS -->
      @await Html.PartialAsync("Partial/_Styles")
+    @RenderSection("Styles", false)
     <title>Hello, world!</title>
   </head>
   <body>
@@ -15,5 +16,6 @@
     @RenderBody();
     
    @await Html.PartialAsync("Partial/_Scripts")
+    @RenderSection("Scripts", false)
   </body>
 </html>

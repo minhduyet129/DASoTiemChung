@@ -1,73 +1,648 @@
 ﻿@{
     Layout = "_SearchLayout";
 }
- <div>
-      <header>
+@using DASoTiemChung.Controllers
+
+@section Styles {
+    <style type="text/css">
+    </style>
+}
+
+    <div>
         <div class="fixed-top align-items-center " style="background: linear-gradient(133deg,#ed1b23,#2e3091,#253494)!important">
-          <div class="container">
-            <div class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
-              <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
-                <svg  xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-activity text-white" viewBox="0 0 16 16">
-                  <path fill-rule="evenodd" d="M6 2a.5.5 0 0 1 .47.33L10 12.036l1.53-4.208A.5.5 0 0 1 12 7.5h3.5a.5.5 0 0 1 0 1h-3.15l-1.88 5.17a.5.5 0 0 1-.94 0L6 3.964 4.47 8.171A.5.5 0 0 1 4 8.5H.5a.5.5 0 0 1 0-1h3.15l1.88-5.17A.5.5 0 0 1 6 2Z"/>
-                </svg>
-                <span  class="fs-5 text-white ml-3 fontmobile text-center fw-bold " >CỔNG THÔNG TIN TIÊM CHỦNG COVID-19</span>
-                <svg  xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-activity text-white" viewBox="0 0 16 16">
-                  <path fill-rule="evenodd" d="M6 2a.5.5 0 0 1 .47.33L10 12.036l1.53-4.208A.5.5 0 0 1 12 7.5h3.5a.5.5 0 0 1 0 1h-3.15l-1.88 5.17a.5.5 0 0 1-.94 0L6 3.964 4.47 8.171A.5.5 0 0 1 4 8.5H.5a.5.5 0 0 1 0-1h3.15l1.88-5.17A.5.5 0 0 1 6 2Z"/>
-                </svg>
-              </a>
-        
-              <ul class="nav nav-pills">
-                <li class="nav-item"><a href="#" class="nav-link text-white" aria-current="page">Home</a></li>
-                <li class="nav-item"><a href="#" class="nav-link text-white">Features</a></li>
-                <li class="nav-item"><a href="#" class="nav-link text-white">Pricing</a></li>
-                <li class="nav-item"><a href="#" class="nav-link text-white">FAQs</a></li>
-                <li class="nav-item"><a href="#" class="nav-link text-white">About</a></li>
-              </ul>
+            <div class="container">
+                <div class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
+                    <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-activity text-white" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M6 2a.5.5 0 0 1 .47.33L10 12.036l1.53-4.208A.5.5 0 0 1 12 7.5h3.5a.5.5 0 0 1 0 1h-3.15l-1.88 5.17a.5.5 0 0 1-.94 0L6 3.964 4.47 8.171A.5.5 0 0 1 4 8.5H.5a.5.5 0 0 1 0-1h3.15l1.88-5.17A.5.5 0 0 1 6 2Z" />
+                        </svg>
+                        <span class="fs-5 text-white ml-3 fontmobile text-center fw-bold ">CỔNG THÔNG TIN TIÊM CHỦNG COVID-19</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-activity text-white" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M6 2a.5.5 0 0 1 .47.33L10 12.036l1.53-4.208A.5.5 0 0 1 12 7.5h3.5a.5.5 0 0 1 0 1h-3.15l-1.88 5.17a.5.5 0 0 1-.94 0L6 3.964 4.47 8.171A.5.5 0 0 1 4 8.5H.5a.5.5 0 0 1 0-1h3.15l1.88-5.17A.5.5 0 0 1 6 2Z" />
+                        </svg>
+                    </a>
+
+                    <ul class="nav nav-pills">
+                        <li class="nav-item"><a href="#" class="nav-link text-white" aria-current="page">Home</a></li>
+                        <li class="nav-item"><a href="#" class="nav-link text-white">Features</a></li>
+                        <li class="nav-item"><a href="#" class="nav-link text-white">Pricing</a></li>
+                        <li class="nav-item"><a href="#" class="nav-link text-white">FAQs</a></li>
+                        <li class="nav-item"><a href="#" class="nav-link text-white">About</a></li>
+                    </ul>
+                </div>
             </div>
-          </div>
         </div>
-    
-      </header>
-    
-      <main>
-        
-      </main>
-    
-      <footer class="pt-4 my-md-5 pt-md-5 border-top">
-        <div class="row">
-          <div class="col-12 col-md">
-            <img class="mb-2" src="/docs/5.0/assets/brand/bootstrap-logo.svg" alt="" width="24" height="19">
-            <small class="d-block mb-3 text-muted">© 2017–2021</small>
-          </div>
-          <div class="col-6 col-md">
-            <h5>Features</h5>
-            <ul class="list-unstyled text-small">
-              <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Cool stuff</a></li>
-              <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Random feature</a></li>
-              <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Team feature</a></li>
-              <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Stuff for developers</a></li>
-              <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Another one</a></li>
-              <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Last time</a></li>
-            </ul>
-          </div>
-          <div class="col-6 col-md">
-            <h5>Resources</h5>
-            <ul class="list-unstyled text-small">
-              <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Resource</a></li>
-              <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Resource name</a></li>
-              <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Another resource</a></li>
-              <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Final resource</a></li>
-            </ul>
-          </div>
-          <div class="col-6 col-md">
-            <h5>About</h5>
-            <ul class="list-unstyled text-small">
-              <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Team</a></li>
-              <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Locations</a></li>
-              <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Privacy</a></li>
-              <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Terms</a></li>
-            </ul>
-          </div>
-        </div>
-      </footer>
     </div>
+
+    <div>
+        <div class="page-heading">
+            <div class="page-title">
+                <div class="row">
+                    <div class="col-12 col-md-6 order-md-1 order-last">
+                        <h3>@Html.Raw(ViewBag.Title)</h3>
+
+                    </div>
+                    <div class="col-12 col-md-6 order-md-2 order-first">
+                        <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
+                            <ol class="breadcrumb">
+                                @*<li class="breadcrumb-item"><a href="javascript:;">Dữ liệu cơ bản (v2)</a></li>*@
+                                @*<li class="breadcrumb-item active" aria-current="page">Quản lý trường học (v2)</li>*@
+                            </ol>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <section class="section">
+                <div class="card border">
+                    <div class="card-header d-flex align-items-center">
+                        <h4 class="card-title m-0">Tìm kiếm</h4>
+                        <button class="btn ms-auto"
+                                type="button"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#search"
+                                aria-expanded="true"
+                                aria-controls="search">
+                            <i class="fa fa-angle-down"></i>
+                        </button>
+                    </div>
+                    <div class="card-content show" id="search">
+                        <div class="card-body">
+                            <form id="searchForm" class="form">
+                                <div class="row">
+                                    <div class="col-md-3 col-12">
+                                        <div class="form-group">
+                                            <label for="searchTenNguoiDan">Tên người dân</label>
+                                            <div class="position-relative">
+                                                <input type="text" id="searchTenNguoiDan" class="form-control"
+                                                       placeholder="Nhập tên người dân muốn tìm" name="school-name">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-3 col-12">
+                                        <div class="form-group">
+                                            <label for="searchSoCccdhc">Số căn cước công dân</label>
+                                            <div class="position-relative">
+                                                <input type="text" id="searchSoCccdhc" class="form-control"
+                                                       placeholder="Nhập số căn cước công dân muốn tìm" name="school-name">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-12">
+                                        <div class="form-group">
+                                            <label for="searchTenVacXin">Tên vắc xin</label>
+                                            <div class="position-relative">
+                                                <input type="text" id="searchTenVacXin" class="form-control"
+                                                       placeholder="Nhập tên vắc xin muốn tìm" name="school-name">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-12">
+                                        <div class="form-group">
+                                            <label for="searchTenDiemTiem">Tên điểm tiêm</label>
+                                            <div class="position-relative">
+                                                <input type="text" id="searchTenDiemTiem" class="form-control"
+                                                       placeholder="Nhập tên điểm tiêm muốn tìm" name="school-name">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12 d-flex justify-content-end">
+                                        <button type="submit"
+                                                class="btn btn-primary me-1 mb-1">
+                                            Tìm kiếm
+                                        </button>
+                                        @*<button type="reset"
+                                        class="btn btn-light-secondary me-1 mb-1">
+                                        Reset
+                                        </button>*@
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Striped rows start -->
+            <section class="section">
+                <div class="card border">
+                    <div class="card-header d-flex align-items-center">
+                        <div class="d-flex justify-content-between w-100">
+                            <h4 class="card-title m-0">Danh sách phiếu tiêm vắc xin</h4>
+                            <button type="button" class="btn btn-primary"
+                                    onclick="openForm({ url: '@Url.RouteUrl(TraCuuTiemChungController.RouteForm, new { id = 0 })' })">
+                                Thêm mới
+                            </button>
+                        </div>
+                    </div>
+                    @*<div class="card-body"></div>*@
+                    <div id="dataTable" style="min-height: 100px;">
+                    </div>
+                </div>
+            </section>
+            <!-- Striped rows end -->
+        </div>
+        <div class="modal fade" id="detailModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="pt-4 my-md-5 pt-md-5 border-top">
+        <div class="row">
+            <div class="col-12 col-md">
+                <img class="mb-2" src="/docs/5.0/assets/brand/bootstrap-logo.svg" alt="" width="24" height="19">
+                <small class="d-block mb-3 text-muted">© 2017–2021</small>
+            </div>
+            <div class="col-6 col-md">
+                <h5>Features</h5>
+                <ul class="list-unstyled text-small">
+                    <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Cool stuff</a></li>
+                    <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Random feature</a></li>
+                    <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Team feature</a></li>
+                    <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Stuff for developers</a></li>
+                    <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Another one</a></li>
+                    <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Last time</a></li>
+                </ul>
+            </div>
+            <div class="col-6 col-md">
+                <h5>Resources</h5>
+                <ul class="list-unstyled text-small">
+                    <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Resource</a></li>
+                    <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Resource name</a></li>
+                    <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Another resource</a></li>
+                    <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Final resource</a></li>
+                </ul>
+            </div>
+            <div class="col-6 col-md">
+                <h5>About</h5>
+                <ul class="list-unstyled text-small">
+                    <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Team</a></li>
+                    <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Locations</a></li>
+                    <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Privacy</a></li>
+                    <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Terms</a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+</div>
+@section Scripts {
+    <script type="text/javascript">
+        let $dataTable;
+        let $searchTenNguoiDan;
+        let $searchSoCccdhc;
+        let $searchTenDiemTiem;
+        let $searchTenVacXin;
+        let $detailModal;
+        let detailModalInstance;
+        let SkipCount = 1;
+        let MaxResultCount = 10;
+        let pagingAjaxInstance;
+        let detailAjaxInstance;
+
+        $(document).ready(function () {
+            $dataTable = $("#dataTable");
+            $searchTenNguoiDan = $("#searchTenNguoiDan");
+            $searchSoCccdhc = $("#searchSoCccdhc");
+            $searchTenDiemTiem = $("#searchTenDiemTiem");
+            $searchTenVacXin = $("#searchTenVacXin");
+
+
+            $searchForm = $("#searchForm");
+            $detailModal = $("#detailModal");
+            detailModalInstance = new bootstrap.Modal(
+                document.getElementById("detailModal"),
+                {
+                    backdrop: 'static',
+                    keyboard: false,
+                    focus: false,
+                }
+            );
+
+            //$detailModal.on('shown.bs.modal', function() {
+            //    $(document).off('focusin.modal');
+            //});
+
+            $detailModal.on("hide.bs.modal", function (e) {
+                detailAjaxInstance && detailAjaxInstance.abort();
+                detailAjaxInstance = null;
+            });
+
+            $(document)
+                .unbind()
+                .on("submit", "#searchForm", function (e) {
+                    e.preventDefault();
+
+                    getPaging({ index: 1 });
+                });
+
+            //getPaging();
+        });
+
+        function getPaging(
+            { index, size } = { index: SkipCount, size: MaxResultCount }
+        ) {
+            pagingAjaxInstance && pagingAjaxInstance.abort();
+            pagingAjaxInstance = null;
+
+            SkipCount = index || SkipCount;
+            MaxResultCount = size || MaxResultCount;
+
+            let payload = {
+                SkipCount,
+                MaxResultCount,
+                TenNguoiDan: $.trim($searchTenNguoiDan.val()).length > 0 ? $.trim($searchTenNguoiDan.val()) : "",
+                SoCccdhc: $.trim($searchSoCccdhc.val()).length > 0 ? $.trim($searchSoCccdhc.val()) : "",
+                TenDiemTiem: $.trim($searchTenDiemTiem.val()).length > 0 ? $.trim($searchTenDiemTiem.val()) : "",
+                TenVacXin: $.trim($searchTenVacXin.val()).length > 0 ? $.trim($searchTenVacXin.val()) : "",
+            };
+
+            pagingAjaxInstance = $.ajax({
+                url: `@Url.RouteUrl(TraCuuTiemChungController.RouteDataGrid)`,
+                method: "GET",
+                data: payload,
+                beforeSend: () => {
+                    $dataTable.FLoading("show");
+                },
+                success: (result) => {
+                    $dataTable.empty().append(result);
+                },
+                error: (jqXHR, textStatus, errorThrown) => {
+                    let error = { message: "Đã có lỗi xảy ra, vui lòng liên hệ quản trị!" };
+                    if ($.trim(jqXHR.responseText).length > 0) {
+                        try {
+                            error = (JSON.parse(jqXHR.responseText) ?? { error: { ...error } })
+                                .error;
+                        } catch {
+                            error.message = jqXHR.responseText;
+                        }
+                    }
+                    Swal.fire({
+                        icon: "error",
+                        title: "Ôi không...",
+                        text: error.message,
+                        //footer: '<a href="javascript:;">Why do I have this issue?</a>'
+                    });
+                },
+            }).always(() => {
+                $dataTable.FLoading("hide");
+            });
+        }
+
+        function openForm({ url }) {
+            detailAjaxInstance = $.ajax({
+                url,
+                method: "GET",
+                beforeSend: () => {
+                    $("#main").FLoading("show");
+                    //$detailModal.find(".modal-body").empty().append("Đang tải dữ liệu...");
+                },
+                success: (result) => {
+                    $detailModal.find(".modal-content").empty().append(result);
+
+
+
+                    detailModalInstance.show();
+                },
+                error: (jqXHR, textStatus, errorThrown) => {
+                    let error = { message: "Đã có lỗi xảy ra, vui lòng liên hệ quản trị!" };
+                    if ($.trim(jqXHR.responseText).length > 0) {
+                        try {
+                            error = (JSON.parse(jqXHR.responseText) ?? { error: { ...error } })
+                                .error;
+                        } catch {
+                            error.message = jqXHR.responseText;
+                        }
+                    }
+                    Swal.fire({
+                        icon: "error",
+                        title: "Ôi không...",
+                        text: error.message,
+                        //footer: '<a href="javascript:;">Why do I have this issue?</a>'
+                    });
+                },
+            }).always(() => {
+                $("#main").FLoading("hide");
+            });
+        }
+
+        function saveForm({ url, method }) {
+            if (!$("#pcTenNguoiDan").val()) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Ôi không...',
+                    text: 'Vui lòng nhập tên người dân',
+                    //footer: '<a href="javascript:;">Why do I have this issue?</a>'
+                });
+                return;
+            } if (!$("#pcSoCccdhc").val()) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Ôi không...',
+                    text: 'Vui lòng nhập số căn cước công dân',
+                    //footer: '<a href="javascript:;">Why do I have this issue?</a>'
+                });
+                return;
+            }
+            if (!$("#pcThoiGianTiem").val()) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Ôi không...',
+                    text: 'Vui lòng chọn thời gian tiêm',
+                    //footer: '<a href="javascript:;">Why do I have this issue?</a>'
+                });
+                return;
+            }
+            if (!$("#pcNhanVien").val()) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Ôi không...',
+                    text: 'Vui lòng chọn nhân viên',
+                    //footer: '<a href="javascript:;">Why do I have this issue?</a>'
+                });
+                return;
+            }
+            if (!$("#pcSoCccdhc").val()) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Ôi không...',
+                    text: 'Vui lòng nhập số căn cước công dân',
+                    //footer: '<a href="javascript:;">Why do I have this issue?</a>'
+                });
+                return;
+            }
+            if (!$("#pcMuiTiem").val()) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Ôi không...',
+                    text: 'Vui lòng chọn mũi tiêm',
+                    //footer: '<a href="javascript:;">Why do I have this issue?</a>'
+                });
+                return;
+            }
+            if (!$("#pcDiemTiem").val()) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Ôi không...',
+                    text: 'Vui lòng chọn điểm tiêm',
+                    //footer: '<a href="javascript:;">Why do I have this issue?</a>'
+                });
+                return;
+            }
+            if (!$("#pcMuiTiem").val()) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Ôi không...',
+                    text: 'Vui lòng chọn mũi tiêm',
+                    //footer: '<a href="javascript:;">Why do I have this issue?</a>'
+                });
+                return;
+            }
+            if (!$("#pcVacXin").val()) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Ôi không...',
+                    text: 'Vui lòng chọn loại vắc xin',
+                    //footer: '<a href="javascript:;">Why do I have this issue?</a>'
+                });
+                return;
+            }
+
+            let pcId = $("#pcId").val();
+            let pcTenNguoiDan = $("#pcTenNguoiDan").val();
+            let pcSoCccdhc = $("#pcSoCccdhc").val();
+            let pcMuiTiem = $("#pcMuiTiem").val();
+            let pcThoiGianTiem = $("#pcThoiGianTiem").val();
+            let pcDiemTiem = $("#pcDiemTiem").val();
+            let pcNhanVien = $("#pcNhanVien").val();
+            let pcVacXin = $("#pcVacXin").val();
+            let pcPhanUngSauTiem = $("#pcPhanUngSauTiem").val();
+            let detail = [];
+            let maBenhLys = $(".maBenhLy");
+            let tinhTrangs = $(".tinhTrang");
+            let trieuChungs = $(".trieuChung");
+
+            for (let i = 0; i < maBenhLys.length; i++) {
+                let data = {
+                    MaBenhLy: Number(maBenhLys[i].innerText),
+                    TinhTrang: tinhTrangs[i].value,
+                    TrieuChung: trieuChungs[i].value
+
+                }
+                detail.push(data);
+            }
+
+            $.ajax({
+                url,
+                method,
+                data: {
+                    MaPhieuTiem: pcId,
+                    TenNguoiDan: pcTenNguoiDan,
+                    SoCccdhc: pcSoCccdhc,
+                    ThoiGianTiem: pcThoiGianTiem,
+                    MaMuiTiem: pcMuiTiem,
+                    MaNhanVien: pcNhanVien,
+                    MaKho: pcDiemTiem,
+                    MaVacXinTheoLo: pcVacXin,
+                    PhanUngSauTiem: pcPhanUngSauTiem,
+                    PhieuTiemBenhLys: detail
+
+
+                },
+                beforeSend: () => {
+                    //$detailModal.FLoading("show");
+                    //$detailModal.find(".modal-body").empty().append("Đang tải dữ liệu...");
+                },
+                success: (result) => {
+                    detailModalInstance.hide();
+                    getPaging();
+
+                    Swal.fire({
+                        icon: "success",
+                        title: "Thực hiện thành công",
+                    }).then((result) => {
+
+                    });
+                },
+                error: (jqXHR, textStatus, errorThrown) => {
+                    let error = { message: "Đã có lỗi xảy ra, vui lòng liên hệ quản trị!" };
+                    if (jqXHR.status == 403) {
+                        error.message = "Bạn không có quyền thực hiện thao tác này!";
+                    };
+                    if ($.trim(jqXHR.responseText).length > 0) {
+                        try {
+                            error = (JSON.parse(jqXHR.responseText) ?? { error: { ...error } })
+                                .error;
+                        } catch {
+                            error.message = jqXHR.responseText;
+                        }
+                    }
+                    Swal.fire({
+                        icon: "error",
+                        title: "Ôi không...",
+                        text: error.message,
+                        //footer: '<a href="javascript:;">Why do I have this issue?</a>'
+                    });
+                },
+            }).always(() => {
+                //$detailModal.FLoading("hide");
+            });
+        }
+
+        function closeForm() {
+            Swal.fire({
+                icon: 'question',
+                title: "Bạn có chắc chắn muốn đóng cửa sổ này?",
+                text: "Nếu bạn đóng cửa sổ này, tất cả các thay đổi sẽ không được lưu!",
+                showCancelButton: true,
+                confirmButtonText: 'Có',
+                confirmButtonColor: '#d33',
+                cancelButtonText: 'Không',
+                cancelButtonColor: '#3085d6',
+                focusCancel: true,
+            }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    detailModalInstance.hide();
+                }
+            });
+        }
+
+        function confirmOnDelete({ url }) {
+            Swal.fire({
+                icon: 'question',
+                title: "Bạn có chắc chắn muốn xóa?",
+                showCancelButton: true,
+                confirmButtonText: 'Có',
+                confirmButtonColor: '#d33',
+                cancelButtonText: 'Không',
+                cancelButtonColor: '#3085d6',
+                focusCancel: true,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    deleteItem({ url });
+                }
+            });
+        }
+
+        function deleteItem({ url }) {
+            $.ajax({
+                url,
+                method: "DELETE",
+                beforeSend: () => {
+                    //$detailModal.FLoading("show");
+                    //$detailModal.find(".modal-body").empty().append("Đang tải dữ liệu...");
+                },
+                success: (result) => {
+                    getPaging();
+
+                    Swal.fire({
+                        icon: "success",
+                        title: "Thực hiện thành công",
+                    }).then((result) => {
+
+                    });
+                },
+                error: (jqXHR, textStatus, errorThrown) => {
+                    let error = { message: "Đã có lỗi xảy ra, vui lòng liên hệ quản trị!" };
+                    if ($.trim(jqXHR.responseText).length > 0) {
+                        try {
+                            error = (JSON.parse(jqXHR.responseText) ?? { error: { ...error } })
+                                .error;
+                        } catch {
+                            error.message = jqXHR.responseText;
+                        }
+                    }
+                    Swal.fire({
+                        icon: "error",
+                        title: "Ôi không...",
+                        text: error.message,
+                        //footer: '<a href="javascript:;">Why do I have this issue?</a>'
+                    });
+                },
+            }).always(() => {
+                //$detailModal.FLoading("hide");
+            });
+        }
+
+
+
+        //search product
+
+        function searchProductInput(e) {
+            var key = e.keyCode || e.which;
+            if (key == 13) {
+                $.ajax({
+                    url: `@Url.RouteUrl(VacXinTheoLoController.RouteDataJson)`,
+                    method: "GET",
+                    data: {
+                        TenVacXinTheoLo: $("#searchProductInput").val(),
+                        SkipCount: 1,
+                        MaxResultCount: 20
+                    }
+                    ,
+                    success: (result) => {
+                        $("#showProduct").html('');
+
+                        var productlist = '';
+                        for (let i = 0; i < result.items.length; i++) {
+                            productlist += `<div class="mx-3" style="cursor:pointer" onclick="appendCombo('${result.items[i].maVacXinTheoLo}','${result.items[i].tenVacXinTheoLo}')">${result.items[i].tenVacXinTheoLo}</div><hr class="m-0">`
+                        }
+
+
+                        $("#showProduct").append(productlist);
+
+                    },
+                    error: (jqXHR, textStatus, errorThrown) => {
+                        let error = { message: "Đã có lỗi xảy ra, vui lòng liên hệ quản trị!" };
+                        if ($.trim(jqXHR.responseText).length > 0) {
+                            try {
+                                error = (JSON.parse(jqXHR.responseText) ?? { error: { ...error } })
+                                    .error;
+                            } catch {
+                                error.message = jqXHR.responseText;
+                            }
+                        }
+                        Swal.fire({
+                            icon: "error",
+                            title: "Ôi không...",
+                            text: error.message,
+                            //footer: '<a href="javascript:;">Why do I have this issue?</a>'
+                        });
+                    },
+                }).always(() => {
+                    //$detailModal.FLoading("hide");
+                });
+            }
+        }
+
+        function appendCombo(id, name) {
+            $("#searchProductInput").val(name);
+
+            if ($(`.tr-${id}`).length < 1) {
+                let tr = '';
+                tr = `<tr class="tr-${id}">
+
+
+                                                    <th scope="row"></th>
+                                                            <td class="d-none maVacXinTheoLo">${id}</td>
+                                                            <td>${name}</td>
+                                                            <td><input type="number" min="0" value="0" class="form-control donGiaNhap" placeholder="Giá nhập"></td>
+                                                            <td><input type="number" min="0" value="0" class="form-control soLuongNhap" placeholder="Số lượng nhập"></td>
+                                                            <td><i style="cursor:pointer;" onclick="removeProduct('${id}')" class="bi bi-trash-fill"></i></td>
+                                                </tr>
+                                                `;
+                $("#comboBody").append(tr);
+            }
+
+        }
+
+        function removeProduct(id) {
+            $(`.tr-${id}`).remove();
+        }
+    </script>
+}

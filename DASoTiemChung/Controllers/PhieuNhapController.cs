@@ -364,10 +364,20 @@ namespace DASoTiemChung.Controllers
             {
                 if (id.HasValue)
                 {
+                    //lo lay dc cai ban ghi phieu nn
                     var lo = _reposity.GetById(id.Value);
                     if (lo != null)
                     {
                         var detaillist = _context.ChiTietPhieuNhaps.Where(x => x.MaPhieuNhap == lo.MaPhieuNhap).ToList();
+                        foreach(var detail in detaillist)
+                        {
+                            var vctl = _context.VacXinTheoLos.Find(detail.MaVacXinTheoLo);
+                            vctl.SoLuong -= detail.SoLuong;
+                            _context.Update(vctl);
+
+
+                        }
+
                         _context.ChiTietPhieuNhaps.RemoveRange(detaillist);
                         lo.DaXoa = true;
                         _reposity.Update(lo);

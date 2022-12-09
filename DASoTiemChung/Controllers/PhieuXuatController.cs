@@ -192,7 +192,7 @@ namespace DASoTiemChung.Controllers
                         if (vacXinTheoLo != null)
                         {
                             if (vacXinTheoLo.SoLuong < ctpn.SoLuong)
-                                return BadRequest($"vắc xin tại kho không đủ rồi.Số lượng còn lại {vacXinTheoLo.SoLuong}");
+                                return BadRequest($"vắc xin {vacXinTheoLo.TenVacXinTheoLo} tại kho không đủ rồi.Số lượng còn lại {vacXinTheoLo.SoLuong}");
                             vacXinTheoLo.SoLuong -= ctpn.SoLuong;
                             
                             _context.Update(vacXinTheoLo);
@@ -303,7 +303,7 @@ namespace DASoTiemChung.Controllers
                             if (vacXinTheoLo != null)
                             {
                                 if (vacXinTheoLo.SoLuong < ctpn.SoLuong)
-                                    return BadRequest($"vắc xin tại kho không đủ rồi.Số lượng còn lại {vacXinTheoLo.SoLuong}");
+                                    return BadRequest($"vắc xin {vacXinTheoLo.TenVacXinTheoLo} tại kho không đủ rồi.Số lượng còn lại {vacXinTheoLo.SoLuong}");
                                 vacXinTheoLo.SoLuong -= ctpn.SoLuong;
 
                                 _context.Update(vacXinTheoLo);
@@ -367,37 +367,60 @@ namespace DASoTiemChung.Controllers
         [HttpDelete("[controller]/{id}", Name = RouteDelete)]
         public async Task<IActionResult> Delete(int? id)
         {
-
-            try
+            using (var transaction = _context.Database.BeginTransaction())
             {
-                if (id.HasValue)
+                try
                 {
-                    var lo = _reposity.GetById(id.Value);
-                    if (lo != null)
+                    if (id.HasValue)
                     {
-                        var detaillist = _context.ChiTietPhieuXuats.Where(x => x.MaPhieuXuat == lo.MaPhieuXuat).ToList();
-                        _context.ChiTietPhieuXuats.RemoveRange(detaillist);
-                        lo.DaXoa = true;
-                        _reposity.Update(lo);
-                        _reposity.Save();
-                        return Ok();
-                    }
-                    else
-                    {
-                        return NotFound($"Không tìm thấy lô với id {id}");
+                        var lo = _reposity.GetById(id.Value);
+                        if (lo != null)
+                        {
+                            var detaillist = _context.ChiTietPhieuXuats.Where(x => x.MaPhieuXuat == lo.MaPhieuXuat).ToList();
+                            foreach (var detail in detaillist)
+                            {
+                                var vctl = _context.VacXinTheoLos.Find(detail.MaVacXinTheoLo);
+                                vctl.SoLuong += detail.SoLuong;
+                                _context.Update(vctl);
+
+                                var vxtlDiemTiem = _context.VacXinTheoLos.FirstOrDefault(x => x.MaVacXin == vctl.MaVacXin && x.MaKho == lo.MaKhoNhan && x.MaLo == vctl.MaLo && x.MaNhaSanXuat == vctl.MaNhaSanXuat);
+                                if (vxtlDiemTiem != null)
+                                {
+                                    vxtlDiemTiem.SoLuong -= detail.SoLuong;
+                                    _context.Update(vxtlDiemTiem);
+
+                                }
+
+
+                            }
+                            _context.ChiTietPhieuXuats.RemoveRange(detaillist);
+                            lo.DaXoa = true;
+                            _reposity.Update(lo);
+                            _reposity.Save();
+                            transaction.Commit();
+                            return Ok();
+                        }
+                        else
+                        {
+                            transaction.Rollback();
+
+                            return NotFound($"Không tìm thấy lô với id {id}");
+                        }
+
                     }
 
                 }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+
+                    _logger.LogError(ex, ex.ToString());
+                }
+
+
 
             }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, ex.ToString());
-            }
-
-
             return BadRequest("Có lỗi xảy ra!");
-
         }
     }
 }

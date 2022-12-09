@@ -221,6 +221,7 @@ namespace DASoTiemChung.Controllers
                     if (lo != null)
                     {
                         lo.DaXoa = true;
+                        lo.TenNhanVien += " (Đã xóa)";
                         _reposity.Update(lo);
                         _reposity.Save();
                         return Ok();

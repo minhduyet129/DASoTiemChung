@@ -235,7 +235,9 @@ namespace DASoTiemChung.Controllers
                     var lo = _reposity.GetById(id.Value);
                     if (lo != null)
                     {
+
                         lo.DaXoa = true;
+                        lo.TenKho += " (Đã xóa)";
                         _reposity.Update(lo);
                         _reposity.Save();
                         return Ok();
