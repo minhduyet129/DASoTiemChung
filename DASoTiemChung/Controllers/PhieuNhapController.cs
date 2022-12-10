@@ -71,7 +71,7 @@ namespace DASoTiemChung.Controllers
             }
             int skipRecord = (input.SkipCount - 1) * input.MaxResultCount;
             var take = input.MaxResultCount;
-            var query = _context.PhieuNhaps.Include(x => x.MaNhanVienNavigation).AsQueryable().Where(x=>!x.DaXoa);
+            var query = _context.PhieuNhaps.Include(x => x.MaNhanVienNavigation).Include(x=>x.MaKhoNavigation).AsQueryable().Where(x=>!x.DaXoa);
             try
             {
                 if (!string.IsNullOrEmpty(input.MaPhieuNhap))
@@ -87,7 +87,7 @@ namespace DASoTiemChung.Controllers
                     query = query.Where(x => x.ThoiGianNhap.Equals(input.ThoiGianNhap));
                 }
 
-                if (currentUser.MaQuyenNavigation.TenQuyen.Equals(Quyens.NhanVienCapCao) || currentUser.MaQuyenNavigation.TenQuyen.Equals(Quyens.NhanVien))
+                if (currentUser.MaQuyenNavigation.TenQuyen.Equals(Quyens.TruongKho) || currentUser.MaQuyenNavigation.TenQuyen.Equals(Quyens.ThuKho))
                 {
                     query = query.Where(x => x.MaKho == currentUser.MaKho);
                 }
@@ -135,7 +135,7 @@ namespace DASoTiemChung.Controllers
                 {
                     if (id == 0)
                     {
-                        if (currentUser.MaQuyenNavigation.TenQuyen.Equals(Quyens.NhanVienCapCao) || currentUser.MaQuyenNavigation.TenQuyen.Equals(Quyens.NhanVien))
+                        if (currentUser.MaQuyenNavigation.TenQuyen.Equals(Quyens.ThuKho) || currentUser.MaQuyenNavigation.TenQuyen.Equals(Quyens.TruongKho))
                         {
                             result.MaKho = currentUser.MaKho;
                             var currentKho = _context.Khos.Find(result.MaKho);
@@ -163,7 +163,7 @@ namespace DASoTiemChung.Controllers
 
                         if (result != null)
                         {
-                            if (currentUser.MaQuyenNavigation.TenQuyen.Equals(Quyens.NhanVienCapCao) || currentUser.MaQuyenNavigation.TenQuyen.Equals(Quyens.NhanVien))
+                            if (currentUser.MaQuyenNavigation.TenQuyen.Equals(Quyens.TruongKho) || currentUser.MaQuyenNavigation.TenQuyen.Equals(Quyens.ThuKho))
                             {
                                 var userInPhieuNhap = _context.NhanViens.Find(result.MaNhanVien);
 
@@ -185,7 +185,7 @@ namespace DASoTiemChung.Controllers
                                 }
                                 var khoInPhieuNhap = _context.Khos.Find(result.MaKho);
 
-                                ViewBag.DiemTiems = new List<Kho>() { khoInPhieuNhap };
+                                ViewBag.Khos = new List<Kho>() { khoInPhieuNhap };
                             }
                             if (currentUser.MaQuyenNavigation.TenQuyen.Equals(Quyens.QuanLy))
                             {

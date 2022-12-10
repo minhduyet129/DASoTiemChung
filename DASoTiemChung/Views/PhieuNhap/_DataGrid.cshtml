@@ -71,7 +71,7 @@
                     
                     <td align="center">@Html.Raw(combo.ThoiGianNhap.Value.ToString("dd/MM/yyyy"))</td>
                     <td align="center">@Html.Raw(combo.MaNhanVienNavigation.TenTaiKhoan)</td>
-                    <td align="center">@Html.Raw(combo.MaKhoNavigation.TenKho)</td>
+                    <td align="center">@Html.Raw(combo.MaKhoNavigation?.TenKho)</td>
                     <td align="center">@Html.Raw(combo.GhiChu)</td>
                     <td align="center">
                         <div class="btn-group">

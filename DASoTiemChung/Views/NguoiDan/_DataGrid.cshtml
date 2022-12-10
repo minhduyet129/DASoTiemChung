@@ -14,18 +14,14 @@
         <thead>
             <tr>
                 <th class="text-center">#</th>
-                <th class="text-center col-lg-3">Họ Tên người dân</th>
-                <th class="text-center col-lg-3">Số thẻ bảo hiểm y tế</th>
-                <th class="text-center col-lg-3">Số điện thoại</th>
+                <th class="text-center col-lg-3">Họ Tên</th>
+                <th class="text-center col-lg-3">Số thẻ BHYT</th>
+                <th class="text-center col-lg-3">SDT</th>
                 <th class="text-center col-lg-3">Số CCCD/HC</th>
                 <th class="text-center col-lg-3">Nghề nghiệp</th>
-                <th class="text-center col-lg-3">Đơn vị công tác</th>
                 <th class="text-center col-lg-3">Địa chỉ</th>
                 <th class="text-center col-lg-3">Email</th>
-                <th class="text-center col-lg-3">Dân tộc quốc tịch</th>
-                <th class="text-center col-lg-3">Người dám hộ</th>
-                <th class="text-center col-lg-3">Quan hệ với người dám hộ</th>
-                <th class="text-center col-lg-3">Số điện thoại người giám hộ</th>
+                <th class="text-center col-lg-3">Quốc Tịch</th>
 
                 <th class="text-center">Thao tác</th>
             </tr>
@@ -37,25 +33,21 @@
             <tr>
                 <td align="center">@(orderNum++)</td>
 
-                <td class="ps-4"> @Html.Raw(category.HoTen)</td>
-                <td class="ps-4"> @Html.Raw(category.SoTheBaoHiemYte)</td>
-                <td class="ps-4"> @Html.Raw(category.SoDienThoai)</td>
-                <td class="ps-4"> @Html.Raw(category.SoCccdhc)</td>
-                <td class="ps-4"> @Html.Raw(category.NgheNghiep)</td>
-                <td class="ps-4"> @Html.Raw(category.DonViCongTac)</td>
+                    <td class="center" > @Html.Raw(category.HoTen)</td>
+                    <td class ="center"> @Html.Raw(category.SoTheBaoHiemYte)</td>
+                    <td class="center"> @Html.Raw(category.SoDienThoai)</td>
+                    <td class="center"> @Html.Raw(category.SoCccdhc)</td>
+                    <td class="center"> @Html.Raw(category.NgheNghiep)</td>
 
-                <td class="ps-4">
+                <td class="center">
                     @Html.Raw(category.SoNha + "," + category.XaPhuongNavigation.TenXaPhuong +
                 "," + category.QuanHuyenNavigation.TenQuanHuyen +
                 "," + category.TinhThanhPhoNavigation.TenTinhThanhPho
                 )
 
                 </td>
-                <td class="ps-4"> @Html.Raw(category.Email)</td>
-                <td class="ps-4"> @Html.Raw(category.DanTocQuocTich)</td>
-                <td class="ps-4"> @Html.Raw(category.NguoiDamHo)</td>
-                <td class="ps-4"> @Html.Raw(category.QuanHeNguoiDamHo)</td>
-                <td class="ps-4"> @Html.Raw(category.SoDienThoaiNguoiDamHo)</td>
+                    <td class="center"> @Html.Raw(category.Email)</td>
+                    <td class="center"> @Html.Raw(category.DanTocQuocTich)</td>
 
 
 
