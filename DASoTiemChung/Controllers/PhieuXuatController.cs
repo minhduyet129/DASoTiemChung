@@ -37,10 +37,27 @@ namespace DASoTiemChung.Controllers
         [HttpGet("[controller]/DataGrid", Name = RouteDataGrid)]
         public async Task<IActionResult> DataGridAsync(SearchPhieuXuatDto input)
         {
-            return PartialView("_DataGrid", await GetPagingLos(input));
+            var userName = User.Identity.Name;
+            if (!string.IsNullOrEmpty(userName))
+            {
+                var currentUser = _context.NhanViens.Include(x => x.MaQuyenNavigation).FirstOrDefault(x => x.TenTaiKhoan == userName);
+                if (currentUser != null)
+                {
+                    return PartialView("_DataGrid", await GetPagingLos(input, currentUser));
+                }
+                else
+                {
+                    return BadRequest("Bạn cần đăng nhập lại để xác nhận lại người dùng!");
+                }
+            }
+            else
+            {
+                return BadRequest("Bạn cần đăng nhập lại để xác nhận lại người dùng!");
+            }
+
         }
 
-        private async Task<PagedResultDto<PhieuXuat>> GetPagingLos(SearchPhieuXuatDto input)
+        private async Task<PagedResultDto<PhieuXuat>> GetPagingLos(SearchPhieuXuatDto input, NhanVien currentUser)
         {
 
             if (input.SkipCount < 0)
@@ -78,6 +95,11 @@ namespace DASoTiemChung.Controllers
                 {
                     query = query.Where(x => x.ThoiGianXuat.Equals(input.ThoiGianXuat));
                 }
+
+                if (currentUser.MaQuyenNavigation.TenQuyen.Equals(Quyens.TruongKho) || currentUser.MaQuyenNavigation.TenQuyen.Equals(Quyens.ThuKho))
+                {
+                    query = query.Where(x => x.MaKhoXuat == currentUser.MaKho);
+                }
             }
 
             catch (Exception ex)
@@ -109,30 +131,91 @@ namespace DASoTiemChung.Controllers
         public async Task<IActionResult> Form(int id)
         {
             PhieuXuat result = new PhieuXuat();
-
-
-
-
+            ViewBag.DiemTiems = _context.Khos.OrderBy(x => x.TenKho).Where(x => !x.DaXoa && x.Kieu).ToList();
             var userName = User.Identity.Name;
             if (!string.IsNullOrEmpty(userName))
             {
                 var currentUser = _context.NhanViens.Include(x => x.MaQuyenNavigation).FirstOrDefault(x => x.TenTaiKhoan == userName);
                 if (currentUser != null)
                 {
-                    if ((bool)(currentUser.MaQuyenNavigation?.TenQuyen.Equals(Quyens.ThuKho)))
+
+                    if (id == 0)
                     {
-                        result.MaKhoXuat = currentUser.MaKho;
-                        var kho = _context.Khos.FirstOrDefault(x => x.MaKho == result.MaKhoXuat);
-                        result.MaNhanVien = currentUser.MaNhanVien;
-                        ViewBag.DiemTiems = new List<Kho>() { kho };
-                        ViewBag.NhanViens = new List<NhanVien>() { currentUser };
+                        if (currentUser.MaQuyenNavigation.TenQuyen.Equals(Quyens.ThuKho) || currentUser.MaQuyenNavigation.TenQuyen.Equals(Quyens.TruongKho))
+                        {
+                            result.MaKhoXuat = currentUser.MaKho;
+                            var currentKho = _context.Khos.Find(result.MaKhoXuat);
+                            ViewBag.Khos = new List<Kho>() { currentKho };
+                            result.MaNhanVien = currentUser.MaNhanVien;
+                            ViewBag.NhanViens = new List<NhanVien>() { currentUser };
+                        }
+                        if (currentUser.MaQuyenNavigation.TenQuyen.Equals(Quyens.QuanLy))
+                        {
+                            ViewBag.Khos = _context.Khos.Where(x => !x.DaXoa && !x.Kieu).OrderBy(x => x.TenKho).ToList();
+                            ViewBag.NhanViens = new List<NhanVien>();
+
+
+                        }
+                        
+                        result.ThoiGianXuat = DateTime.Now;
+                        return PartialView("_Form", result);
                     }
-                    if ((bool)(currentUser.MaQuyenNavigation?.TenQuyen.Equals(Quyens.QuanLy)))
+
+                    try
                     {
-                        ViewBag.Khos = _context.Khos.Where(x => !x.DaXoa && !x.Kieu).OrderBy(x => x.TenKho).ToList();
-                        ViewBag.NhanViens = _context.NhanViens.OrderBy(x => x.TenNhanVien).Where(x => !x.DaXoa).ToList();
+                        result = _context.PhieuXuats.Include(x => x.MaNhanVienNavigation).Include(x => x.ChiTietPhieuXuats).ThenInclude(x => x.MaVacXinTheoLoNavigation).FirstOrDefault(x => x.MaPhieuXuat == id);
+
+                        if (result != null)
+                        {
+                            if (currentUser.MaQuyenNavigation.TenQuyen.Equals(Quyens.TruongKho) || currentUser.MaQuyenNavigation.TenQuyen.Equals(Quyens.ThuKho))
+                            {
+                                var userInPhieuNhap = _context.NhanViens.Find(result.MaNhanVien);
+
+                                if (!userInPhieuNhap.Equals(currentUser))
+                                {
+                                    if (userInPhieuNhap.MaKho == currentUser.MaKho)
+                                    {
+                                        ViewBag.NhanViens = new List<NhanVien>() { currentUser, userInPhieuNhap };
+                                    }
+                                    else
+                                    {
+                                        ViewBag.NhanViens = new List<NhanVien>() { userInPhieuNhap };
+                                    }
+
+                                }
+                                else
+                                {
+                                    ViewBag.NhanViens = new List<NhanVien>() { userInPhieuNhap };
+                                }
+                                var khoInPhieuXuat = _context.Khos.Find(result.MaKhoXuat);
+                                
+                                ViewBag.Khos = new List<Kho>() { khoInPhieuXuat };
+                            }
+                            if (currentUser.MaQuyenNavigation.TenQuyen.Equals(Quyens.QuanLy))
+                            {
+
+                                //chỉ cho phép thay đổi nhân viên và thông số phiếu xuất , không cho phép thay đổi kho xuất
+                                var currentKho = _context.Khos.Find(result.MaKhoXuat);
+                                ViewBag.Khos = new List<Kho>() { currentKho };
+                                ViewBag.NhanViens = _context.NhanViens.OrderBy(x => x.TenNhanVien).Where(x => !x.DaXoa && x.MaKho == result.MaKhoXuat).ToList();
+
+                            }
+
+                            return PartialView("_Form", result);
+                        }
+                        else
+                        {
+                            return BadRequest("Phiếu xuất không tồn tại!.");
+                        }
+
 
                     }
+                    catch (Exception ex)
+                    {
+                        _logger.LogError(ex, ex.ToString());
+                    }
+
+
                 }
                 else
                 {
@@ -144,31 +227,8 @@ namespace DASoTiemChung.Controllers
                 return BadRequest("Bạn cần đăng nhập lại để xác nhận lại người dùng!");
             }
 
-
-           
-            ViewBag.DiemTiems = _context.Khos.OrderBy(x => x.TenKho).Where(x => !x.DaXoa &&x.Kieu).ToList();
             
-
-
-            if (id == 0)
-            {
-
-                result.ThoiGianXuat = DateTime.Now;
-                return PartialView("_Form", result);
-            }
-
-
-            try
-            {
-                result = _context.PhieuXuats.Include(x => x.MaNhanVienNavigation).Include(x => x.ChiTietPhieuXuats).ThenInclude(x => x.MaVacXinTheoLoNavigation).FirstOrDefault(x => x.MaPhieuXuat == id);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, ex.ToString());
-            }
-
-
-
+            
             return PartialView("_Form", result);
         }
 
@@ -249,7 +309,7 @@ namespace DASoTiemChung.Controllers
 
         }
         public const string RouteUpdate = "PhieuXuatPutUpdate";
-        [Authorize(Roles = Quyens.QuanLy)]
+        [Authorize(Roles = Quyens.ChinhSuaKho)]
         [HttpPut("[controller]/{id}", Name = RouteUpdate)]
         public async Task<IActionResult> Update(int id, PhieuXuat dto)
         {
@@ -364,6 +424,7 @@ namespace DASoTiemChung.Controllers
         }
 
         public const string RouteDelete = "PhieuXuatDelete";
+        [Authorize(Roles = Quyens.ChinhSuaKho)]
         [HttpDelete("[controller]/{id}", Name = RouteDelete)]
         public async Task<IActionResult> Delete(int? id)
         {

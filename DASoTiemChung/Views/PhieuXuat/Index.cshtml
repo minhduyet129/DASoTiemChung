@@ -460,11 +460,22 @@
         function searchProductInput(e) {
             var key = e.keyCode || e.which;
             if (key == 13) {
+                if (!$("#pcKho").val()) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Ôi không...',
+                        text: 'Vui lòng chọn tên kho nhập',
+                        //footer: '<a href="javascript:;">Why do I have this issue?</a>'
+                    });
+                    return;
+                }
+
                 $.ajax({
                     url: `@Url.RouteUrl(VacXinTheoLoController.RouteDataJson)`,
                     method: "GET",
                     data: {
                         TenVacXinTheoLo: $("#searchProductInput").val(),
+                        MaKho: $("#pcKhoXuat").val(),
                         SkipCount: 1,
                         MaxResultCount: 20
                     }
@@ -527,5 +538,49 @@
         function removeProduct(id) {
             $(`.tr-${id}`).remove();
         }
+
+
+        function searchNhanVienKho() {
+                $.ajax({
+                    url: `@Url.RouteUrl(NhanVienController.RouteDataJson)`,
+                    method: "GET",
+                    data: {
+                        MaKho: $.trim($("#pcKhoXuat").val()).length > 0 ? $.trim($("#pcKhoXuat").val()) : "",
+                    },
+                    beforeSend: () => {
+                        //$detailModal.FLoading("show");
+                        //$detailModal.find(".modal-body").empty().append("Đang tải dữ liệu...");
+                    },
+                    success: (result) => {
+
+                        let contentNhanVien = '<option value="">Chọn nhân viên</option>';
+                        for (let item of result) {
+                            contentNhanVien += `<option value=${item.maNhanVien} >${item.tenTaiKhoan}</option>`;
+                        }
+                        $("#pcNhanVien").empty().append(contentNhanVien);
+                        console.log(result);
+
+                    },
+                    error: (jqXHR, textStatus, errorThrown) => {
+                        let error = { message: "Đã có lỗi xảy ra, vui lòng liên hệ quản trị!" };
+                        if ($.trim(jqXHR.responseText).length > 0) {
+                            try {
+                                error = (JSON.parse(jqXHR.responseText) ?? { error: { ...error } })
+                                    .error;
+                            } catch {
+                                error.message = jqXHR.responseText;
+                            }
+                        }
+                        Swal.fire({
+                            icon: "error",
+                            title: "Ôi không...",
+                            text: error.message,
+                            //footer: '<a href="javascript:;">Why do I have this issue?</a>'
+                        });
+                    },
+                }).always(() => {
+                    //$detailModal.FLoading("hide");
+                });
+            }
     </script>
 }
