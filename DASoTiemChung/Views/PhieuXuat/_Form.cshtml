@@ -29,7 +29,7 @@
         </div>
         <div class="form-group">
             <label for="pcKhoXuat">Kho</label>
-            <select class="choices form-select" id="pcKhoXuat" name="@Html.NameFor(x => x.MaKhoXuat) onchange="searchNhanVienKho()"">
+            <select class="choices form-select" id="pcKhoXuat" name="@Html.NameFor(x => x.MaKhoXuat)" onchange="searchNhanVienKho()">
                 <option value="">Chọn kho xuất đi</option>
                 @foreach (Kho role in ViewBag.Khos ?? new List<Kho>())
                 {

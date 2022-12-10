@@ -355,18 +355,18 @@ namespace DASoTiemChung.Controllers
 
                         }
                         _context.ChiTietPhieuXuats.RemoveRange(detaillist);
-
+                        _context.SaveChanges();
                         foreach (var ctpn in childrens)
                         {
                             ctpn.MaPhieuXuat = dto.MaPhieuXuat;
-                            var vacXinTheoLo = _context.VacXinTheoLos.Find(ctpn.MaVacXinTheoLo);
+                            var vacXinTheoLo = _context.VacXinTheoLos.Include(x => x.MaNhaSanXuatNavigation).Include(x => x.MaLoNavigation).Include(x => x.MaVacXinNavigation).FirstOrDefault(x => x.MaVacXinTheoLo == ctpn.MaVacXinTheoLo);
                             if (vacXinTheoLo != null)
                             {
                                 if (vacXinTheoLo.SoLuong < ctpn.SoLuong)
                                     return BadRequest($"vắc xin {vacXinTheoLo.TenVacXinTheoLo} tại kho không đủ rồi.Số lượng còn lại {vacXinTheoLo.SoLuong}");
                                 vacXinTheoLo.SoLuong -= ctpn.SoLuong;
 
-                                _context.Update(vacXinTheoLo);
+                                _context.Entry<VacXinTheoLo>(vacXinTheoLo).State = EntityState.Detached;
 
 
                                 var vacXinTheoLoDiemTiem = _context.VacXinTheoLos.FirstOrDefault(x => x.MaLo == vacXinTheoLo.MaLo && x.MaVacXin == vacXinTheoLo.MaVacXin && x.MaKho == dto.MaKhoNhan && x.MaNhaSanXuat == vacXinTheoLo.MaNhaSanXuat);

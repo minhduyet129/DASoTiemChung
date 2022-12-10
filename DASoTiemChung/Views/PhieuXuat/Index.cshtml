@@ -357,6 +357,9 @@
                 },
                 error: (jqXHR, textStatus, errorThrown) => {
                     let error = { message: "Đã có lỗi xảy ra, vui lòng liên hệ quản trị!" };
+                    if (jqXHR.status == 403) {
+                        error.message = "Bạn không có quyền thực hiện thao tác này!";
+                    };
                     if ($.trim(jqXHR.responseText).length > 0) {
                         try {
                             error = (JSON.parse(jqXHR.responseText) ?? { error: { ...error } })
@@ -433,6 +436,9 @@
                 },
                 error: (jqXHR, textStatus, errorThrown) => {
                     let error = { message: "Đã có lỗi xảy ra, vui lòng liên hệ quản trị!" };
+                    if (jqXHR.status == 403) {
+                        error.message = "Bạn không có quyền thực hiện thao tác này!";
+                    };
                     if ($.trim(jqXHR.responseText).length > 0) {
                         try {
                             error = (JSON.parse(jqXHR.responseText) ?? { error: { ...error } })
@@ -460,11 +466,11 @@
         function searchProductInput(e) {
             var key = e.keyCode || e.which;
             if (key == 13) {
-                if (!$("#pcKho").val()) {
+                if (!$("#pcKhoXuat").val()) {
                     Swal.fire({
                         icon: 'error',
                         title: 'Ôi không...',
-                        text: 'Vui lòng chọn tên kho nhập',
+                        text: 'Vui lòng chọn tên kho xuất',
                         //footer: '<a href="javascript:;">Why do I have this issue?</a>'
                     });
                     return;
@@ -554,7 +560,7 @@
                     success: (result) => {
 
                         let contentNhanVien = '<option value="">Chọn nhân viên</option>';
-                        for (let item of result) {
+                        for (let item of result.items) {
                             contentNhanVien += `<option value=${item.maNhanVien} >${item.tenTaiKhoan}</option>`;
                         }
                         $("#pcNhanVien").empty().append(contentNhanVien);
