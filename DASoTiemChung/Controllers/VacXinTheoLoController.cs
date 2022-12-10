@@ -2,16 +2,20 @@
 using DASoTiemChung.Filter;
 using DASoTiemChung.Models;
 using DASoTiemChung.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace DASoTiemChung.Controllers
 {
+    [Authorize(Roles = Quyens.ThemKho)]
+
     public class VacXinTheoLoController : Controller
     {
         private readonly ILogger<VacXinTheoLoController> _logger;
@@ -36,10 +40,26 @@ namespace DASoTiemChung.Controllers
         [HttpGet("[controller]/DataGrid", Name = RouteDataGrid)]
         public async Task<IActionResult> DataGridAsync(SearchVacXinTheoLoDto input)
         {
-            return PartialView("_DataGrid", await GetPagingLos(input));
+            var userName = User.Identity.Name;
+            if (!string.IsNullOrEmpty(userName))
+            {
+                var currentUser = _context.NhanViens.Include(x => x.MaQuyenNavigation).FirstOrDefault(x => x.TenTaiKhoan == userName);
+                if (currentUser != null)
+                {
+                    return PartialView("_DataGrid", await GetPagingLos(input, currentUser));
+                }
+                else
+                {
+                    return BadRequest("Bạn cần đăng nhập lại để xác nhận lại người dùng!");
+                }
+            }
+            else
+            {
+                return BadRequest("Bạn cần đăng nhập lại để xác nhận lại người dùng!");
+            }
         }
 
-        private async Task<PagedResultDto<VacXinTheoLo>> GetPagingLos(SearchVacXinTheoLoDto input)
+        private async Task<PagedResultDto<VacXinTheoLo>> GetPagingLos(SearchVacXinTheoLoDto input,NhanVien currentUser)
         {
 
             if (input.SkipCount < 0)
@@ -87,7 +107,10 @@ namespace DASoTiemChung.Controllers
                 {
                     query = query.Where(x => x.NgayHetHan == input.NgayHetHan.Value);
                 }
-
+                if (currentUser.MaQuyenNavigation.TenQuyen.Equals(Quyens.TruongKho) || currentUser.MaQuyenNavigation.TenQuyen.Equals(Quyens.ThuKho))
+                {
+                    query = query.Where(x => x.MaKho == currentUser.MaKho);
+                }
 
             }
 
