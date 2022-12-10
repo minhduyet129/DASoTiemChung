@@ -234,6 +234,11 @@ namespace DASoTiemChung.Controllers
                 {
                     return BadRequest("Tên đã tồn tại!");
                 }
+                var checkVacXinTheoLoExist= _context.VacXinTheoLos.FirstOrDefault(x=>x.MaKho==dto.MaKho&&x.MaLo==dto.MaLo&&x.MaVacXin==dto.MaVacXin&&x.MaNhaSanXuat==dto.MaNhaSanXuat&&!x.DaXoa);
+                if (checkVacXinTheoLoExist != null)
+                {
+                    return BadRequest($"Vắc xin theo lô này đã được tạo với tên ' {checkVacXinTheoLoExist.TenVacXinTheoLo} ', nếu muốn thay đổi vui lòng chỉnh sửa .");
+                }
                 _reposity.Insert(dto);
                 _reposity.Save();
                 return Ok();

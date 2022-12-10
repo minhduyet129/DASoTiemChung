@@ -528,7 +528,7 @@
                     success: (result) => {
 
                         let contentNhanVien = '<option value="">Chọn nhân viên</option>';
-                        for (let item of result) {
+                        for (let item of result.items) {
                             contentNhanVien += `<option value=${item.maNhanVien} >${item.tenTaiKhoan}</option>`;
                         }
                         $("#pcNhanVien").empty().append(contentNhanVien);

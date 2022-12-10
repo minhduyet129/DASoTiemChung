@@ -591,13 +591,13 @@
                     //$detailModal.find(".modal-body").empty().append("Đang tải dữ liệu...");
                 },
                 success: (result) => {
-
+                    console.log(result);
                     let contentNhanVien = '<option value="">Chọn nhân viên</option>';
-                    for (let item of result) {
+                    for (let item of result.items) {
                         contentNhanVien += `<option value=${item.maNhanVien} >${item.tenTaiKhoan}</option>`;
                     }
                      $("#pcNhanVien").empty().append(contentNhanVien);
-                    console.log(result);
+                    
 
 
 
@@ -636,14 +636,14 @@
                     //$detailModal.find(".modal-body").empty().append("Đang tải dữ liệu...");
                 },
                 success: (result) => {
+                    console.log(result);
 
                     let contentVacXin = '<option value="">Chọn vắc xin</option>';
-                    for (let item of result) {
+                    for (let item of result.items) {
                         contentVacXin += `<option value=${item.maVacXinTheoLo} >${item.tenVacXinTheoLo}</option>`;
                     }
                      $("#pcVacXin").empty().append(contentVacXin);
-                    console.log(result);
-
+                   
 
 
                 },
