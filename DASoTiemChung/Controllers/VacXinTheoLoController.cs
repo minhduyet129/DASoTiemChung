@@ -14,8 +14,7 @@ using System.Threading.Tasks;
 
 namespace DASoTiemChung.Controllers
 {
-    [Authorize(Roles = Quyens.ThemKho)]
-
+    [Authorize]
     public class VacXinTheoLoController : Controller
     {
         private readonly ILogger<VacXinTheoLoController> _logger;
@@ -59,7 +58,7 @@ namespace DASoTiemChung.Controllers
             }
         }
 
-        private async Task<PagedResultDto<VacXinTheoLo>> GetPagingLos(SearchVacXinTheoLoDto input,NhanVien currentUser)
+        private async Task<PagedResultDto<VacXinTheoLo>> GetPagingLos(SearchVacXinTheoLoDto input, NhanVien currentUser)
         {
 
             if (input.SkipCount < 0)
@@ -72,7 +71,7 @@ namespace DASoTiemChung.Controllers
             }
             int skipRecord = (input.SkipCount - 1) * input.MaxResultCount;
             var take = input.MaxResultCount;
-            var query = _context.VacXinTheoLos.Include(x => x.MaKhoNavigation).Include(x => x.MaLoNavigation).Include(x => x.MaVacXinNavigation).Include(x => x.MaNhaSanXuatNavigation).AsQueryable().Where(x=>!x.DaXoa);
+            var query = _context.VacXinTheoLos.Include(x => x.MaKhoNavigation).Include(x => x.MaLoNavigation).Include(x => x.MaVacXinNavigation).Include(x => x.MaNhaSanXuatNavigation).AsQueryable().Where(x => !x.DaXoa);
             try
             {
                 if (!string.IsNullOrEmpty(input.TenVacXinTheoLo))
@@ -101,16 +100,17 @@ namespace DASoTiemChung.Controllers
                 }
                 if (input.NgaySanXuat.HasValue)
                 {
-                    query = query.Where(x => x.NgaySanXuat==input.NgaySanXuat.Value);
+                    query = query.Where(x => x.NgaySanXuat == input.NgaySanXuat.Value);
                 }
                 if (input.NgayHetHan.HasValue)
                 {
                     query = query.Where(x => x.NgayHetHan == input.NgayHetHan.Value);
                 }
-                if (currentUser.MaQuyenNavigation.TenQuyen.Equals(Quyens.TruongKho) || currentUser.MaQuyenNavigation.TenQuyen.Equals(Quyens.ThuKho))
+                if (!currentUser.MaQuyenNavigation.TenQuyen.Equals(Quyens.QuanLy))
                 {
                     query = query.Where(x => x.MaKho == currentUser.MaKho);
                 }
+                
 
             }
 
@@ -136,7 +136,7 @@ namespace DASoTiemChung.Controllers
 
             return result;
         }
-        public  const string RouteDataJson = "VacXinTheoLoGetDataJson";
+        public const string RouteDataJson = "VacXinTheoLoGetDataJson";
         [HttpGet("[controller]/DataJson", Name = RouteDataJson)]
         public async Task<IActionResult> DataJsonAsync(SearchVacXinTheoLoDto input)
         {
@@ -155,7 +155,7 @@ namespace DASoTiemChung.Controllers
                 var take = input.MaxResultCount;
 
                 var query = _context.VacXinTheoLos.AsQueryable();
-                if(!string.IsNullOrEmpty(input.TenVacXinTheoLo))
+                if (!string.IsNullOrEmpty(input.TenVacXinTheoLo))
                 {
                     query = query.Where(x => x.TenVacXinTheoLo.Contains(input.TenVacXinTheoLo));
                 }
@@ -166,7 +166,7 @@ namespace DASoTiemChung.Controllers
                 }
 
                 query = query.OrderBy(x => x.TenVacXinTheoLo).Skip(skipRecord).Take(take);
-                
+
 
 
                 result.Items = query.ToList();
@@ -195,28 +195,85 @@ namespace DASoTiemChung.Controllers
         {
             VacXinTheoLo result = new VacXinTheoLo();
 
-            ViewBag.Los = _context.Los.OrderBy(x=>x.TenLo).ToList().Where(x => !x.DaXoa);
-            ViewBag.Khos = _context.Khos.OrderBy(x=>x.TenKho).ToList().Where(x => !x.DaXoa);
-            ViewBag.NhaSanXuats = _context.NhaSanXuats.OrderBy(x=>x.TenNhaSanXuat).ToList().Where(x => !x.DaXoa);
-            ViewBag.VacXins = _context.VacXins.OrderBy(x=>x.TenVacXin).ToList().Where(x => !x.DaXoa);
+            ViewBag.Los = _context.Los.OrderBy(x => x.TenLo).Where(x => !x.DaXoa).ToList();
+            
+            ViewBag.NhaSanXuats = _context.NhaSanXuats.OrderBy(x => x.TenNhaSanXuat).Where(x => !x.DaXoa).ToList();
+            ViewBag.VacXins = _context.VacXins.OrderBy(x => x.TenVacXin).Where(x => !x.DaXoa).ToList();
 
-            if (id == 0)
+
+
+
+
+            var userName = User.Identity.Name;
+            if (!string.IsNullOrEmpty(userName))
             {
-                result.NgaySanXuat = DateTime.Now;
-                result.NgayHetHan = DateTime.Now;
-                return PartialView("_Form", result);
+                var currentUser = _context.NhanViens.Include(x => x.MaQuyenNavigation).FirstOrDefault(x => x.TenTaiKhoan == userName);
+                if (currentUser != null)
+                {
+                    if (id == 0)
+                    {
+                        
+                        if (currentUser.MaQuyenNavigation.TenQuyen.Equals(Quyens.QuanLy))
+                        {
+                            ViewBag.Khos = _context.Khos.Where(x => !x.DaXoa ).OrderBy(x => x.TenKho).ToList();
+                            
+
+                        }
+                        else
+                        {
+                            var currentKho = _context.Khos.FirstOrDefault(x=>x.MaKho==currentUser.MaKho);
+                            result.MaKho=currentUser.MaKho;
+                            ViewBag.Khos = new List<Kho>() { currentKho};
+                        }
+                        result.NgaySanXuat = DateTime.Now;
+                        result.NgayHetHan = DateTime.Now;
+                        return PartialView("_Form", result);
+                    }
+
+                    try
+                    {
+                        result = _reposity.GetById(id);
+
+
+
+                        if (result != null)
+                        {
+                            if (currentUser.MaQuyenNavigation.TenQuyen.Equals(Quyens.QuanLy))
+                            {
+                                ViewBag.Khos = _context.Khos.Where(x => !x.DaXoa).OrderBy(x => x.TenKho).ToList();
+
+
+                            }
+                            else
+                            {
+                                var currentKho = _context.Khos.FirstOrDefault(x => x.MaKho == currentUser.MaKho);
+                                result.MaKho = currentUser.MaKho;
+                                ViewBag.Khos = new List<Kho>() { currentKho };
+                            }
+                        }
+                        else
+                        {
+                            return BadRequest("Phiếu nhập không tồn tại!.");
+                        }
+
+
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogError(ex, ex.ToString());
+                    }
+
+
+                }
+                else
+                {
+                    return BadRequest("Bạn cần đăng nhập lại để xác nhận lại người dùng!");
+                }
             }
-
-
-            try
+            else
             {
-                result = _reposity.GetById(id);
+                return BadRequest("Bạn cần đăng nhập lại để xác nhận lại người dùng!");
             }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, ex.ToString());
-            }
-
 
 
             return PartialView("_Form", result);
@@ -229,12 +286,12 @@ namespace DASoTiemChung.Controllers
 
             try
             {
-                var find = _reposity.GetAll().FirstOrDefault(x => x.TenVacXinTheoLo == dto.TenVacXinTheoLo&&!x.DaXoa);
+                var find = _reposity.GetAll().FirstOrDefault(x => x.TenVacXinTheoLo == dto.TenVacXinTheoLo && !x.DaXoa);
                 if (find != null)
                 {
                     return BadRequest("Tên đã tồn tại!");
                 }
-                var checkVacXinTheoLoExist= _context.VacXinTheoLos.FirstOrDefault(x=>x.MaKho==dto.MaKho&&x.MaLo==dto.MaLo&&x.MaVacXin==dto.MaVacXin&&x.MaNhaSanXuat==dto.MaNhaSanXuat&&!x.DaXoa);
+                var checkVacXinTheoLoExist = _context.VacXinTheoLos.FirstOrDefault(x => x.MaKho == dto.MaKho && x.MaLo == dto.MaLo && x.MaVacXin == dto.MaVacXin && x.MaNhaSanXuat == dto.MaNhaSanXuat && !x.DaXoa);
                 if (checkVacXinTheoLoExist != null)
                 {
                     return BadRequest($"Vắc xin theo lô này đã được tạo với tên ' {checkVacXinTheoLoExist.TenVacXinTheoLo} ', nếu muốn thay đổi vui lòng chỉnh sửa .");
@@ -264,7 +321,7 @@ namespace DASoTiemChung.Controllers
             }
             try
             {
-                var find = _reposity.GetAll().FirstOrDefault(x => x.TenVacXinTheoLo == dto.TenVacXinTheoLo  && x.MaVacXinTheoLo != dto.MaVacXinTheoLo&&!x.DaXoa);
+                var find = _reposity.GetAll().FirstOrDefault(x => x.TenVacXinTheoLo == dto.TenVacXinTheoLo && x.MaVacXinTheoLo != dto.MaVacXinTheoLo && !x.DaXoa);
                 if (find != null)
                 {
                     return BadRequest("Tên đã tồn tại!");
@@ -301,7 +358,7 @@ namespace DASoTiemChung.Controllers
                     if (lo != null)
                     {
                         lo.DaXoa = true;
-                        lo.TenVacXinTheoLo+= "(Đã xóa)";
+                        lo.TenVacXinTheoLo += "(Đã xóa)";
                         _reposity.Update(lo);
                         _reposity.Save();
                         return Ok();
