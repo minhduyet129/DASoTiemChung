@@ -437,6 +437,7 @@
                         //footer: '<a href="javascript:;">Why do I have this issue?</a>'
                     });
                     return;
+                }
                     $.ajax({
                         url: `@Url.RouteUrl(VacXinTheoLoController.RouteDataJson)`,
                         method: "GET",
@@ -479,10 +480,10 @@
                     }).always(() => {
                         //$detailModal.FLoading("hide");
                     });
-                }
-            }
-            }
 
+            }
+            
+    }
 
             function appendCombo(id, name) {
                 $("#searchProductInput").val(name);

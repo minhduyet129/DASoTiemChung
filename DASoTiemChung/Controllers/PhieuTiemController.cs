@@ -405,6 +405,7 @@ namespace DASoTiemChung.Controllers
         }
 
         public const string RouteDelete = "PhieuTiemDelete";
+        [Authorize(Roles = Quyens.ChinhSuaThuTucTiem)]
         [HttpDelete("[controller]/{id}", Name = RouteDelete)]
         public async Task<IActionResult> Delete(int? id)
         {
@@ -418,10 +419,19 @@ namespace DASoTiemChung.Controllers
                     {
                         var detaillist = _context.PhieuTiemBenhLys.Where(x => x.MaPhieuTiem == lo.MaPhieuTiem).ToList();
                         _context.PhieuTiemBenhLys.RemoveRange(detaillist);
-
-                        _reposity.Delete(id);
+                        lo.DaXoa = true;
+                        _reposity.Update(lo);
                         _reposity.Save();
+                        var vxtl = _context.VacXinTheoLos.FirstOrDefault(x => x.MaVacXinTheoLo == lo.MaVacXinTheoLo);
+                        
+                       
+                            vxtl.SoLuong += 1;
+                             _context.VacXinTheoLos.Update(vxtl);
+                        _context.SaveChanges();
+                           
+                        
                         return Ok();
+                        
                     }
                     else
                     {
