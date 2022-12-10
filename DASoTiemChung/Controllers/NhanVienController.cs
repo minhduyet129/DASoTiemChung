@@ -115,7 +115,52 @@ namespace DASoTiemChung.Controllers
 
             return result;
         }
+        public const string RouteDataJson = "NhanVienGetDataJson";
+        [HttpGet("[controller]/DataJson", Name = RouteDataJson)]
+        public async Task<IActionResult> DataJsonAsync(SearchNhanVienDto input)
+        {
 
+            try
+            {
+                if (input.SkipCount < 0)
+                {
+                    input.SkipCount = 0;
+                }
+                if (input.MaxResultCount <= 0)
+                {
+                    input.MaxResultCount = 10;
+                }
+                int skipRecord = (input.SkipCount - 1) * input.MaxResultCount;
+                var take = input.MaxResultCount;
+
+                var query = _context.NhanViens.Where(x=>!x.DaXoa).AsQueryable();
+                if (input.MaKho.HasValue)
+                {
+                    query = query.Where(x => x.MaKho==input.MaKho);
+                }
+                PagedResultDto<NhanVien> result = new PagedResultDto<NhanVien>(0, input.SkipCount, take, new List<NhanVien>());
+                
+                query = query.OrderBy(x => x.TenTaiKhoan).Skip(skipRecord).Take(take);
+                
+
+                result.Items = query.ToList();
+
+                bool checkNull = (result != null);
+
+                if (checkNull)
+                {
+                    result.SkipCount = input.SkipCount;
+                    result.MaxResultCount = take;
+                }
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.ToString());
+            }
+
+            return Ok("Có lỗi !");
+        }
 
         public const string RouteForm = "NhanVienGetForm";
         [HttpGet("[controller]/{id}", Name = RouteForm)]

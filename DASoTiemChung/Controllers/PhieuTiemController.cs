@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace DASoTiemChung.Controllers
 {
-    [Authorize(Roles =Quyens.ThemThuTucTiem)]
+    [Authorize(Roles = Quyens.ThemThuTucTiem)]
     public class PhieuTiemController : Controller
     {
         private readonly ILogger<PhieuTiemController> _logger;
@@ -54,7 +54,7 @@ namespace DASoTiemChung.Controllers
             }
             int skipRecord = (input.SkipCount - 1) * input.MaxResultCount;
             var take = input.MaxResultCount;
-            var query = _context.PhieuTiems.Include(x => x.MaVacXinTheoLoNavigation).Include(x => x.MaNguoiDanNavigation).Include(x => x.MaMuiTiemNavigation).Include(x => x.MaKhoNavigation).Include(x=>x.MaNhanVienNavigation).Where(x => !x.DaXoa).AsQueryable();
+            var query = _context.PhieuTiems.Include(x => x.MaVacXinTheoLoNavigation).Include(x => x.MaNguoiDanNavigation).Include(x => x.MaMuiTiemNavigation).Include(x => x.MaKhoNavigation).Include(x => x.MaNhanVienNavigation).Where(x => !x.DaXoa).AsQueryable();
             try
             {
                 if (!string.IsNullOrEmpty(input.TenNguoiDan))
@@ -74,25 +74,7 @@ namespace DASoTiemChung.Controllers
                     query = query.Where(x => x.MaVacXinTheoLoNavigation.TenVacXinTheoLo.Contains(input.TenVacXin));
                 }
 
-                var userName = User.Identity.Name;
-                if (!string.IsNullOrEmpty(userName))
-                {
-                    var currentUser = _context.NhanViens.Include(x => x.MaQuyenNavigation).FirstOrDefault(x => x.TenTaiKhoan == userName);
-                    
-                    if (currentUser != null)
-                    {
-                        if ((bool)(currentUser.MaQuyenNavigation?.TenQuyen.Equals(Quyens.NhanVien)))
-                        {
-                            query = query.Where(x => x.MaKho == currentUser.MaKho);
-                        }
-                        if ((bool)(currentUser.MaQuyenNavigation?.TenQuyen.Equals(Quyens.QuanLy)))
-                        {
-                            
 
-                        }
-                    }
-                    
-                }
             }
 
             catch (Exception ex)
@@ -127,9 +109,6 @@ namespace DASoTiemChung.Controllers
             ViewBag.BenhLys = _context.TienSuBenhLies.Where(x => !x.DaXoa).OrderBy(x => x.MaBenhLy).ToList();
             ViewBag.MuiTiems = _context.MuiTiems.Where(x => !x.DaXoa).OrderBy(x => x.TenMuiTiem).ToList();
 
-            ViewBag.VacXins = _context.VacXinTheoLos.Where(x => !x.DaXoa).OrderBy(x => x.TenVacXinTheoLo).ToList();
-
-
 
             var userName = User.Identity.Name;
             if (!string.IsNullOrEmpty(userName))
@@ -137,20 +116,111 @@ namespace DASoTiemChung.Controllers
                 var currentUser = _context.NhanViens.Include(x => x.MaQuyenNavigation).FirstOrDefault(x => x.TenTaiKhoan == userName);
                 if (currentUser != null)
                 {
-                    if ((bool)(currentUser.MaQuyenNavigation?.TenQuyen.Equals(Quyens.ThuKho)))
+
+                    if (id == 0)
                     {
-                        result.MaKho = currentUser.MaKho;
-                        var kho = _context.Khos.FirstOrDefault(x=>x.MaKho==result.MaKho);
-                        result.MaNhanVien = currentUser.MaNhanVien;
-                        ViewBag.DiemTiems = new List<Kho>() { kho };
-                        ViewBag.NhanViens = new List<NhanVien>() { currentUser };
+                        if (currentUser.MaQuyenNavigation.TenQuyen.Equals(Quyens.NhanVienCapCao) || currentUser.MaQuyenNavigation.TenQuyen.Equals(Quyens.NhanVien))
+                        {
+                            result.MaKho = currentUser.MaKho;
+                            var currentKho = _context.Khos.Find(result.MaKho);
+                            ViewBag.DiemTiems = new List<Kho>() { currentKho };
+                            result.MaNhanVien = currentUser.MaNhanVien;
+                            ViewBag.NhanViens = new List<NhanVien>() { currentUser };
+                            ViewBag.VacXins = _context.VacXinTheoLos.Where(x => !x.DaXoa && x.MaKho == currentUser.MaKho).OrderBy(x => x.TenVacXinTheoLo).ToList();
+                        }
+                        if (currentUser.MaQuyenNavigation.TenQuyen.Equals(Quyens.QuanLy))
+                        {
+                            ViewBag.DiemTiems = _context.Khos.Where(x => !x.DaXoa && x.Kieu).OrderBy(x => x.TenKho).ToList();
+                            ViewBag.NhanViens = new List<NhanVien>();
+                            ViewBag.VacXins = new List<VacXinTheoLo>();
+
+
+                        }
+                        result.ThoiGianTiem = DateTime.Now;
+                        return PartialView("_Form", result);
                     }
-                    if ((bool)(currentUser.MaQuyenNavigation?.TenQuyen.Equals(Quyens.QuanLy)))
+
+                    try
                     {
-                        ViewBag.DiemTiems = _context.Khos.Where(x => !x.DaXoa && x.Kieu).OrderBy(x => x.TenKho).ToList();
-                        ViewBag.NhanViens = _context.NhanViens.OrderBy(x => x.TenNhanVien).Where(x => !x.DaXoa).ToList();
+                        result = _context.PhieuTiems.Include(x => x.MaNguoiDanNavigation).Include(x => x.MaNhanVienNavigation).Include(x => x.PhieuTiemBenhLys).ThenInclude(x => x.MaTienSuBenhLyNavigation).Select(x => new PhieuTiemInputDto()
+                        {
+                            MaPhieuTiem = x.MaPhieuTiem,
+                            TenNguoiDan = x.MaNguoiDanNavigation.HoTen,
+                            SoCccdhc = x.MaNguoiDanNavigation.SoCccdhc,
+                            ThoiGianTiem = x.ThoiGianTiem,
+                            MaMuiTiem = x.MaMuiTiem,
+                            MaKho = x.MaKho,
+                            MaNhanVien = x.MaNhanVien,
+                            MaVacXinTheoLo = x.MaVacXinTheoLo,
+                            PhanUngSauTiem = x.PhanUngSauTiem,
+                            PhieuTiemBenhLys = x.PhieuTiemBenhLys
+
+                        }).FirstOrDefault();
+
+                        if (result != null)
+                        {
+                            if (currentUser.MaQuyenNavigation.TenQuyen.Equals(Quyens.NhanVienCapCao) || currentUser.MaQuyenNavigation.TenQuyen.Equals(Quyens.NhanVien))
+                            {
+                                var userInPhieuTiem = _context.NhanViens.Find(result.MaNhanVien);
+
+                                //hiển thị nhân viên theo kho trong phiếu sửa.
+
+                                if (!userInPhieuTiem.Equals(currentUser))
+                                {
+                                    if (userInPhieuTiem.MaKho == currentUser.MaKho)
+                                    {
+                                        ViewBag.NhanViens = new List<NhanVien>() { currentUser, userInPhieuTiem };
+                                    }
+                                    else
+                                    {
+                                        ViewBag.NhanViens = new List<NhanVien>() { userInPhieuTiem };
+                                    }
+
+                                }
+                                else
+                                {
+                                    ViewBag.NhanViens = new List<NhanVien>() { userInPhieuTiem };
+                                }
+                                //hiển thị kho nhưng ko cho thay đổi kho trong phiếu tiêm, những ng quản lý ko được phép thay đổi .
+                                var diemTiemInPhieuTiem = _context.Khos.Find(result.MaKho);
+
+                                ViewBag.DiemTiems = new List<Kho>() { diemTiemInPhieuTiem };
+
+                                if (userInPhieuTiem.MaKho != currentUser.MaKho)
+                                {
+                                    var vacxinInPhieuTiem = _context.VacXinTheoLos.Find(result.MaVacXinTheoLo);
+                                    ViewBag.VacXins = new List<VacXinTheoLo>() { vacxinInPhieuTiem };
+                                }
+                                else
+                                {
+                                    ViewBag.VacXins = _context.VacXinTheoLos.Where(x => !x.DaXoa && x.MaKho == currentUser.MaKho).OrderBy(x => x.TenVacXinTheoLo).ToList();
+                                }
+
+                            }
+                            if (currentUser.MaQuyenNavigation.TenQuyen.Equals(Quyens.QuanLy))
+                            {
+
+                                ViewBag.DiemTiems = _context.Khos.Where(x => !x.DaXoa && x.Kieu).OrderBy(x => x.TenKho).ToList();
+                                ViewBag.NhanViens = _context.NhanViens.Where(x => !x.DaXoa && x.MaKho == result.MaKho).ToList();
+                                ViewBag.VacXins = _context.VacXinTheoLos.Where(x => !x.DaXoa && x.MaKho == result.MaKho).OrderBy(x => x.TenVacXinTheoLo).ToList();
+
+                            }
+
+                            return PartialView("_Form", result);
+                        }
+                        else
+                        {
+                            return BadRequest("Phiếu nhập không tồn tại!.");
+                        }
+
 
                     }
+                    catch (Exception ex)
+                    {
+                        _logger.LogError(ex, ex.ToString());
+                    }
+
+
                 }
                 else
                 {
@@ -161,35 +231,6 @@ namespace DASoTiemChung.Controllers
             {
                 return BadRequest("Bạn cần đăng nhập lại để xác nhận lại người dùng!");
             }
-            
-            if (id == 0)
-            {
-                result.ThoiGianTiem = DateTime.Now;
-                return PartialView("_Form", result);
-            }
-
-            try
-            {
-                result = _context.PhieuTiems.Include(x => x.MaNguoiDanNavigation).Include(x=>x.MaNhanVienNavigation).Include(x => x.PhieuTiemBenhLys).ThenInclude(x => x.MaTienSuBenhLyNavigation).Select(x => new PhieuTiemInputDto()
-                {
-                    MaPhieuTiem = x.MaPhieuTiem,
-                    TenNguoiDan = x.MaNguoiDanNavigation.HoTen,
-                    SoCccdhc = x.MaNguoiDanNavigation.SoCccdhc,
-                    ThoiGianTiem = x.ThoiGianTiem,
-                    MaMuiTiem = x.MaMuiTiem,
-                    MaKho = x.MaKho,
-                    MaNhanVien = x.MaNhanVien,
-                    MaVacXinTheoLo = x.MaVacXinTheoLo,
-                    PhanUngSauTiem = x.PhanUngSauTiem,
-                    PhieuTiemBenhLys = x.PhieuTiemBenhLys
-
-                }).FirstOrDefault();
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, ex.ToString());
-            }
-
 
 
             return PartialView("_Form", result);
@@ -217,14 +258,15 @@ namespace DASoTiemChung.Controllers
                         ThoiGianTiem = dto.ThoiGianTiem,
                         MaVacXinTheoLo = dto.MaVacXinTheoLo,
                         PhieuTiemBenhLys = dto.PhieuTiemBenhLys,
-                        PhanUngSauTiem = dto.PhanUngSauTiem,
+                        PhanUngSauTiem = dto.PhanUngSauTiem
+
 
 
                     };
 
                     _context.PhieuTiems.Add(phieutiem);
                     _context.SaveChanges();
-                    var vacXinTheoLoTiem=_context.VacXinTheoLos.Find(dto.MaVacXinTheoLo);
+                    var vacXinTheoLoTiem = _context.VacXinTheoLos.Find(dto.MaVacXinTheoLo);
                     if (vacXinTheoLoTiem != null)
                     {
                         if (vacXinTheoLoTiem.SoLuong < 1)
@@ -264,7 +306,7 @@ namespace DASoTiemChung.Controllers
         }
 
         public const string RouteUpdate = "PhieuTiemPutUpdate";
-        [Authorize(Roles = Quyens.QuanLy)]
+        [Authorize(Roles = Quyens.ChinhSuaThuTucTiem)]
         [HttpPut("[controller]/{id}", Name = RouteUpdate)]
         public async Task<IActionResult> Update(int id, PhieuTiemInputDto dto)
         {
@@ -322,13 +364,13 @@ namespace DASoTiemChung.Controllers
                         }
 
                         var vacXinTheoLoTiemOld = _context.VacXinTheoLos.Find(maOld);
-                        if(vacXinTheoLoTiemOld != null)
+                        if (vacXinTheoLoTiemOld != null)
                         {
                             vacXinTheoLoTiemOld.SoLuong += 1;
                             _context.VacXinTheoLos.Update(vacXinTheoLoTiemOld);
                             _context.SaveChanges();
                         }
-                        
+
 
                         var listPhieuTiemRemove = _context.PhieuTiemBenhLys.Where(x => x.MaPhieuTiem == phieutiem.MaPhieuTiem).ToList();
                         _context.PhieuTiemBenhLys.RemoveRange(listPhieuTiemRemove);

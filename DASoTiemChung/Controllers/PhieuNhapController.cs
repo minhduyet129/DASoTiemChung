@@ -146,7 +146,7 @@ namespace DASoTiemChung.Controllers
                         if (currentUser.MaQuyenNavigation.TenQuyen.Equals(Quyens.QuanLy))
                         {
                             ViewBag.Khos = _context.Khos.Where(x => !x.DaXoa&&!x.Kieu).OrderBy(x => x.TenKho).ToList();
-                            
+                            ViewBag.NhanViens=new List<NhanVien>();
                             
 
                         }
@@ -166,13 +166,31 @@ namespace DASoTiemChung.Controllers
                             if (currentUser.MaQuyenNavigation.TenQuyen.Equals(Quyens.NhanVienCapCao) || currentUser.MaQuyenNavigation.TenQuyen.Equals(Quyens.NhanVien))
                             {
                                 var userInPhieuNhap = _context.NhanViens.Find(result.MaNhanVien);
-                                
-                                ViewBag.NhanViens = new List<NhanVien>() { currentUser,userInPhieuNhap };
-                                var currentKho = _context.Khos.Find(result.MaKho);
-                                ViewBag.Khos = new List<Kho>() { currentKho };
+
+                                if (!userInPhieuNhap.Equals(currentUser))
+                                {
+                                    if (userInPhieuNhap.MaKho == currentUser.MaKho)
+                                    {
+                                        ViewBag.NhanViens = new List<NhanVien>() { currentUser, userInPhieuNhap };
+                                    }
+                                    else
+                                    {
+                                        ViewBag.NhanViens = new List<NhanVien>() { userInPhieuNhap };
+                                    }
+
+                                }
+                                else
+                                {
+                                    ViewBag.NhanViens = new List<NhanVien>() { userInPhieuNhap };
+                                }
+                                var khoInPhieuNhap = _context.Khos.Find(result.MaKho);
+
+                                ViewBag.DiemTiems = new List<Kho>() { khoInPhieuNhap };
                             }
                             if (currentUser.MaQuyenNavigation.TenQuyen.Equals(Quyens.QuanLy))
                             {
+
+                                //chỉ cho phép thay đổi nhân viên và thông số phiếu nhập , không cho phép thay đổi kho nhập
                                 var currentKho = _context.Khos.Find(result.MaKho);
                                 ViewBag.Khos = new List<Kho>() { currentKho };
                                 ViewBag.NhanViens = _context.NhanViens.OrderBy(x => x.TenNhanVien).Where(x => !x.DaXoa&&x.MaKho==result.MaKho).ToList();

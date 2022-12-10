@@ -14,6 +14,7 @@ namespace DASoTiemChung.Dtos
         public string XuatXu { get; set; }
         public string TenNhaSanXuat { get; set; }
         public string TenKho { get; set; }
+        public int? MaKho { get; set; }
         public string TenVacXinTheoLo { get; set; }
     }
 }

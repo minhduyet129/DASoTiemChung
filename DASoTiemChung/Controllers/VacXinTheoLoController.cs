@@ -137,13 +137,14 @@ namespace DASoTiemChung.Controllers
                     query = query.Where(x => x.TenVacXinTheoLo.Contains(input.TenVacXinTheoLo));
                 }
                 PagedResultDto<VacXinTheoLo> result = new PagedResultDto<VacXinTheoLo>(0, input.SkipCount, take, new List<VacXinTheoLo>());
-                if (string.IsNullOrEmpty(input.TenVacXinTheoLo))
+                if (input.MaKho.HasValue)
                 {
-                    query = query.OrderBy(x => x.TenVacXinTheoLo).Skip(skipRecord).Take(take);
+                    query = query.Where(x => x.MaKho == input.MaKho.Value);
                 }
 
+                query = query.OrderBy(x => x.TenVacXinTheoLo).Skip(skipRecord).Take(take);
+                
 
-                query = query.OrderBy(x => x.TenVacXinTheoLo);
 
                 result.Items = query.ToList();
 
