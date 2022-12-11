@@ -57,15 +57,15 @@ namespace DASoTiemChung.Controllers
             {
                 if (!string.IsNullOrEmpty(input.TenNguoiDan))
                 {
-                    query = query.Where(x => x.MaNguoiDanNavigation.HoTen.Contains(input.TenNguoiDan));
+                    query = query.Where(x => x.MaNguoiDanNavigation.HoTen==input.TenNguoiDan);
                 }
                 if (!string.IsNullOrEmpty(input.TenDiemTiem))
                 {
-                    query = query.Where(x => x.MaKhoNavigation.TenKho.Contains(input.TenDiemTiem));
+                    query = query.Where(x => x.MaKhoNavigation.TenKho == input.TenDiemTiem);
                 }
                 if (!string.IsNullOrEmpty(input.SoCccdhc))
                 {
-                    query = query.Where(x => x.MaNguoiDanNavigation.SoDienThoai.Contains(input.SoCccdhc));
+                    query = query.Where(x => x.MaNguoiDanNavigation.SoCccdhc==input.SoCccdhc);
                 }
                 if (!string.IsNullOrEmpty(input.TenVacXin))
                 {

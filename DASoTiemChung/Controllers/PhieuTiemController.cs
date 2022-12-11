@@ -67,7 +67,7 @@ namespace DASoTiemChung.Controllers
                 }
                 if (!string.IsNullOrEmpty(input.SoCccdhc))
                 {
-                    query = query.Where(x => x.MaNguoiDanNavigation.SoDienThoai.Contains(input.SoCccdhc));
+                    query = query.Where(x => x.MaNguoiDanNavigation.SoCccdhc.Contains(input.SoCccdhc));
                 }
                 if (!string.IsNullOrEmpty(input.TenVacXin))
                 {
