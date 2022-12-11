@@ -2,116 +2,287 @@
     Layout = "_SearchLayout";
 }
 @using DASoTiemChung.Controllers
+@using DASoTiemChung.Dtos
+
+@{
+    int i = 1;
+    var thongtinTraCuu = ViewBag.ThongTinTraCuu as ThongTinTiemChungOutputDto;
+}
 
 @section Styles {
     <style type="text/css">
     </style>
 }
 
-<div>
-    <div class="fixed-top align-items-center " style="background: linear-gradient(133deg,#ed1b23,#2e3091,#253494)!important">
-        <div class="container">
-            <div class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
-                <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-activity text-white" viewBox="0 0 16 16">
-                        <path fill-rule="evenodd" d="M6 2a.5.5 0 0 1 .47.33L10 12.036l1.53-4.208A.5.5 0 0 1 12 7.5h3.5a.5.5 0 0 1 0 1h-3.15l-1.88 5.17a.5.5 0 0 1-.94 0L6 3.964 4.47 8.171A.5.5 0 0 1 4 8.5H.5a.5.5 0 0 1 0-1h3.15l1.88-5.17A.5.5 0 0 1 6 2Z" />
-                    </svg>
-                    <span class="fs-5 text-white ml-3 fontmobile text-center fw-bold ">CỔNG THÔNG TIN TIÊM CHỦNG COVID-19</span>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-activity text-white" viewBox="0 0 16 16">
-                        <path fill-rule="evenodd" d="M6 2a.5.5 0 0 1 .47.33L10 12.036l1.53-4.208A.5.5 0 0 1 12 7.5h3.5a.5.5 0 0 1 0 1h-3.15l-1.88 5.17a.5.5 0 0 1-.94 0L6 3.964 4.47 8.171A.5.5 0 0 1 4 8.5H.5a.5.5 0 0 1 0-1h3.15l1.88-5.17A.5.5 0 0 1 6 2Z" />
-                    </svg>
-                </a>
 
-                <ul class="nav nav-pills">
-                    <li class="nav-item"><a href="https://localhost:44329/DangNhap" class="nav-link text-white" aria-current="page">Quản trị đăng nhập</a></li>
-                    <li class="nav-item"><a href="#" class="nav-link text-white">Giới thiệu</a></li>
-                    <li class="nav-item"><a href="#" class="nav-link text-white">Liên lạc</a></li>
-                    <li class="nav-item"><a href="#" class="nav-link text-white">FAQs</a></li>
-                    <li class="nav-item"><a href="#" class="nav-link text-white">About</a></li>
-                </ul>
-            </div>
-        </div>
-    </div>
-</div>
 
-<div class ="container" style="margin-top:80px">
-    <div class="page-heading">
-        <div class="page-title">
-            <div class="row">
-                <div class="col-12 col-md-6 order-md-1 order-last">
-                    <h3>@Html.Raw(ViewBag.Title)</h3>
+    <div class="container" style="margin-top:80px">
+        <div class="page-heading">
+            <div class="page-title">
+                <div class="row">
+                    <div class="col-12 col-md-6 order-md-1 order-last">
+                        <h3>@Html.Raw(ViewBag.Title)</h3>
 
-                </div>
-                <div class="col-12 col-md-6 order-md-2 order-first">
-                    <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
-                        <ol class="breadcrumb">
-                            @*<li class="breadcrumb-item"><a href="javascript:;">Dữ liệu cơ bản (v2)</a></li>*@
-                            @*<li class="breadcrumb-item active" aria-current="page">Quản lý trường học (v2)</li>*@
-                        </ol>
-                    </nav>
+                    </div>
+                    <div class="col-12 col-md-6 order-md-2 order-first">
+                        <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
+                            <ol class="breadcrumb">
+                                @*<li class="breadcrumb-item"><a href="javascript:;">Dữ liệu cơ bản (v2)</a></li>*@
+                                @*<li class="breadcrumb-item active" aria-current="page">Quản lý trường học (v2)</li>*@
+                            </ol>
+                        </nav>
+                    </div>
                 </div>
             </div>
-        </div>
-        <section class="section">
-            <div class="card border">
-                <div class="card-header d-flex align-items-center">
-                    <h4 class="card-title m-0">Tra cứu chứng nhận tiêm</h4>
+            <section class="section">
+                <div class="card border">
+                    <div class="card-header d-flex align-items-center">
+                        <h4 class="card-title m-0">Tra cứu chứng nhận tiêm</h4>
 
-                </div>
-                <div class="card-content show" id="search">
-                    <div class="card-body">
-                        <form id="searchForm" class="form">
-                            <div class="row">
-                                <div class="col-md-3 col-12">
-                                    <div class="form-group">
-                                        <label for="searchTenNguoiDan">Tên người dân</label>
-                                        <div class="position-relative">
-                                            <input type="text" id="searchTenNguoiDan" class="form-control"
-                                                   placeholder="Nhập tên người dân muốn tìm" name="school-name">
+                    </div>
+                    <div class="card-content show" id="search">
+                        <div class="card-body">
+                            <form id="searchForm" class="form" asp-controller="TraCuuTiemChung" asp-action="Index" method="get">
+                                <div class="row">
+                                    <div class="col-md-3 col-12">
+                                        <div class="form-group">
+                                            <label for="searchTenNguoiDan">Tên người dân</label>
+                                            <div class="position-relative">
+                                                <input type="text" id="searchTenNguoiDan" class="form-control"
+                                                   placeholder="Nhập tên người dân muốn tìm" name="TenNguoiDan">
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
 
-                                <div class="col-md-3 col-12">
-                                    <div class="form-group">
-                                        <label for="searchSoCccdhc">Số căn cước công dân</label>
-                                        <div class="position-relative">
-                                            <input type="text" id="searchSoCccdhc" class="form-control"
-                                                   placeholder="Nhập số căn cước công dân muốn tìm" name="school-name">
+                                    <div class="col-md-3 col-12">
+                                        <div class="form-group">
+                                            <label for="searchSoCccdhc">Số căn cước công dân</label>
+                                            <div class="position-relative">
+                                                <input type="text" id="searchSoCccdhc" class="form-control"
+                                                   placeholder="Nhập số căn cước công dân muốn tìm" name="SoCCCDHC">
+                                            </div>
                                         </div>
                                     </div>
+
                                 </div>
-                                
-                            </div>
-                            <div class="row">
-                                <div class="col-12 d-flex justify-content-end">
-                                    <button type="submit" id="btnCheckEmpty"
+                                <div class="row">
+                                    <div class="col-12 d-flex justify-content-end">
+                                        <button type="submit" id="btnCheckEmpty"
                                             class="btn btn-primary me-1 mb-1">
-                                        Tra cứu 
-                                    </button>
-                                    @*<button type="reset"
+                                            Tra cứu
+                                        </button>
+                                        @*<button type="reset"
                                     class="btn btn-light-secondary me-1 mb-1">
                                     Reset
                                     </button>*@
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Striped rows start -->
+            <section class="section">
+                <div class="container">
+                    @if (@TempData["Message"] != null)
+                {
+                    <div class="text-danger text-center">@TempData["Message"]</div>
+                }
+                else
+                {
+                    <div id="dataTable" style="min-height: 100px;">
+
+                        <div _ngcontent-lww-c8="" class="row ng-star-inserted">
+                            <div _ngcontent-lww-c8="" class="col-lg-9">
+                                <div _ngcontent-lww-c8="" class="w-100 text-center">
+                                    <p _ngcontent-lww-c8="" class="text-uppercase fw-bolder mb-1">
+                                        CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
+                                    </p>
+                                    <p _ngcontent-lww-c8="" class="fw-bolder">
+                                        Độc lập - Tự do - Hạnh phúc
+                                    </p>
+                                </div>
+                                <div _ngcontent-lww-c8="" class="w-100 mt-4 text-center mb-4">
+                                    <h4 _ngcontent-lww-c8="" class="fw-bolder">
+                                        CHỨNG NHẬN TIÊM CHỦNG COVID-19
+                                    </h4>
+                                </div>
+                                <div _ngcontent-lww-c8="" class="row">
+                                    <div _ngcontent-lww-c8="" class="col-lg-4 col-md-6">
+                                        <p _ngcontent-lww-c8="" class="mb-1 fw-semibold">Họ và tên</p>
+                                        <p _ngcontent-lww-c8="" class="fw-bolder text-dark">@thongtinTraCuu.HoTen</p>
+                                    </div>
+                                    <div _ngcontent-lww-c8="" class="col-lg-4 col-md-6">
+                                        <p _ngcontent-lww-c8="" class="mb-1 fw-semibold">Ngày sinh</p>
+                                        <p _ngcontent-lww-c8="" class="fw-bolder text-dark">@thongtinTraCuu.NgaySinh.ToString("dd/MM/yyyy")</p>
+                                    </div>
+                                    <div _ngcontent-lww-c8="" class="col-lg-4 col-md-6">
+                                        <p _ngcontent-lww-c8="" class="mb-1 fw-semibold">CCCD/HC</p>
+                                        <p _ngcontent-lww-c8="" class="fw-bolder text-dark">
+                                            @thongtinTraCuu.CCCD
+                                        </p>
+                                    </div>
+                                    <div _ngcontent-lww-c8="" class="col-lg-4 col-md-6">
+                                        <p _ngcontent-lww-c8="" class="mb-1 fw-semibold">Số thẻ BHYT</p>
+                                        <p _ngcontent-lww-c8="" class="fw-bolder text-dark">@thongtinTraCuu.BHYT</p>
+                                    </div>
+                                    <div _ngcontent-lww-c8="" class="col-lg-4 col-md-6">
+                                        <p _ngcontent-lww-c8="" class="mb-1 fw-semibold">Số điện thoại</p>
+                                        <p _ngcontent-lww-c8="" class="fw-bolder text-dark">@thongtinTraCuu.SoDienThoai</p>
+                                    </div>
+                                    <div _ngcontent-lww-c8="" class="col-12">
+                                        <p _ngcontent-lww-c8="" class="mb-1 fw-semibold">Địa chỉ</p>
+                                        <p _ngcontent-lww-c8="" class="fw-bolder text-dark">
+                                           @thongtinTraCuu.DiaChi
+                                        </p>
+                                    </div>
+
+                                    <div _ngcontent-lww-c8="" class="col-12 table-responsive">
+                                        <table _ngcontent-lww-c8="" class="table table-bordered table-hover">
+                                            <thead _ngcontent-lww-c8="">
+                                                <tr _ngcontent-lww-c8="" class="bg-light text-dark">
+                                                    <th _ngcontent-lww-c8="" class="text-center">Mũi số</th>
+                                                    <th _ngcontent-lww-c8="" class="text-center">
+                                                        Thời gian tiêm
+                                                    </th>
+                                                    <th _ngcontent-lww-c8="" class="text-center">
+                                                        Tên vắc xin
+                                                    </th>
+                                                    <th _ngcontent-lww-c8="" class="text-center">Số lô</th>
+                                                    <th _ngcontent-lww-c8="" class="text-center">Nơi tiêm</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody _ngcontent-lww-c8="">
+                                                <!---->
+                                                <tr _ngcontent-lww-c8="" class="ng-star-inserted">
+                                                    <td _ngcontent-lww-c8="" class="text-center" scope="row">
+                                                        1
+                                                    </td>
+                                                    <td _ngcontent-lww-c8="" class="text-center">
+                                                        03/10/2021 - 08:57
+                                                    </td>
+                                                    <td _ngcontent-lww-c8="" class="text-center">
+                                                        COVID-19 Vaccine (Vero Cell), Inactivated (Sinopharm)
+                                                    </td>
+                                                    <td _ngcontent-lww-c8="" class="text-center">
+                                                        B2021082582
+                                                    </td>
+                                                    <td _ngcontent-lww-c8="" class="text-center">
+                                                        TYT An Lạc
+                                                    </td>
+                                                </tr>
+                                                <tr _ngcontent-lww-c8="" class="ng-star-inserted">
+                                                    <td _ngcontent-lww-c8="" class="text-center" scope="row">
+                                                        2
+                                                    </td>
+                                                    <td _ngcontent-lww-c8="" class="text-center">
+                                                        24/10/2021 - 09:54
+                                                    </td>
+                                                    <td _ngcontent-lww-c8="" class="text-center">
+                                                        COVID-19 Vaccine (Vero Cell), Inactivated (Sinopharm)
+                                                    </td>
+                                                    <td _ngcontent-lww-c8="" class="text-center">
+                                                        B2021093084
+                                                    </td>
+                                                    <td _ngcontent-lww-c8="" class="text-center">
+                                                        TYT An Lạc
+                                                    </td>
+                                                </tr>
+                                                <tr _ngcontent-lww-c8="" class="ng-star-inserted">
+                                                    <td _ngcontent-lww-c8="" class="text-center" scope="row">
+                                                        3
+                                                    </td>
+                                                    <td _ngcontent-lww-c8="" class="text-center">
+                                                        06/01/2022 - 01:00
+                                                    </td>
+                                                    <td _ngcontent-lww-c8="" class="text-center">
+                                                        COVID-19 Vaccine Comirnaty (Pfizer/BioNtech)
+                                                    </td>
+                                                    <td _ngcontent-lww-c8="" class="text-center">PK0723</td>
+                                                    <td _ngcontent-lww-c8="" class="text-center">
+                                                        TYT An Lạc
+                                                    </td>
+                                                </tr>
+                                                <tr _ngcontent-lww-c8="" class="ng-star-inserted">
+                                                    <td _ngcontent-lww-c8="" class="text-center" scope="row">
+                                                        4
+                                                    </td>
+                                                    <td _ngcontent-lww-c8="" class="text-center">
+                                                        13/04/2022 - 08:57
+                                                    </td>
+                                                    <td _ngcontent-lww-c8="" class="text-center">
+                                                        COVID-19 Vaccine Comirnaty (Pfizer/BioNtech)
+                                                    </td>
+                                                    <td _ngcontent-lww-c8="" class="text-center">ACB9330</td>
+                                                    <td _ngcontent-lww-c8="" class="text-center">
+                                                        TYT An Lạc
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <!---->
                                 </div>
                             </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </section>
+                            <div _ngcontent-lww-c8="" class="col-lg-3 rounded-3 p-4 shadow-lg h-100 bg-success ">
+                                <div _ngcontent-lww-c8="" class="row">
 
-        <!-- Striped rows start -->
-        <section class="section">
-            <div class="card border">
-                <div class="card-header d-flex align-items-center">
-                    <div class="d-flex justify-content-between w-100">
-                        <h4 class="card-title m-0">Kết quả</h4>
+                                    <div _ngcontent-lww-c8="" class="col-12 text-center text-white mt-2 mb-2 pt-2 pb-2 pl-0 pr-0">
+                                        <h4 _ngcontent-lww-c8="" class="text-uppercase fw-bolder">
+                                            Quét mã QR thông tin tiêm chủng
+                                        </h4>
+                                    </div>
+                                    <div _ngcontent-lww-c8="" class="col-12 text-center mb-3 p-2">
+                                        <ngx-qrcode _ngcontent-lww-c8="">
+                                            <div class="qrcode">
+                                                <img src="data:image/png;base64,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" />
+                                            </div>
+                                        </ngx-qrcode>
+                                    </div>
+                                    <div _ngcontent-lww-c8="" class="col-12">
+                                        <div _ngcontent-lww-c8="" class="w-100 p-3 bg-white radius20">
+                                            <div _ngcontent-lww-c8="" class="d-flex text-dark">
+                                                <div _ngcontent-lww-c8="" style="width: 30px">
+                                                    <i _ngcontent-lww-c8="" class="icofont-business-man"></i>
+                                                </div>
+                                                <div _ngcontent-lww-c8="" class="w-100">
+                                                    <p _ngcontent-lww-c8="" class="mb-1">Họ và tên</p>
+                                                    <p _ngcontent-lww-c8="" class="fw-bolder text-dark">
+                                                        Cao Văn Huy
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div _ngcontent-lww-c8="" class="d-flex text-dark">
+                                                <div _ngcontent-lww-c8="" style="width: 30px">
+                                                    <i _ngcontent-lww-c8="" class="icofont-birthday-cake"></i>
+                                                </div>
+                                                <div _ngcontent-lww-c8="" class="w-100">
+                                                    <p _ngcontent-lww-c8="" class="mb-1">Ngày sinh</p>
+                                                    <p _ngcontent-lww-c8="" class="fw-bolder">03/06/1999</p>
+                                                </div>
+                                            </div>
+                                            <div _ngcontent-lww-c8="" class="d-flex text-dark">
+                                                <div _ngcontent-lww-c8="" style="width: 30px">
+                                                    <i _ngcontent-lww-c8="" class="icofont-ui-v-card"></i>
+                                                </div>
+                                                <div _ngcontent-lww-c8="" class="w-100">
+                                                    <p _ngcontent-lww-c8="" class="mb-1">CCCD/HC</p>
+                                                    <p _ngcontent-lww-c8="" class="fw-bolder">030099002825</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                @*<div class="card-body"></div>*@
-                <div id="dataTable" style="min-height: 100px;">
-                </div>
+                }
+
+
+
+
             </div>
         </section>
         <!-- Striped rows end -->
@@ -124,519 +295,8 @@
     </div>
 </div>
 
-<footer class="pt-4 my-md-5 pt-md-5 border-top">
-    <div class="row">
-        <div class="col-12 col-md">
-            <img class="mb-2" src="/docs/5.0/assets/brand/bootstrap-logo.svg" alt="" width="24" height="19">
-            <small class="d-block mb-3 text-muted">© 2017–2021</small>
-        </div>
-        <div class="col-6 col-md">
-            <h5>Features</h5>
-            <ul class="list-unstyled text-small">
-                <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Cool stuff</a></li>
-                <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Random feature</a></li>
-                <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Team feature</a></li>
-                <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Stuff for developers</a></li>
-                <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Another one</a></li>
-                <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Last time</a></li>
-            </ul>
-        </div>
-        <div class="col-6 col-md">
-            <h5>Resources</h5>
-            <ul class="list-unstyled text-small">
-                <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Resource</a></li>
-                <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Resource name</a></li>
-                <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Another resource</a></li>
-                <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Final resource</a></li>
-            </ul>
-        </div>
-        <div class="col-6 col-md">
-            <h5>About</h5>
-            <ul class="list-unstyled text-small">
-                <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Team</a></li>
-                <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Locations</a></li>
-                <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Privacy</a></li>
-                <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Terms</a></li>
-            </ul>
-        </div>
-    </div>
-</footer>
 
 @section Scripts {
-    <script type="text/javascript">
-        let $dataTable;
-        let $searchTenNguoiDan;
-        let $searchSoCccdhc;
-        let $searchTenDiemTiem;
-        let $searchTenVacXin;
-        let $detailModal;
-        let detailModalInstance;
-        let SkipCount = 1;
-        let MaxResultCount = 10;
-        let pagingAjaxInstance;
-        let detailAjaxInstance;
-
-        $(document).ready(function () {
-            $dataTable = $("#dataTable");
-            $searchTenNguoiDan = $("#searchTenNguoiDan");
-            $searchSoCccdhc = $("#searchSoCccdhc");
-            $searchTenDiemTiem = $("#searchTenDiemTiem");
-            $searchTenVacXin = $("#searchTenVacXin");
-
-
-            $searchForm = $("#searchForm");
-            $detailModal = $("#detailModal");
-            detailModalInstance = new bootstrap.Modal(
-                document.getElementById("detailModal"),
-                {
-                    backdrop: 'static',
-                    keyboard: false,
-                    focus: false,
-                }
-            );
-
-            //$detailModal.on('shown.bs.modal', function() {
-            //    $(document).off('focusin.modal');
-            //});
-
-            $detailModal.on("hide.bs.modal", function (e) {
-                detailAjaxInstance && detailAjaxInstance.abort();
-                detailAjaxInstance = null;
-            });
-
-            $(document)
-                .unbind()
-                .on("submit", "#searchForm", function (e) {
-                    if ($("#searchTenNguoiDan" && "#searchSoCccdhc").val().length > 0){
-
-
-                    e.preventDefault();
-
-                    getPaging({ index: 1 });
-                    }
-                    else {
-                        alert('Vui lòng nhập căn cước công dân và họ tên của bạn')
-                    }
-                });
-
-            //getPaging();
-        });
-
-        function getPaging(
-            { index, size } = { index: SkipCount, size: MaxResultCount }
-        ) {
-            pagingAjaxInstance && pagingAjaxInstance.abort();
-            pagingAjaxInstance = null;
-
-            SkipCount = index || SkipCount;
-            MaxResultCount = size || MaxResultCount;
-
-            let payload = {
-                SkipCount,
-                MaxResultCount,
-                TenNguoiDan: $.trim($searchTenNguoiDan.val()).length > 0 ? $.trim($searchTenNguoiDan.val()) : "",
-                SoCccdhc: $.trim($searchSoCccdhc.val()).length > 0 ? $.trim($searchSoCccdhc.val()) : "",
-                TenDiemTiem: $.trim($searchTenDiemTiem.val()).length > 0 ? $.trim($searchTenDiemTiem.val()) : "",
-                TenVacXin: $.trim($searchTenVacXin.val()).length > 0 ? $.trim($searchTenVacXin.val()) : "",
-            };
-
-            pagingAjaxInstance = $.ajax({
-                url: `@Url.RouteUrl(TraCuuTiemChungController.RouteDataGrid)`,
-                method: "GET",
-                data: payload,
-                beforeSend: () => {
-                    $dataTable.FLoading("show");
-                },
-                success: (result) => {
-                    $dataTable.empty().append(result);
-                },
-                error: (jqXHR, textStatus, errorThrown) => {
-                    let error = { message: "Đã có lỗi xảy ra, vui lòng liên hệ quản trị!" };
-                    if ($.trim(jqXHR.responseText).length > 0) {
-                        try {
-                            error = (JSON.parse(jqXHR.responseText) ?? { error: { ...error } })
-                                .error;
-                        } catch {
-                            error.message = jqXHR.responseText;
-                        }
-                    }
-                    Swal.fire({
-                        icon: "error",
-                        title: "Ôi không...",
-                        text: error.message,
-                        //footer: '<a href="javascript:;">Why do I have this issue?</a>'
-                    });
-                },
-            }).always(() => {
-                $dataTable.FLoading("hide");
-            });
-        }
-
-
-        function openForm({ url }) {
-            detailAjaxInstance = $.ajax({
-                url,
-                method: "GET",
-                beforeSend: () => {
-                    $("#main").FLoading("show");
-                    //$detailModal.find(".modal-body").empty().append("Đang tải dữ liệu...");
-                },
-                success: (result) => {
-                    $detailModal.find(".modal-content").empty().append(result);
-
-
-
-                    detailModalInstance.show();
-                },
-                error: (jqXHR, textStatus, errorThrown) => {
-                    let error = { message: "Đã có lỗi xảy ra, vui lòng liên hệ quản trị!" };
-                    if ($.trim(jqXHR.responseText).length > 0) {
-                        try {
-                            error = (JSON.parse(jqXHR.responseText) ?? { error: { ...error } })
-                                .error;
-                        } catch {
-                            error.message = jqXHR.responseText;
-                        }
-                    }
-                    Swal.fire({
-                        icon: "error",
-                        title: "Ôi không...",
-                        text: error.message,
-                        //footer: '<a href="javascript:;">Why do I have this issue?</a>'
-                    });
-                },
-            }).always(() => {
-                $("#main").FLoading("hide");
-            });
-        }
-       
-
-        function traCuu({ url, method }) {
-            if (!$("#pcTenNguoiDan").val()) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Ôi không...',
-                    text: 'Vui lòng nhập tên người dân',
-                    //footer: '<a href="javascript:;">Why do I have this issue?</a>'
-                });
-                return;
-            } if (!$("#pcSoCccdhc").val()) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Ôi không...',
-                    text: 'Vui lòng nhập số căn cước công dân',
-                    //footer: '<a href="javascript:;">Why do I have this issue?</a>'
-                });
-                return;
-            }
-            if (!$("#pcThoiGianTiem").val()) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Ôi không...',
-                    text: 'Vui lòng chọn thời gian tiêm',
-                    //footer: '<a href="javascript:;">Why do I have this issue?</a>'
-                });
-                return;
-            }
-            if (!$("#pcNhanVien").val()) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Ôi không...',
-                    text: 'Vui lòng chọn nhân viên',
-                    //footer: '<a href="javascript:;">Why do I have this issue?</a>'
-                });
-                return;
-            }
-            if (!$("#pcSoCccdhc").val()) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Ôi không...',
-                    text: 'Vui lòng nhập số căn cước công dân',
-                    //footer: '<a href="javascript:;">Why do I have this issue?</a>'
-                });
-                return;
-            }
-            if (!$("#pcMuiTiem").val()) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Ôi không...',
-                    text: 'Vui lòng chọn mũi tiêm',
-                    //footer: '<a href="javascript:;">Why do I have this issue?</a>'
-                });
-                return;
-            }
-            if (!$("#pcDiemTiem").val()) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Ôi không...',
-                    text: 'Vui lòng chọn điểm tiêm',
-                    //footer: '<a href="javascript:;">Why do I have this issue?</a>'
-                });
-                return;
-            }
-            if (!$("#pcMuiTiem").val()) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Ôi không...',
-                    text: 'Vui lòng chọn mũi tiêm',
-                    //footer: '<a href="javascript:;">Why do I have this issue?</a>'
-                });
-                return;
-            }
-            if (!$("#pcVacXin").val()) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Ôi không...',
-                    text: 'Vui lòng chọn loại vắc xin',
-                    //footer: '<a href="javascript:;">Why do I have this issue?</a>'
-                });
-                return;
-            }
-
-            let pcId = $("#pcId").val();
-            let pcTenNguoiDan = $("#pcTenNguoiDan").val();
-            let pcSoCccdhc = $("#pcSoCccdhc").val();
-            let pcMuiTiem = $("#pcMuiTiem").val();
-            let pcThoiGianTiem = $("#pcThoiGianTiem").val();
-            let pcDiemTiem = $("#pcDiemTiem").val();
-            let pcNhanVien = $("#pcNhanVien").val();
-            let pcVacXin = $("#pcVacXin").val();
-            let pcPhanUngSauTiem = $("#pcPhanUngSauTiem").val();
-            let detail = [];
-            let maBenhLys = $(".maBenhLy");
-            let tinhTrangs = $(".tinhTrang");
-            let trieuChungs = $(".trieuChung");
-
-            for (let i = 0; i < maBenhLys.length; i++) {
-                let data = {
-                    MaBenhLy: Number(maBenhLys[i].innerText),
-                    TinhTrang: tinhTrangs[i].value,
-                    TrieuChung: trieuChungs[i].value
-
-                }
-                detail.push(data);
-            }
-
-            $.ajax({
-                url,
-                method,
-                data: {
-                    MaPhieuTiem: pcId,
-                    TenNguoiDan: pcTenNguoiDan,
-                    SoCccdhc: pcSoCccdhc,
-                    ThoiGianTiem: pcThoiGianTiem,
-                    MaMuiTiem: pcMuiTiem,
-                    MaNhanVien: pcNhanVien,
-                    MaKho: pcDiemTiem,
-                    MaVacXinTheoLo: pcVacXin,
-                    PhanUngSauTiem: pcPhanUngSauTiem,
-                    PhieuTiemBenhLys: detail
-
-
-                },
-                beforeSend: () => {
-                    //$detailModal.FLoading("show");
-                    //$detailModal.find(".modal-body").empty().append("Đang tải dữ liệu...");
-                },
-                success: (result) => {
-                    detailModalInstance.hide();
-                    getPaging();
-
-                    Swal.fire({
-                        icon: "success",
-                        title: "Thực hiện thành công",
-                    }).then((result) => {
-
-                    });
-                },
-                error: (jqXHR, textStatus, errorThrown) => {
-                    let error = { message: "Đã có lỗi xảy ra, vui lòng liên hệ quản trị!" };
-                    if (jqXHR.status == 403) {
-                        error.message = "Bạn không có quyền thực hiện thao tác này!";
-                    };
-                    if ($.trim(jqXHR.responseText).length > 0) {
-                        try {
-                            error = (JSON.parse(jqXHR.responseText) ?? { error: { ...error } })
-                                .error;
-                        } catch {
-                            error.message = jqXHR.responseText;
-                        }
-                    }
-                    Swal.fire({
-                        icon: "error",
-                        title: "Ôi không...",
-                        text: error.message,
-                        //footer: '<a href="javascript:;">Why do I have this issue?</a>'
-                    });
-                },
-            }).always(() => {
-                //$detailModal.FLoading("hide");
-            });
-        }
     
     
-    const isEveryInputEmpty = () => {
-        var inputs = document.querySelectorAll('.container input');
-        
-        for (const input of inputs)
-            if (input.value !== '') return false;
-        
-        return true;
-    }
-        function closeForm() {
-            Swal.fire({
-                icon: 'question',
-                title: "Bạn có chắc chắn muốn đóng cửa sổ này?",
-                text: "Nếu bạn đóng cửa sổ này, tất cả các thay đổi sẽ không được lưu!",
-                showCancelButton: true,
-                confirmButtonText: 'Có',
-                confirmButtonColor: '#d33',
-                cancelButtonText: 'Không',
-                cancelButtonColor: '#3085d6',
-                focusCancel: true,
-            }).then((result) => {
-                /* Read more about isConfirmed, isDenied below */
-                if (result.isConfirmed) {
-                    detailModalInstance.hide();
-                }
-            });
-        }
-
-        function confirmOn
-
-
-
-            ({ url }) {
-            Swal.fire({
-                icon: 'question',
-                title: "Bạn có chắc chắn muốn xóa?",
-                showCancelButton: true,
-                confirmButtonText: 'Có',
-                confirmButtonColor: '#d33',
-                cancelButtonText: 'Không',
-                cancelButtonColor: '#3085d6',
-                focusCancel: true,
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    deleteItem({ url });
-                }
-            });
-        }
-
-        function deleteItem({ url }) {
-            $.ajax({
-                url,
-                method: "DELETE",
-                beforeSend: () => {
-                    //$detailModal.FLoading("show");
-                    //$detailModal.find(".modal-body").empty().append("Đang tải dữ liệu...");
-                },
-                success: (result) => {
-                    getPaging();
-
-                    Swal.fire({
-                        icon: "success",
-                        title: "Thực hiện thành công",
-                    }).then((result) => {
-
-                    });
-                },
-                error: (jqXHR, textStatus, errorThrown) => {
-                    let error = { message: "Đã có lỗi xảy ra, vui lòng liên hệ quản trị!" };
-                    if ($.trim(jqXHR.responseText).length > 0) {
-                        try {
-                            error = (JSON.parse(jqXHR.responseText) ?? { error: { ...error } })
-                                .error;
-                        } catch {
-                            error.message = jqXHR.responseText;
-                        }
-                    }
-                    Swal.fire({
-                        icon: "error",
-                        title: "Ôi không...",
-                        text: error.message,
-                        //footer: '<a href="javascript:;">Why do I have this issue?</a>'
-                    });
-                },
-            }).always(() => {
-                //$detailModal.FLoading("hide");
-            });
-        }
-
-
-
-        //search product
-
-        function searchProductInput(e) {
-            var key = e.keyCode || e.which;
-            if (key == 13) {
-                $.ajax({
-                    url: `@Url.RouteUrl(VacXinTheoLoController.RouteDataJson)`,
-                    method: "GET",
-                    data: {
-                        TenVacXinTheoLo: $("#searchProductInput").val(),
-                        SkipCount: 1,
-                        MaxResultCount: 20
-                    }
-                    ,
-                    success: (result) => {
-                        $("#showProduct").html('');
-
-                        var productlist = '';
-                        for (let i = 0; i < result.items.length; i++) {
-                            productlist += `<div class="mx-3" style="cursor:pointer" onclick="appendCombo('${result.items[i].maVacXinTheoLo}','${result.items[i].tenVacXinTheoLo}')">${result.items[i].tenVacXinTheoLo}</div><hr class="m-0">`
-                        }
-
-
-                        $("#showProduct").append(productlist);
-
-                    },
-                    error: (jqXHR, textStatus, errorThrown) => {
-                        let error = { message: "Đã có lỗi xảy ra, vui lòng liên hệ quản trị!" };
-                        if ($.trim(jqXHR.responseText).length > 0) {
-                            try {
-                                error = (JSON.parse(jqXHR.responseText) ?? { error: { ...error } })
-                                    .error;
-                            } catch {
-                                error.message = jqXHR.responseText;
-                            }
-                        }
-                        Swal.fire({
-                            icon: "error",
-                            title: "Ôi không...",
-                            text: error.message,
-                            //footer: '<a href="javascript:;">Why do I have this issue?</a>'
-                        });
-                    },
-                }).always(() => {
-                    //$detailModal.FLoading("hide");
-                });
-            }
-        }
-
-        function appendCombo(id, name) {
-            $("#searchProductInput").val(name);
-
-            if ($(`.tr-${id}`).length < 1) {
-                let tr = '';
-                tr = `<tr class="tr-${id}">
-
-
-                                                            <th scope="row"></th>
-                                                                    <td class="d-none maVacXinTheoLo">${id}</td>
-                                                                    <td>${name}</td>
-                                                                    <td><input type="number" min="0" value="0" class="form-control donGiaNhap" placeholder="Giá nhập"></td>
-                                                                    <td><input type="number" min="0" value="0" class="form-control soLuongNhap" placeholder="Số lượng nhập"></td>
-                                                                    <td><i style="cursor:pointer;" onclick="removeProduct('${id}')" class="bi bi-trash-fill"></i></td>
-                                                        </tr>
-                                                        `;
-                $("#comboBody").append(tr);
-            }
-
-        }
-
-        function removeProduct(id) {
-            $(`.tr-${id}`).remove();
-        }
-    </script>
 }

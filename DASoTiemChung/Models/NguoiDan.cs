@@ -29,7 +29,7 @@ namespace DASoTiemChung.Models
         public int? MaQuanHuyen { get; set; }
         public int? MaTinhThanhPho { get; set; }
         public bool DaXoa { get; set; }
-
+        public DateTime NgaySinh { get; set; }
         public virtual ICollection<PhieuTiem> PhieuTiems { get; set; }
     }
 }

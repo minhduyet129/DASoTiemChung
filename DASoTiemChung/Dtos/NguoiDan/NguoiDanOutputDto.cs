@@ -1,4 +1,5 @@
 ﻿using DASoTiemChung.Models;
+using System;
 using System.Collections.Generic;
 
 namespace DASoTiemChung.Dtos
@@ -27,6 +28,7 @@ namespace DASoTiemChung.Dtos
         public string NguoiDamHo { get; set; }
         public string QuanHeNguoiDamHo { get; set; }
         public string SoDienThoaiNguoiDamHo { get; set; }
+        public DateTime NgaySinh { get; set; }
 
     }
 }
