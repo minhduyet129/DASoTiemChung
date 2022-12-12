@@ -138,7 +138,7 @@
                                            @thongtinTraCuu.DiaChi
                                         </p>
                                     </div>
-
+                                    
                                     <div _ngcontent-lww-c8="" class="col-12 table-responsive">
                                         <table _ngcontent-lww-c8="" class="table table-bordered table-hover">
                                             <thead _ngcontent-lww-c8="">
@@ -150,76 +150,32 @@
                                                     <th _ngcontent-lww-c8="" class="text-center">
                                                         Tên vắc xin
                                                     </th>
-                                                    <th _ngcontent-lww-c8="" class="text-center">Số lô</th>
+                                                    <th _ngcontent-lww-c8="" class="text-center">Bác sỹ tiêm</th>
                                                     <th _ngcontent-lww-c8="" class="text-center">Nơi tiêm</th>
                                                 </tr>
                                             </thead>
                                             <tbody _ngcontent-lww-c8="">
                                                 <!---->
+                                                @foreach (var combo in ViewBag.GetPhieuTiems)
+                                            {
                                                 <tr _ngcontent-lww-c8="" class="ng-star-inserted">
                                                     <td _ngcontent-lww-c8="" class="text-center" scope="row">
-                                                        1
+                                                            @Html.Raw(combo.MaMuiTiem)
                                                     </td>
                                                     <td _ngcontent-lww-c8="" class="text-center">
-                                                        03/10/2021 - 08:57
+                                                            @Html.Raw(combo.ThoiGianTiem)
                                                     </td>
                                                     <td _ngcontent-lww-c8="" class="text-center">
-                                                        COVID-19 Vaccine (Vero Cell), Inactivated (Sinopharm)
+                                                       @Html.Raw(combo.MaVacXinTheoLoNavigation?.TenVacXinTheoLo)
                                                     </td>
                                                     <td _ngcontent-lww-c8="" class="text-center">
-                                                        B2021082582
+                                                            @Html.Raw(combo.MaNhanVienNavigation?.TenNhanVien)
                                                     </td>
                                                     <td _ngcontent-lww-c8="" class="text-center">
-                                                        TYT An Lạc
+                                                            @Html.Raw(combo.MaKhoNavigation?.TenKho)
                                                     </td>
                                                 </tr>
-                                                <tr _ngcontent-lww-c8="" class="ng-star-inserted">
-                                                    <td _ngcontent-lww-c8="" class="text-center" scope="row">
-                                                        2
-                                                    </td>
-                                                    <td _ngcontent-lww-c8="" class="text-center">
-                                                        24/10/2021 - 09:54
-                                                    </td>
-                                                    <td _ngcontent-lww-c8="" class="text-center">
-                                                        COVID-19 Vaccine (Vero Cell), Inactivated (Sinopharm)
-                                                    </td>
-                                                    <td _ngcontent-lww-c8="" class="text-center">
-                                                        B2021093084
-                                                    </td>
-                                                    <td _ngcontent-lww-c8="" class="text-center">
-                                                        TYT An Lạc
-                                                    </td>
-                                                </tr>
-                                                <tr _ngcontent-lww-c8="" class="ng-star-inserted">
-                                                    <td _ngcontent-lww-c8="" class="text-center" scope="row">
-                                                        3
-                                                    </td>
-                                                    <td _ngcontent-lww-c8="" class="text-center">
-                                                        06/01/2022 - 01:00
-                                                    </td>
-                                                    <td _ngcontent-lww-c8="" class="text-center">
-                                                        COVID-19 Vaccine Comirnaty (Pfizer/BioNtech)
-                                                    </td>
-                                                    <td _ngcontent-lww-c8="" class="text-center">PK0723</td>
-                                                    <td _ngcontent-lww-c8="" class="text-center">
-                                                        TYT An Lạc
-                                                    </td>
-                                                </tr>
-                                                <tr _ngcontent-lww-c8="" class="ng-star-inserted">
-                                                    <td _ngcontent-lww-c8="" class="text-center" scope="row">
-                                                        4
-                                                    </td>
-                                                    <td _ngcontent-lww-c8="" class="text-center">
-                                                        13/04/2022 - 08:57
-                                                    </td>
-                                                    <td _ngcontent-lww-c8="" class="text-center">
-                                                        COVID-19 Vaccine Comirnaty (Pfizer/BioNtech)
-                                                    </td>
-                                                    <td _ngcontent-lww-c8="" class="text-center">ACB9330</td>
-                                                    <td _ngcontent-lww-c8="" class="text-center">
-                                                        TYT An Lạc
-                                                    </td>
-                                                </tr>
+                                            }
                                             </tbody>
                                         </table>
                                     </div>
@@ -250,7 +206,7 @@
                                                 <div _ngcontent-lww-c8="" class="w-100">
                                                     <p _ngcontent-lww-c8="" class="mb-1">Họ và tên</p>
                                                     <p _ngcontent-lww-c8="" class="fw-bolder text-dark">
-                                                        Cao Văn Huy
+                                                        @thongtinTraCuu.HoTen
                                                     </p>
                                                 </div>
                                             </div>
@@ -260,7 +216,7 @@
                                                 </div>
                                                 <div _ngcontent-lww-c8="" class="w-100">
                                                     <p _ngcontent-lww-c8="" class="mb-1">Ngày sinh</p>
-                                                    <p _ngcontent-lww-c8="" class="fw-bolder">03/06/1999</p>
+                                                    <p _ngcontent-lww-c8="" class="fw-bolder">@thongtinTraCuu.NgaySinh</p>
                                                 </div>
                                             </div>
                                             <div _ngcontent-lww-c8="" class="d-flex text-dark">
@@ -269,7 +225,7 @@
                                                 </div>
                                                 <div _ngcontent-lww-c8="" class="w-100">
                                                     <p _ngcontent-lww-c8="" class="mb-1">CCCD/HC</p>
-                                                    <p _ngcontent-lww-c8="" class="fw-bolder">030099002825</p>
+                                                    <p _ngcontent-lww-c8="" class="fw-bolder">@thongtinTraCuu.CCCD</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -278,6 +234,8 @@
                             </div>
                         </div>
                     </div>
+
+
                 }
 
 

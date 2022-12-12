@@ -1,6 +1,6 @@
 ﻿@using DASoTiemChung.Controllers
 @{
-    ViewBag.Title = "Quản lý phiếu tiêm";
+    ViewBag.Title = "Quản lý đăng ký tiêm phòng";
 }
 
 @section Styles {
@@ -103,7 +103,7 @@
             <div class="card border">
                 <div class="card-header d-flex align-items-center">
                     <div class="d-flex justify-content-between w-100">
-                        <h4 class="card-title m-0">Danh sách phiếu tiêm vắc xin</h4>
+                        <h4 class="card-title m-0">Danh sách đăng ký tiêm vắc xin</h4>
                         <button type="button" class="btn btn-primary"
                             onclick="openForm({ url: '@Url.RouteUrl(PhieuTiemController.RouteForm, new { id = 0 })' })">
                             Thêm mới

@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace DASoTiemChung.Controllers
 {
@@ -52,8 +53,17 @@ namespace DASoTiemChung.Controllers
                                    CCCD=nguoidans.SoCccdhc,
                                    NgaySinh=nguoidans.NgaySinh,
                                    DiaChi=$"{nguoidans.SoNha} {nguoidanxa.TenXaPhuong} {nguoidanxaquan.TenQuanHuyen} {nguoidanxaquantinh.TenTinhThanhPho}"
-                               }).FirstOrDefault();
+                               }).Where(x=>x.HoTen==TenNguoiDan&&x.CCCD==SoCCCDHC).FirstOrDefault();
+                var getND = _context.NguoiDans.Where(x => x.HoTen == TenNguoiDan && x.SoCccdhc == SoCCCDHC && !x.DaXoa).FirstOrDefault();
+                if (getND != null)
+                {
+                    ViewBag.GetPhieuTiems = _context.PhieuTiems.Include(x => x.MaVacXinTheoLoNavigation).Include(x => x.MaNguoiDanNavigation).Include(x => x.MaMuiTiemNavigation).Include(x => x.MaKhoNavigation).Include(x => x.MaNhanVienNavigation).Where(x => !x.DaXoa).Where(x => x.MaNguoiDan == getND.MaNguoiDan).ToList();
 
+                }
+                else
+                {
+                    TempData["Message"] = "Thông tin tiểm chủng không tồn tại";
+                }
 
                 if (thongTinTraCuu == null)
                 {
