@@ -327,6 +327,15 @@
                 });
                 return;
             }
+            if (!$("#pcNS").val()) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Ôi không...',
+                    text: 'Vui lòng nhập tên ngày sinh',
+                    //footer: '<a href="javascript:;">Why do I have this issue?</a>'
+                });
+                return;
+            }
             if (!$("#pcSDT").val()) {
                 Swal.fire({
                     icon: 'error',

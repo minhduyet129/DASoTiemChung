@@ -154,7 +154,7 @@ namespace DASoTiemChung.Controllers
                 int skipRecord = (input.SkipCount - 1) * input.MaxResultCount;
                 var take = input.MaxResultCount;
 
-                var query = _context.VacXinTheoLos.AsQueryable();
+                var query = _context.VacXinTheoLos.Where(x=>!x.DaXoa).AsQueryable();
                 if (!string.IsNullOrEmpty(input.TenVacXinTheoLo))
                 {
                     query = query.Where(x => x.TenVacXinTheoLo.Contains(input.TenVacXinTheoLo));

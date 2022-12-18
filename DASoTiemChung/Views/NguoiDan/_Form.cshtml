@@ -41,6 +41,10 @@
             <input type="text" class="form-control" id="pcName" name="@Html.NameFor(x => x.HoTen)" placeholder="Tên người dân" value="@Model.HoTen">
         </div>
         <div class="form-group">
+            <label for="pcNS">Ngày sinh </label>
+            <input type="date" class="form-control" id="pcNS" name="@Html.NameFor(x => x.NgaySinh)" value="@Model.NgaySinh.ToString("yyyy-MM-dd")">
+        </div>
+        <div class="form-group">
             <label for="pcTinhThanh">Tỉnh thành</label>
             <select class="choices form-select" id="pcTinhThanh" onchange="changeTinh()" name="@Html.NameFor(x => x.MaTinhThanhPho)">
                 <option value="">Chọn tỉnh thành</option>

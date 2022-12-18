@@ -15,6 +15,8 @@
             <tr>
                 <th class="text-center">#</th>
                 <th class="text-center col-lg-3">Họ Tên</th>
+                <th class="text-center col-lg-3">Ngày sinh</th>
+
                 <th class="text-center col-lg-3">Số thẻ BHYT</th>
                 <th class="text-center col-lg-3">SDT</th>
                 <th class="text-center col-lg-3">Số CCCD/HC</th>
@@ -34,6 +36,7 @@
                 <td align="center">@(orderNum++)</td>
 
                     <td class="center" > @Html.Raw(category.HoTen)</td>
+                    <td class="center"> @Html.Raw(category.NgaySinh.ToString("dd-MM-yyyy"))</td>
                     <td class ="center"> @Html.Raw(category.SoTheBaoHiemYte)</td>
                     <td class="center"> @Html.Raw(category.SoDienThoai)</td>
                     <td class="center"> @Html.Raw(category.SoCccdhc)</td>

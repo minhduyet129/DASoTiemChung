@@ -142,7 +142,7 @@ namespace DASoTiemChung.Controllers
 
                     try
                     {
-                        result = _context.PhieuTiems.Include(x => x.MaNguoiDanNavigation).Include(x => x.MaNhanVienNavigation).Include(x => x.PhieuTiemBenhLys).ThenInclude(x => x.MaTienSuBenhLyNavigation).Select(x => new PhieuTiemInputDto()
+                        result = _context.PhieuTiems.Where(x=>x.MaPhieuTiem==id).Include(x => x.MaNguoiDanNavigation).Include(x => x.MaNhanVienNavigation).Include(x => x.PhieuTiemBenhLys).ThenInclude(x => x.MaTienSuBenhLyNavigation).Select(x => new PhieuTiemInputDto()
                         {
                             MaPhieuTiem = x.MaPhieuTiem,
                             TenNguoiDan = x.MaNguoiDanNavigation.HoTen,
