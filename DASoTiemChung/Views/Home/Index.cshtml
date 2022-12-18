@@ -1,8 +1,94 @@
-﻿@{
+﻿@using DASoTiemChung.Controllers
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+
+<div class="d-flex justify-content-around container">
+    <div class="shadow p-3 mb-5 bg-body rounded me-2 w-100">
+        <div class="d-flex align-items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-eyedropper" viewBox="0 0 16 16">
+                <path d="M13.354.646a1.207 1.207 0 0 0-1.708 0L8.5 3.793l-.646-.647a.5.5 0 1 0-.708.708L8.293 5l-7.147 7.146A.5.5 0 0 0 1 12.5v1.793l-.854.853a.5.5 0 1 0 .708.707L1.707 15H3.5a.5.5 0 0 0 .354-.146L11 7.707l1.146 1.147a.5.5 0 0 0 .708-.708l-.647-.646 3.147-3.146a1.207 1.207 0 0 0 0-1.708l-2-2zM2 12.707l7-7L10.293 7l-7 7H2v-1.293z" />
+            </svg>
+            <div class="mx-4">
+                <div class="fw-bolder fs-4 font-monospace">Số mũi tiêm hôm qua</div>
+                <div class="fst-italic  fs-5">@ViewBag.MuiTiemHomQua (mũi)</div>
+            </div>
+        </div>
+
+    </div>
+    <div class="shadow p-3 mb-5 bg-body rounded w-100">
+        <div class="d-flex align-items-center">
+            <i class="fas fa-shield-alt"></i>
+            <div class="mx-4">
+                <div class="fw-bolder fs-4 font-monospace">Tổng số mũi đã tiêm trên địa bàn</div>
+                <div class="fst-italic  fs-5">@ViewBag.TongMuiTiem (mũi)</div>
+            </div>
+        </div>
+
+    </div>
 </div>
+<div id="piechart" style="width: 900px; height: 500px;"></div>
+
+@section Scripts {
+    <script type="text/javascript">
+
+        google.charts.load('current', { 'packages': ['corechart'] });
+        google.charts.setOnLoadCallback(drawChart);
+
+        function drawChart() {
+            $.ajax({
+                url: `@Url.RouteUrl(ThongKeController.TiLeTiem)`,
+                method: "GET",
+                data: {
+
+                },
+                beforeSend: () => {
+                    //$detailModal.FLoading("show");
+                    //$detailModal.find(".modal-body").empty().append("Đang tải dữ liệu...");
+                },
+                success: (result) => {
+
+
+
+
+                    var data = google.visualization.arrayToDataTable(result);
+
+                    var options = {
+                        title: 'Tỉ lệ số mũi tiêm của người dân'
+                    };
+
+                    var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+
+                    chart.draw(data, options);
+
+
+                },
+                error: (jqXHR, textStatus, errorThrown) => {
+                    let error = { message: "Đã có lỗi xảy ra, vui lòng liên hệ quản trị!" };
+                    if (jqXHR.status == 403) {
+                        error.message = "Bạn không có quyền thực hiện thao tác này!";
+                    };
+                    if ($.trim(jqXHR.responseText).length > 0) {
+                        try {
+                            error = (JSON.parse(jqXHR.responseText) ?? { error: { ...error } })
+                                .error;
+                        } catch {
+                            error.message = jqXHR.responseText;
+                        }
+                    }
+                    Swal.fire({
+                        icon: "error",
+                        title: "Ôi không...",
+                        text: error.message,
+                        //footer: '<a href="javascript:;">Why do I have this issue?</a>'
+                    });
+                },
+            }).always(() => {
+                //$detailModal.FLoading("hide");
+            });
+
+        }
+    </script>
+
+}

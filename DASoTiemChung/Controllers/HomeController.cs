@@ -1,4 +1,5 @@
 ﻿using DASoTiemChung.Models;
+using DASoTiemChung.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -12,14 +13,20 @@ namespace DASoTiemChung.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly SoTiemChungContext _context;
+        
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, SoTiemChungContext context)
         {
             _logger = logger;
+            _context = context;
+           
         }
 
         public IActionResult Index()
         {
+            ViewBag.MuiTiemHomQua= _context.PhieuTiems.Where(x => !x.DaXoa && x.ThoiGianTiem > DateTime.Now.Date.AddDays(-1) && x.ThoiGianTiem < DateTime.Today.Date).Count();
+            ViewBag.TongMuiTiem= _context.PhieuTiems.Where(x => !x.DaXoa).Count();
             return View();
         }
 
