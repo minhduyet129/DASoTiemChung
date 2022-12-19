@@ -34,7 +34,7 @@ namespace DASoTiemChung.Controllers
         public async Task<IActionResult> Index(TraCuuInputDto input)
         {
             
-            if (!string.IsNullOrWhiteSpace(input.TenNguoiDan) && !string.IsNullOrWhiteSpace(input.SoCCCDHC))
+            if (!string.IsNullOrWhiteSpace(input.TenNguoiDan) && !string.IsNullOrWhiteSpace(input.SoDienThoai)&&input.NgaySinh.HasValue)
             {
                 var query =( from nguoidans in _context.NguoiDans
                                join xaphuongs in _context.XaPhuongs on nguoidans.MaXaPhuong equals xaphuongs.MaXaPhuong into kxp
@@ -58,7 +58,14 @@ namespace DASoTiemChung.Controllers
                                    CCCD=nguoidans.SoCccdhc,
                                    NgaySinh=nguoidans.NgaySinh,
                                    DiaChi=$"{nguoidans.SoNha} {nguoidanxa.TenXaPhuong} {nguoidanxaquan.TenQuanHuyen} {nguoidanxaquantinh.TenTinhThanhPho}"
-                               }).Where(x=>x.HoTen==input.TenNguoiDan&&x.CCCD==input.SoCCCDHC);
+                               }).Where(x=>x.HoTen==input.TenNguoiDan&&x.NgaySinh==input.NgaySinh&&x.SoDienThoai==input.SoDienThoai);
+                if (!string.IsNullOrWhiteSpace(input.SoCCCDHC))
+                {
+                    query = query.Where(x => x.CCCD == input.SoCCCDHC);
+                }
+
+
+
                 var thongTinTraCuu = query.FirstOrDefault();
 
                 if (thongTinTraCuu != null)
@@ -92,7 +99,7 @@ namespace DASoTiemChung.Controllers
             else
             {
                 
-                TempData["Message"] = "Vui lòng nhập thông tin người dân cần tra cứu";
+                TempData["Message"] = "Vui lòng nhập đầy đủ những thông tin người dân cần thiết để tra cứu (*)";
             }
             return View();
         }

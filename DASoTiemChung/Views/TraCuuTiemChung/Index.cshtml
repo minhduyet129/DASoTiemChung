@@ -55,7 +55,7 @@
                                 <div class="row">
                                     <div class="col-md-3 col-12">
                                         <div class="form-group">
-                                            <label for="searchTenNguoiDan">Tên người dân</label>
+                                            <label for="searchTenNguoiDan">Tên người dân(*)</label>
                                             <div class="position-relative">
                                                 <input type="text" id="searchTenNguoiDan" class="form-control"
                                                    placeholder="Nhập tên người dân muốn tìm" name="TenNguoiDan">
@@ -72,6 +72,24 @@
                                                    placeholder="Nhập số căn cước công dân muốn tìm" name="SoCCCDHC">
                                             </div>
                                         </div>
+                                    </div>
+                                    <div class="col-md-3 col-12">
+                                        <div class="form-group">
+                                            <label for="searchNS">Ngày Sinh(*)</label>
+                                            <div class="position-relative">
+                                            <input type="date" class="form-control" id="searchNS" name="NgaySinh">
+                                            </div>
+                                        </div>
+                                    </div>
+                                
+                                    <div class="col-md-3 col-12">
+                                    <div class="form-group">
+                                        <label for="searchSoDT">Số điện thoại(*)</label>
+                                        <div class="position-relative">
+                                            <input type="text" id="searchSoDT" class="form-control"
+                                                   placeholder="Số điện thoại" name="SoDienThoai">
+                                        </div>
+                                    </div>
                                     </div>
 
                                 </div>
@@ -278,8 +296,15 @@
         let params = new URLSearchParams(window.location.search);
             let tenND = params.get('TenNguoiDan');
             let soCCCD = params.get('SoCCCDHC');
+            let soDT=params.get('SoDienThoai');
+            let NS=params.get('NgaySinh');
             $("#searchTenNguoiDan").val(tenND);
             $("#searchSoCccdhc").val(soCCCD);
+            $("#searchSoDT").val(soDT);
+            $("#searchNS").val(NS);
+
+
+
     </script>
      
 }
