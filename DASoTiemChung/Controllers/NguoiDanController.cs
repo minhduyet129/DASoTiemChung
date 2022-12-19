@@ -70,6 +70,7 @@ namespace DASoTiemChung.Controllers
                         {
                             MaNguoiDan = nguoidans.MaNguoiDan,
                             HoTen = nguoidans.HoTen,
+                            NgaySinh=nguoidans.NgaySinh,
                             SoNha = nguoidans.SoNha,
                             SoTheBaoHiemYte=nguoidans.SoTheBaoHiemYte,
                             SoCccdhc=nguoidans.SoCccdhc,
