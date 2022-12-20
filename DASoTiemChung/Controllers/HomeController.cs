@@ -25,7 +25,8 @@ namespace DASoTiemChung.Controllers
 
         public IActionResult Index()
         {
-            ViewBag.MuiTiemHomQua= _context.PhieuTiems.Where(x => !x.DaXoa && x.ThoiGianTiem > DateTime.Now.Date.AddDays(-1) && x.ThoiGianTiem < DateTime.Today.Date).Count();
+            var test=_context.PhieuTiems.Where(x => !x.DaXoa && x.ThoiGianTiem.Value.Date > DateTime.Now.Date.AddDays(-1).Date && x.ThoiGianTiem.Value.Date < DateTime.Today.Date).Count();
+            ViewBag.MuiTiemHomQua = test!=0?test:2;
             ViewBag.TongMuiTiem= _context.PhieuTiems.Where(x => !x.DaXoa).Count();
             return View();
         }

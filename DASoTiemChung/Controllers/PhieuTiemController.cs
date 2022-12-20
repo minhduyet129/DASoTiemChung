@@ -244,7 +244,7 @@ namespace DASoTiemChung.Controllers
             {
                 try
                 {
-                    var nguoidan = _context.NguoiDans.FirstOrDefault(x => x.HoTen == dto.TenNguoiDan && x.SoCccdhc == dto.SoCccdhc && !x.DaXoa);
+                    var nguoidan = _context.NguoiDans.FirstOrDefault(x => x.HoTen.Trim() == dto.TenNguoiDan.Trim() && x.SoCccdhc.Trim() == dto.SoCccdhc.Trim() && !x.DaXoa);
                     if (nguoidan == null)
                     {
                         return BadRequest("Người dân không tồn tại!Vui lòng kiểm tra lại hoặc thêm mới người dân");

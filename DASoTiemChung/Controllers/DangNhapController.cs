@@ -44,7 +44,7 @@ namespace DASoTiemChung.Controllers
                 TempData["Message"] = "Tên tài khoản và mật khẩu không được bỏ trống!";
                 return View("Index");
             }
-            NhanVien nhanVien = _context.NhanViens.Include(x=>x.MaQuyenNavigation).FirstOrDefault(x => x.TenTaiKhoan == input.TenTaiKhoan && x.MatKhau == input.MatKhau);
+            NhanVien nhanVien = _context.NhanViens.Include(x=>x.MaQuyenNavigation).FirstOrDefault(x => x.TenTaiKhoan.Trim().Equals(input.TenTaiKhoan) && x.MatKhau.Equals(input.MatKhau));
             if (nhanVien == null)
             {
                 TempData["Message"] = "Tên tài khoản hoặc mật khẩu không chính xác!";
@@ -55,7 +55,7 @@ namespace DASoTiemChung.Controllers
                 {
                     new Claim(ClaimTypes.Name, nhanVien.TenTaiKhoan),
                     new Claim(ClaimTypes.NameIdentifier, nhanVien.MaNhanVien.ToString()),
-                     new Claim(ClaimTypes.Role, nhanVien.MaQuyenNavigation.TenQuyen)
+                     new Claim(ClaimTypes.Role, nhanVien.MaQuyenNavigation.TenQuyen.Replace(System.Environment.NewLine, string.Empty))
                 };
             var claimsIdentity = new ClaimsIdentity(claims, "Login");
 

@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 
 namespace DASoTiemChung.Controllers
 {
+    [Authorize(Roles =Quyens.ThemKho)]
     public class PhieuXuatController : Controller
     {
         private readonly ILogger<PhieuXuatController> _logger;
@@ -355,30 +356,32 @@ namespace DASoTiemChung.Controllers
 
                         }
                         _context.ChiTietPhieuXuats.RemoveRange(detaillist);
-                        _context.SaveChanges();
+                        
                         foreach (var ctpn in childrens)
                         {
                             ctpn.MaPhieuXuat = dto.MaPhieuXuat;
-                            var vacXinTheoLo = _context.VacXinTheoLos.Include(x => x.MaNhaSanXuatNavigation).Include(x => x.MaLoNavigation).Include(x => x.MaVacXinNavigation).FirstOrDefault(x => x.MaVacXinTheoLo == ctpn.MaVacXinTheoLo);
+                            var vacXinTheoLo = _context.VacXinTheoLos.Find(ctpn.MaVacXinTheoLo);
                             if (vacXinTheoLo != null)
                             {
                                 if (vacXinTheoLo.SoLuong < ctpn.SoLuong)
                                     return BadRequest($"vắc xin {vacXinTheoLo.TenVacXinTheoLo} tại kho không đủ rồi.Số lượng còn lại {vacXinTheoLo.SoLuong}");
                                 vacXinTheoLo.SoLuong -= ctpn.SoLuong;
 
-                                _context.Entry<VacXinTheoLo>(vacXinTheoLo).State = EntityState.Detached;
-
-
+                                _context.Update(vacXinTheoLo);
                                 var vacXinTheoLoDiemTiem = _context.VacXinTheoLos.FirstOrDefault(x => x.MaLo == vacXinTheoLo.MaLo && x.MaVacXin == vacXinTheoLo.MaVacXin && x.MaKho == dto.MaKhoNhan && x.MaNhaSanXuat == vacXinTheoLo.MaNhaSanXuat);
 
                                 if (vacXinTheoLoDiemTiem != null)
                                 {
                                     vacXinTheoLoDiemTiem.SoLuong += ctpn.SoLuong;
                                     _context.VacXinTheoLos.Update(vacXinTheoLoDiemTiem);
+                                    _context.SaveChanges();
                                 }
                                 else
                                 {
                                     var diemTiem = _context.Khos.Find(dto.MaKhoNhan);
+                                    var vacXin = _context.VacXins.Find(vacXinTheoLo.MaVacXin);
+                                    var tenLo = _context.Los.Find(vacXinTheoLo.MaLo);
+                                    var nsx = _context.NhaSanXuats.Find(vacXinTheoLo.MaNhaSanXuat);
                                     var vacXinTheoLoNew = new VacXinTheoLo()
                                     {
                                         MaLo = vacXinTheoLo.MaLo,

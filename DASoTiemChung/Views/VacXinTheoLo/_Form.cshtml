@@ -100,7 +100,7 @@
         </div>
         <div class="form-group">
             <label for="pcSoLuong">Số lượng</label>
-            <input type="number" class="form-control" id="pcSoLuong" name="@Html.NameFor(x => x.SoLuong)" placeholder="Số lượng" value="@Model.SoLuong">
+            <input type="number" class="form-control" id="pcSoLuong" name="@Html.NameFor(x => x.SoLuong)" min="0" placeholder="Số lượng" value="@Model.SoLuong">
         </div>
 
     </form>

@@ -284,7 +284,7 @@ namespace DASoTiemChung.Controllers
         }
 
         public const string RouteUpdate = "PhieuNhapPutUpdate";
-        [Authorize(Roles =Quyens.ChinhSuaThuTucTiem)]
+        [Authorize(Roles =Quyens.ChinhSuaKho)]
         [HttpPut("[controller]/{id}", Name = RouteUpdate)]
         public async Task<IActionResult> Update(int id, PhieuNhap dto)
         {
@@ -373,7 +373,7 @@ namespace DASoTiemChung.Controllers
         }
 
         public const string RouteDelete = "PhieuNhapDelete";
-        [Authorize(Roles = Quyens.ChinhSuaThuTucTiem)]
+        [Authorize(Roles = Quyens.ChinhSuaKho)]
         [HttpDelete("[controller]/{id}", Name = RouteDelete)]
         public async Task<IActionResult> Delete(int? id)
         {

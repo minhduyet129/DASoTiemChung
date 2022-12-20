@@ -294,6 +294,7 @@ namespace DASoTiemChung.Controllers
                 {
                     return BadRequest($"Vắc xin theo lô này đã được tạo với tên ' {checkVacXinTheoLoExist.TenVacXinTheoLo} ', nếu muốn thay đổi vui lòng chỉnh sửa .");
                 }
+                dto.SoLuong = dto.SoLuong ?? 0;
                 _reposity.Insert(dto);
                 _reposity.Save();
                 return Ok();
