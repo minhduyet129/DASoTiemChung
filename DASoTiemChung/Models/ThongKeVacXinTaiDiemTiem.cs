@@ -9,12 +9,15 @@ namespace DASoTiemChung.Models
     {
         public int MaThongKe { get; set; }
         public int? MaKho { get; set; }
-        public long? SoLuongTiem { get; set; }
+        public int? MaVacXinTheoLo { get; set; }
+        
+        public long? SoLuongTrongKho { get; set; }
         public long? SoLuongHong { get; set; }
-        public long? SoLuongThua { get; set; }
-        public DateTime? TuNgay { get; set; }
-        public DateTime? DenNgay { get; set; }
+        public long? SoLuongThucTe { get; set; }
+        public DateTime? NgayThongKe { get; set; }
+        
 
         public virtual Kho MaKhoNavigation { get; set; }
+        public virtual VacXinTheoLo MaVacXinTheoLoNavigation { get; set; }
     }
 }

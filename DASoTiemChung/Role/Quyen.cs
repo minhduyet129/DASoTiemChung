@@ -22,5 +22,10 @@
 
 
 
+
+        public const string BaoHong = "NhanVienCapCao,TruongKho,QuanLy";
+
+
+
     }
 }

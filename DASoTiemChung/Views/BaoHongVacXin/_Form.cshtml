@@ -1,0 +1,60 @@
+﻿@using DASoTiemChung.Controllers
+@using DASoTiemChung.Dtos
+@using Newtonsoft.Json
+@model ThongKeVacXinTaiDiemTiem
+
+@{
+
+    var submitUrl = Model.MaThongKe == 0 ? Url.RouteUrl(BaoHongVacXinController.RouteCreate) : Url.RouteUrl(BaoHongVacXinController.RouteUpdate, new { id = Model.MaThongKe });
+    var submitMethod = Model.MaThongKe == 0 ? "POST" : "PUT";
+}
+<div class="modal-header">
+    <h5 class="modal-title">@(Model.MaThongKe==0 ? "Đăng ký" : "Sửa") báo hỏng vắc xin</h5>
+</div>
+<div class="modal-body">
+    <form id="detailsForm"
+          class="row g-3"
+          onsubmit="event.preventDefault(); saveForm.call(this, { url: '@Html.Raw(submitUrl)', method: '@Html.Raw(submitMethod)' });">
+        <div class="form-group d-none">
+            <label for="pcId">Id</label>
+            <input type="text" readonly class="form-control" id="pcId" name="@Html.NameFor(x => x.MaThongKe)" placeholder="" value="@Html.Raw(Model.MaThongKe==0 ? 0 : Model.MaThongKe)" />
+        </div>
+        <div class="form-group">
+            <label for="pcKho">Địa điểm</label>
+            <select class="choices form-select" id="pcKho" onchange="changeDiemTiem()" name="@Html.NameFor(x => x.MaKho)">
+                <option value="">Chọn địa điểm</option>
+                @foreach (Kho role in ViewBag.DiemTiems ?? new List<Kho>())
+                {
+                    @*@Html.Raw(GenerateCategorySelectOptions(category, 1))*@
+                    <option value="@Html.Raw(role.MaKho)" selected="@(Model.MaKho.Equals(role.MaKho))">@Html.Raw(role.TenKho)</option>
+                }
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="pcVacXin">Vắc xin</label>
+            <select class="choices form-select" id="pcVacXin" name="@Html.NameFor(x => x.MaVacXinTheoLo)">
+                <option value="">Chọn vắc xin</option>
+                @foreach (VacXinTheoLo role in ViewBag.VacXins ?? new List<VacXinTheoLo>())
+                {
+                    @*@Html.Raw(GenerateCategorySelectOptions(category, 1))*@
+                    <option value="@Html.Raw(role.MaVacXinTheoLo)" selected="@(Model.MaVacXinTheoLo.Equals(role.MaVacXinTheoLo))">@Html.Raw(role.TenVacXinTheoLo)</option>
+                }
+            </select>
+        </div>
+       <div class="form-group">
+            <label for="pcSoLuongHong">Số lượng hỏng</label>
+            <input type="number" min="0" class="form-control" id="pcSoLuongHong" name="@Html.NameFor(x => x.SoLuongHong)" value="@Model.SoLuongHong">
+        </div>
+        <div class="form-group">
+            <label for="pcNgayThongKe">Ngày thống kế</label>
+            <input type="date" class="form-control" id="pcNgayThongKe" name="@Html.NameFor(x => x.NgayThongKe)" value="@Model.NgayThongKe.Value.ToString("yyyy-MM-dd")">
+        </div>
+        
+        
+    </form>
+</div>
+
+<div class="modal-footer">
+    <button type="submit" class="btn btn-primary" form="detailsForm">Lưu</button>
+    <button type="button" class="btn btn-secondary" @*data-bs-dismiss="modal"*@ onclick="closeForm()">Đóng</button>
+</div>

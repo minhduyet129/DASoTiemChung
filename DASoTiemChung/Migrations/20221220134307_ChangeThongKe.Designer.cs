@@ -4,14 +4,16 @@ using DASoTiemChung.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DASoTiemChung.Migrations
 {
     [DbContext(typeof(SoTiemChungContext))]
-    partial class SoTiemChungContextModelSnapshot : ModelSnapshot
+    [Migration("20221220134307_ChangeThongKe")]
+    partial class ChangeThongKe
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -535,14 +537,14 @@ namespace DASoTiemChung.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<DateTime?>("DenNgay")
+                        .HasColumnType("date");
+
                     b.Property<int?>("MaKho")
                         .HasColumnType("int");
 
                     b.Property<int?>("MaVacXinTheoLo")
                         .HasColumnType("int");
-
-                    b.Property<DateTime?>("NgayThongKe")
-                        .HasColumnType("date");
 
                     b.Property<long?>("SoLuongHong")
                         .HasColumnType("bigint");
@@ -550,8 +552,14 @@ namespace DASoTiemChung.Migrations
                     b.Property<long?>("SoLuongThucTe")
                         .HasColumnType("bigint");
 
+                    b.Property<long?>("SoLuongTiem")
+                        .HasColumnType("bigint");
+
                     b.Property<long?>("SoLuongTrongKho")
                         .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("TuNgay")
+                        .HasColumnType("date");
 
                     b.HasKey("MaThongKe")
                         .HasName("PK__ThongKeV__60E521F491002700");

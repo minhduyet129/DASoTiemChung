@@ -385,14 +385,17 @@ namespace DASoTiemChung.Models
 
                 
 
-                entity.Property(e => e.DenNgay).HasColumnType("date");
+                entity.Property(e => e.NgayThongKe).HasColumnType("date");
 
-                entity.Property(e => e.TuNgay).HasColumnType("date");
+               
 
                 entity.HasOne(d => d.MaKhoNavigation)
                     .WithMany(p => p.ThongKeVacXinTaiDiems)
                     .HasForeignKey(d => d.MaKho)
                     ;
+                entity.HasOne(d => d.MaVacXinTheoLoNavigation)
+                    .WithMany(p => p.ThongKeVacXinTaiDiemTiems)
+                    .HasForeignKey(d => d.MaVacXinTheoLo);
             });
 
             modelBuilder.Entity<TienSuBenhLy>(entity =>
