@@ -69,9 +69,9 @@
                                         </div>
                                     </div>
                                 </div>
-                                
 
-                                
+
+
                             </div>
                             <div class="row">
                                 <div class="col-12 d-flex justify-content-end">
@@ -90,7 +90,9 @@
                 </div>
             </div>
         </section>
-
+        <div class="mb-3">
+            <button type="button" class="btn btn-info" onclick="location.href='@Url.Action("ExportToExcel", "BaoHongVacXin")'">Xuất file excel</button>
+        </div>
         <!-- Striped rows start -->
         <section class="section">
             <div class="card border">
@@ -123,7 +125,7 @@
         let $searchTenKho;
         let $searchTenVX;
         let $searchNgayThongKe;
-        
+
         let $detailModal;
         let detailModalInstance;
         let SkipCount = 1;
@@ -136,7 +138,7 @@
             $searchTenKho = $("#searchTenKho");
             $searchTenVX = $("#searchTenVX");
             $searchNgayThongKe = $("#searchNgayThongKe");
-            
+
 
             $searchForm = $("#searchForm");
             $detailModal = $("#detailModal");
@@ -184,7 +186,7 @@
                 TenKho: $.trim($searchTenKho.val()).length > 0 ? $.trim($searchTenKho.val()) : "",
                 TenVacXin: $.trim($searchTenVX.val()).length > 0 ? $.trim($searchTenVX.val()) : "",
                 NgayThongKe: $.trim($searchNgayThongKe.val()).length > 0 ? $.trim($searchNgayThongKe.val()) : ""
-                
+
             };
 
             pagingAjaxInstance = $.ajax({
@@ -292,15 +294,15 @@
                 });
                 return;
             }
-            
-            
-            
+
+
+
             let pcId = $("#pcId").val();
             let pcKho = $("#pcKho").val();
             let pcVacXin = $("#pcVacXin").val();
             let pcSoLuongHong = $("#pcSoLuongHong").val();
             let pcNgayThongKe = $("#pcNgayThongKe").val();
-            
+
 
             $.ajax({
                 url,
@@ -309,9 +311,9 @@
                     MaThongKe: pcId,
                     MaKho: pcKho,
                     MaVacXinTheoLo: pcVacXin,
-                    NgayThongKe:pcNgayThongKe,
-                    SoLuongHong:pcSoLuongHong
-                    
+                    NgayThongKe: pcNgayThongKe,
+                    SoLuongHong: pcSoLuongHong
+
                 },
                 beforeSend: () => {
                     //$detailModal.FLoading("show");
@@ -488,14 +490,14 @@
                 tr = `<tr class="tr-${id}">
 
 
-                                    <th scope="row"></th>
-                                            <td class="d-none maVacXinTheoLo">${id}</td>
-                                            <td>${name}</td>
-                                            <td><input type="number" min="0" value="0" class="form-control donGiaNhap" placeholder="Giá nhập"></td>
-                                            <td><input type="number" min="0" value="0" class="form-control soLuongNhap" placeholder="Số lượng nhập"></td>
-                                            <td><i style="cursor:pointer;" onclick="removeProduct('${id}')" class="bi bi-trash-fill"></i></td>
-                                </tr>
-                                `;
+                                            <th scope="row"></th>
+                                                    <td class="d-none maVacXinTheoLo">${id}</td>
+                                                    <td>${name}</td>
+                                                    <td><input type="number" min="0" value="0" class="form-control donGiaNhap" placeholder="Giá nhập"></td>
+                                                    <td><input type="number" min="0" value="0" class="form-control soLuongNhap" placeholder="Số lượng nhập"></td>
+                                                    <td><i style="cursor:pointer;" onclick="removeProduct('${id}')" class="bi bi-trash-fill"></i></td>
+                                        </tr>
+                                        `;
                 $("#comboBody").append(tr);
             }
 
@@ -506,11 +508,11 @@
         }
 
         function changeDiemTiem() {
-            
+
 
             //search vacxin theo lo
 
-             $.ajax({
+            $.ajax({
                 url: `@Url.RouteUrl(VacXinTheoLoController.RouteDataJson)`,
                 method: "GET",
                 data: {
@@ -527,8 +529,8 @@
                     for (let item of result.items) {
                         contentVacXin += `<option value=${item.maVacXinTheoLo} >${item.tenVacXinTheoLo}</option>`;
                     }
-                     $("#pcVacXin").empty().append(contentVacXin);
-                   
+                    $("#pcVacXin").empty().append(contentVacXin);
+
 
 
                 },

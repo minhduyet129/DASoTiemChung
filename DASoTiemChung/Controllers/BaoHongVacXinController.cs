@@ -2,9 +2,11 @@
 using DASoTiemChung.Filter;
 using DASoTiemChung.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -359,6 +361,66 @@ namespace DASoTiemChung.Controllers
 
             return BadRequest("Có lỗi xảy ra!");
 
+        }
+
+        [HttpGet("[controller]/Export")]
+        public IActionResult ExportToExcel()
+        {
+            var query = _context.ThongKeVacXinTaiDiemTiems.Include(x => x.MaKhoNavigation).Include(x => x.MaVacXinTheoLoNavigation).AsQueryable();
+            var userName = User.Identity.Name;
+            if (!string.IsNullOrEmpty(userName))
+            {
+                var currentUser = _context.NhanViens.Include(x => x.MaQuyenNavigation).FirstOrDefault(x => x.TenTaiKhoan == userName);
+                if (currentUser != null)
+                {
+                    if (currentUser.MaQuyenNavigation.TenQuyen.Equals(Quyens.TruongKho) || currentUser.MaQuyenNavigation.TenQuyen.Equals(Quyens.NhanVienCapCao))
+                    {
+                        query = query.Where(x => x.MaKho == currentUser.MaKho);
+                    }
+                    query = query.OrderBy(x => x.MaKhoNavigation.TenKho).ThenBy(x => x.MaVacXinTheoLoNavigation.TenVacXinTheoLo);
+                }
+            }
+            var doctors = query.ToList();
+            byte[] fileContents;
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+            ExcelPackage Ep = new ExcelPackage();
+            ExcelWorksheet Sheet = Ep.Workbook.Worksheets.Add("ThongKeVacXin");
+            Sheet.Cells["A1"].Value = "Tên vắc xin theo lô";
+            Sheet.Cells["B1"].Value = "Số lượng trong kho";
+            Sheet.Cells["C1"].Value = "Số lượng hỏng";
+            Sheet.Cells["D1"].Value = "Số lượng thực tế";
+            Sheet.Cells["E1"].Value = "Ngày thống kê";
+            Sheet.Cells["F1"].Value = "Địa điểm";
+         
+            int row = 2;
+            foreach (var item in doctors)
+            {
+                Sheet.Cells[string.Format("A{0}", row)].Value = item.MaVacXinTheoLoNavigation.TenVacXinTheoLo;
+                Sheet.Cells[string.Format("B{0}", row)].Value = item.SoLuongTrongKho;
+                Sheet.Cells[string.Format("C{0}", row)].Value = item.SoLuongHong;
+                Sheet.Cells[string.Format("D{0}", row)].Value = item.SoLuongThucTe;
+                Sheet.Cells[string.Format("E{0}", row)].Value = item.NgayThongKe.Value.ToString("dd/MM/yyyy");
+                Sheet.Cells[string.Format("F{0}", row)].Value = item.MaKhoNavigation.TenKho;
+               
+                row++;
+            }
+
+
+            Sheet.Cells["A:AZ"].AutoFitColumns();
+            Response.Clear();
+            Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+            fileContents = Ep.GetAsByteArray();
+
+            if (fileContents == null || fileContents.Length == 0)
+            {
+                return NotFound();
+            }
+
+            return File(
+                fileContents: fileContents,
+                contentType: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                fileDownloadName: "Danh sách thống kê sử dụng vắc xin.xlsx"
+            );
         }
     }
 }

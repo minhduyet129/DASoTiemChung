@@ -148,6 +148,23 @@
                     </div>
                 </li>
                 <li class="sidebar-item">
+
+                    <div class="btn btn-toggle collapsed sidebar-link" data-bs-toggle="collapse" data-bs-target="#dashboard-collapsed" aria-expanded="false">
+                        <i class="fas fa-memory"></i>
+                        <span>Thống kê</span>
+                    </div>
+                    <div class="collapse" id="dashboard-collapsed">
+                        <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                            <li class="sidebar-item">
+                                <a asp-route="@BaoHongVacXinController.RouteIndex" class="sidebar-link">
+                                    <i class="bi bi-file-earmark-person-fill"></i>
+                                    <span>Kiểm kho</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="sidebar-item">
                     <a asp-route="@DangNhapController.LogoutExcute" class="sidebar-link">
                         <i class="fas fa-sign-out-alt"></i>
                         <span>Đăng xuất</span>
